@@ -1,0 +1,2468 @@
+<div align="center">
+
+# BZSH Külkereskedelmi 2025/2026 tanév
+## Technikum
+### **Szakma:** SZOFTVERFEJLESZTŐ ÉS -TESZTELŐ 
+
+<br><br><br><br><br><br>
+
+
+# SZAKDOLGOZAT
+
+
+# D O K U M E N T Á C I Ó
+
+
+## Vizsgaremek
+
+
+<br>
+
+## ElitPort: Magánklinikai digitális időpontfoglaló rendszer fejlesztése
+
+<br><br><br><br><br><br><br><br><br><br>
+
+<div align="left" style="display: flex; justify-content: space-between;">
+  <div>
+    <strong>Készítette:</strong><br>
+    Nagy Etelka<br>
+    SZOFTVERFEJLESZTŐ ÉS -TESZTELŐ
+  </div>
+  <br>
+  <div align="right">
+    <strong>Konzulens:</strong><br>
+    [Konzulens Neve]<br>
+    [Beosztása]
+  </div>
+</div>
+
+
+<br><br><br><br><br>
+
+
+### Budapest
+### 2026
+
+</div>
+
+<div style="page-break-after: always;"></div>
+
+
+# 1. Bevezetés
+
+A digitális transzformáció ma már az egészségügy minden területén alapvető elvárás, nem csupán a kényelem, hanem a folyamatok átláthatósága és precizitása miatt is. Dokumentációm tárgya az **ElitPort**, egy komplex egészségügyi menedzsment megoldás, amelyet az **Elit Klinika** specifikus igényeire szabva fejlesztettem ki.
+
+### 1.1. A projekt célja és szakmai hasznosulása
+A szoftver elsődleges célja a manuális, időigényes adminisztráció – például a telefonos időpontegyeztetés és a papíralapú naptárkezelés – kiváltása egy modern, **reszponzív webalkalmazással**. A rendszer egy idősáv-alapú (slot-based) online foglalási logikára épül, amely közvetlen összeköttetést teremt a klinika kínálata és a páciensek igényei között.
+
+A szakmai megvalósítás során egy olyan **intelligens páciensmenedzsment-platform** létrehozására törekedtem, amely:
+* **Reszponzív kialakítású:** Bármilyen eszközön (asztali számítógépen, táblagépen vagy okostelefonon) natív élményt nyújtó, böngészőből futtatható felületet biztosít.
+* **Felhasználóbarát:** Logikus felépítésével minimalizálja a foglaláshoz szükséges időt és lépésszámot.
+* **Automatizált:** Valós idejű ütközésvizsgálattal és rendszerüzenetekkel küszöböli ki az emberi hibákat és a kettős foglalásokat.
+
+### 1.2. Témaválasztás és személyes motiváció
+A témaválasztást egy valós piaci igény alapozta meg. Egy külföldről hazaköltöző, új magánrendelőt nyitó szakorvossal folytatott konzultáció során bebizonyosodott, hogy a jelenleg elérhető klinikai rendszerek jelentős része technológiailag elavult, lassú, és nem nyújt megfelelő felhasználói élményt a modern böngészőkből történő elérés során. 
+
+Ez a tapasztalat inspirált arra, hogy vizsgamunkám keretében egy olyan megoldást hozzak létre, amely naprakész technológiai stackre épülve közvetlenül támogatja egy induló vállalkozás digitális munkafolyamatait. Fejlesztői szempontból a legfőbb kihívást a robusztus backend logika és a dinamikus, reszponzív frontend felület hatékony összehangolása jelentette.
+
+### 1.3. Célcsoport és értékajánlat
+Az alkalmazás két fő felhasználói csoport számára teremt közvetlen értéket:
+1.  **Páciensek:** Számukra egy 24/7 elérhető online felületet biztosít, ahol várakozás nélkül, bármilyen eszközről azonnal foglalhatnak, módosíthatnak vagy mondhatnak le időpontokat.
+2.  **Klinikai személyzet:** Csökkennek az adminisztrációs terhek, a központi dashboard pedig átláthatóvá teszi a napi menetrendet és a szakemberek terheltségét.
+
+### 1.4. Fő funkciók
+A fejlesztés során az alábbi kulcsfontosságú modulok megvalósítására fókuszáltam:
+* **Regisztráció és Szerepkör-alapú Hitelesítés:** Biztonságos belépés, ahol a rendszer automatikusan elkülöníti a páciens (kártyás nézet) és az adminisztrátor (táblázatos/kezelő nézet) felületeit.
+* **Dinamikus Időpontfoglalás:** Szolgáltatás- és szakember-szűrési lehetőségekkel kiegészített naptárkezelő rendszer.
+* **Adminisztrációs Kontroll:** Felhasználók kezelése, szakmai adatok szerkesztése és üzleti statisztikák (Dashboard).
+* **Értesítési Rendszer:** Automatikus e-mail visszajelzések a sikeres tranzakciókról és fiókaktiválásról.
+
+### 1.5. Funkcionális áttekintés
+
+Az ElitPort rendszer szolgáltatásai három jól elkülöníthető pillérre épülnek, biztosítva a biztonságot és a hatékony munkafolyamatokat.
+
+#### 1.5.1. Regisztráció és Azonosítás
+A rendszer alapja a biztonságos és differenciált hozzáférés-kezelés:
+* **Többszintű autentikáció:** A felhasználók azonosítása e-mail cím és titkosított (bcrypt-tel hashelt) jelszó párosával történik.
+* **Szerepkör-alapú hozzáférés (RBAC):** A rendszer a bejelentkezéskor kapott JWT token alapján dinamikusan alakítja a felhasználói felületet. A páciensek és az adminisztrátorok más-más modulokhoz és adatokhoz férnek hozzá.
+* **Fiók életciklus-kezelés:** Tartalmazza a regisztrációt, az e-mail alapú fiókaktiválást és a biztonságos jelszó-visszaállítási (Password Reset) folyamatot.
+
+#### 1.5.2. Páciens felület (User Interface)
+Az ügyfelek számára egy intuitív, minimalista felületet alakítottam ki:
+* **Interaktív szakember-böngésző:** Az elérhető orvosok esztétikus, kártyás elrendezésben jelennek meg, segítve a gyors tájékozódást.
+* **Intelligens foglalási naptár:** A páciens a szolgáltatás és az orvos kiválasztása után valós idejű naptárnézetben böngészheti a szabad idősávokat (slotokat).
+* **Saját profil és előzmények:** A felhasználók transzparens módon kezelhetik korábbi és jövőbeni foglalásaikat. A rendszer lehetőséget biztosít a meglévő időpontok lemondására, illetve új foglalások kezdeményezésére, biztosítva ezzel a rugalmas időpontkezelést.
+
+#### 1.5.3. Adminisztrációs felület (Clinic Management)
+
+A klinika menedzsmentje számára egy dedikált, emelt szintű jogosultságokkal rendelkező vezérlőpult áll rendelkezésre, amely az alábbi modulokat tartalmazza:
+
+* **Dashboard és Analitika:** Grafikus statisztikai áttekintést nyújt a napi betegforgalomról, a klinika kapacitás-kihasználtságáról és az aktuális pénzügyi mutatókról.
+* **Felhasználó- és személyzetkezelés:** Lehetővé teszi a kliensadatok karbantartását, az új egészségügyi szakemberek rendszerbe történő felvételét, valamint a granuláris jogosultsági szintek (pl. orvos, adminisztrátor) kezelését.
+* **Foglaláskezelés és adminisztráció:** Az összes időpont egy központi, szűrhető táblázatban követhető nyomon. Az adminisztrátorok itt jogosultak a manuális beavatkozásra, beleértve a foglalások törlését vagy módosítását.
+* **Szolgáltatások menedzselése:** A klinika által kínált kezelések típusainak, időtartamának és díjszabásának dinamikus szerkesztése.
+
+#### 1.5.4. Integrált értesítési rendszer
+A szoftver automatizált, e-mail alapú kommunikációt valósít meg a **Nodemailer** modul integrációjával, amely az alábbi funkciókat látja el:
+
+* **Tranzakciós üzenetek:** Azonnali visszaigazolás küldése a sikeres regisztrációról, valamint a rögzített foglalásokról.
+* **Biztonsági és rendszerüzenetek:** Automatikus folyamatok támogatása, például egyedi token alapú hivatkozások kiküldése elfelejtett jelszó helyreállítása esetén.
+  
+---
+
+## 2. Tartalomjegyzék
+
+1. [Bevezetés](#1-bevezetés)   
+2. [Tartalomjegyzék](#2-tartalomjegyzék)  
+3. [Fejlesztői dokumentáció](#3-fejlesztői-dokumentáció)
+    - 3.1. [Backend](#31-backend)
+        - 3.1.1. [Fejlesztéshez használt eszközök és technológiák](#311-fejlesztéshez-használt-eszközök-és-technológiák)
+        - 3.1.2. [Fejlesztői környezet](#312-fejlesztői-környezet)
+        - 3.1.3. [Adatbázis felépítés és Adatmodell](#313-adatbázis-felépítés-és-adatmodell)
+        - 3.1.4. [Mappa struktúra](#314-mappa-struktúra)
+        - 3.1.5. [Környezeti változók](#315-környezeti-változók)
+        - 3.1.6. [Végpontok](#316-végpontok)
+        - 3.1.7. [Tipikus adatszerkezetek](#317-tipikus-adatszerkezetek)
+        - 3.1.8. [Funkciók és szervizek](#318-funkciók-és-szervizek)
+        - 3.1.9. [Fejlesztési lehetőségek](#319-fejlesztési-lehetőségek)
+        - 3.1.10. [Nemzetköziesítés és többnyelvűség (i18n)](#3110-nemzetköziesítés-és-többnyelvűség-i18n)
+    - 3.2. [Frontend](#32-frontend)
+        - 3.2.1. [Mappa struktúra](#321-mappa-struktúra)
+        - 3.2.2. [Fejlesztéshez használt eszközök és technológiák](#322-fejlesztéshez-használt-eszközök-technológiák)
+        - 3.2.3. [Komponensek](#323-komponensek)
+        - 3.2.4. [Szervizek](#324-szervizek)
+        - 3.2.5. [Útvonalfigyelők](#325-útvonalfigyelők)
+        - 3.2.6. [Továbbfejlesztési lehetőségek](#326-továbbfejlesztési-lehetőségek) 
+4. [Felhasználói kézikönyv](#4-felhasználói-kézikönyv)
+    - 4.1. [Rendszerkövetelmények](#41-rendszerkövetelmények)
+    - 4.2. [Regisztráció és Első Lépések](#42-regisztráció-és-első-lépések)
+    - 4.3. [Időpontfoglalás menete](#43-időpontfoglalás-menete)
+    - 4.4. [Saját adatok és foglalások kezelése](#44-saját-adatok-és-foglalások-kezelése)
+    - 4.5. [Hibaelhárítás és támogatás](#45-hibaelhárítás-és-támogatás)
+    - 4.6. [Adminisztrátori funkciók](#46-adminisztrátori-funkciók)
+    - 4.7. [Adatbiztonság és Mobilnézet](#47-adatbiztonság-és-mobilnézet)  
+5. [Tesztek](#5-tesztek)
+    - 5.1. [Tesztelési környezetek és eszköz-specifikációk](#51-tesztelési-környezetek-és-eszköz-specifikációk)
+    - 5.2. [Statikus tesztelés: A kódminőség bizonyítása](#52-statikus-tesztelés-a-kódminőség-bizonyítása)
+    - 3.3. [Dinamikus tesztelés (API tesztelés)](#53-dinamikus-tesztelés-api-tesztelés)
+    - 5.4. [Dinamikus tesztelés: Viselkedés nem optimális használat esetén](#54-dinamikus-tesztelés-viselkedés-nem-optimális-használat-esetén)
+    - 5.5. [Stressz teszt (Terheléses vizsgálat)](#55-stressz-teszt-terheléses-vizsgálat)
+    - 5.6. [Automata integrációs tesztelés (Mocha & Supertest)](#56-automata-integrációs-tesztelés-mocha--supertest)
+    - 5.7. [Folyamat-alapú tesztelés: Email rendszer és UX](#57-folyamat-alapú-tesztelés-email-rendszer-és-ux) 
+6. [Tesztelési Összegzés és Következtetések](#6-tesztelési-összegzés-és-következtetések)
+    - 6.1. [Alkalmazott tesztelési rétegek](#61-alkalmazott-tesztelési-rétegek)
+    - 6.2. [Főbb megállapítások](#62-főbb-megállapítások)
+    - 6.3. [Végső értékelés](#63-végső-értékelés)
+7. [Összefoglalás](#7-összefoglalás)
+    - 7.1. [A fejlesztés során szerzett tapasztalatok](#71-a-fejlesztés-során-szerzett-tapasztalatok)
+    - 7.2. [A projekt sikerességének értékelése](#72-a-projekt-sikerességének-értékelése)
+    - 7.3. [Jövőbeli fejlesztési lehetőségek](#73-jövőbeli-fejlesztési-lehetőségek)
+    - 7.4. [Záró gondolatok](#74-záró-gondolatok) 
+8.  [Egyéb információk](#8-egyéb-információk)
+   - 8.1. [Szoftver Manuális Tesztelési Dokumentáció](#81-szoftver-manuális-tesztelési-dokumentáció  )
+
+---
+
+## 3. Fejlesztői dokumentáció
+
+
+## 3.1. Backend 
+
+A backend réteg egy modern, állapotmentes (stateless) **REST API** architektúrára épül. A szerver felel az üzleti logika érvényesítéséért, az adatbázis-műveletekért, a biztonságos hitelesítésért és az e-mail alapú értesítések kezeléséért.
+
+### 3.1.1. Fejlesztéshez használt eszközök és technológiák
+
+A backend architektúra kialakításakor az elsődleges szempont a **skálázhatóság**, az **állapotmentesség (statelessness)**, valamint a **moduláris felépítés** volt. Ez a megközelítés lehetővé tette a hatékony fejlesztési ciklusokat és a komponensek közötti tiszta szétválasztást (Separation of Concerns).
+
+#### Hardver környezet és indoklás
+A fejlesztés egy **HP EliteBook (32GB RAM)** munkaállomáson történt.
+* **Indoklás:** A választott hardver bőséges memóriával rendelkezik a párhuzamosan futó fejlesztői környezetek (Node.js szerver, Angular fejlesztői szerver, IDE, adatbázis-böngésző) zökkenőmentes kiszolgálásához. A Node.js aszinkron I/O modellje és az SQLite fájlalapú struktúrája alacsony CPU-terhelést generál, így a lokális tesztelés nem igényelt dedikált szerverparkot, a fejlesztési ciklusok pedig rendkívül gyorsak maradtak.
+  
+#### Alkalmazott technológiák (Backend Stack)
+
+* **Runtime: Node.js** – Eseményvezérelt, nem blokkoló I/O modellre épülő JavaScript futtatókörnyezet, amely hatékony szerveroldali kiszolgálást tesz lehetővé.
+* **Keretrendszer: Express.js** – Minimalista és rugalmas webes keretrendszer, amely a RESTful végpontok strukturált kezeléséért és a middleware-ek (pl. hitelesítés, naplózás) integrációjáért felel.
+* **ORM: Sequelize** – Ígéret-alapú (Promise-based) Object-Relational Mapper, amely absztrakciós réteget biztosít az adatbázis fölé. Használata növeli a kód tisztaságát és biztosítja az adatbázis-függetlenséget.
+* **Adatbázis: SQLite3** – Beágyazott, fájlalapú relációs adatbázis. A fejlesztési fázisban a konfigurációmentes üzemeltetés és a könnyű hordozhatóság miatt esett rá a választás. Az alkalmazott ORM rétegnek köszönhetően a rendszer későbbi skálázása (pl. PostgreSQL-re való átállás) kódmódosítás nélkül megvalósítható.
+* **Hitelesítés és Biztonság:**
+    * **JWT (JSON Web Token):** A felhasználói munkamenetek biztonságos, állapotmentes (stateless) kezelésére szolgáló iparági sztenderd.
+    * **Bcrypt:** A felhasználói jelszavak biztonságos, egyirányú kriptográfiai hashelésére szolgáló algoritmus, amely megvédi az érzékeny adatokat egy esetleges adatszivárgás esetén is.
+* **Email kommunikáció: Nodemailer** – Node.js modul az automatizált rendszerüzenetek (pl. foglalási visszaigazolások) kiküldéséhez.
+
+#### 3.1.2. Fejlesztői környezet és általános működési elv
+
+A fejlesztési folyamat során az alábbi eszközöket alkalmaztam a kódminőség és a végpontok megbízhatóságának biztosítására:
+
+* **Visual Studio Code:** Az elsődleges forráskódszerkesztő, dedikált bővítményekkel a JavaScript és SQL támogatáshoz.
+* **Insomnia / Postman:** REST API kliensek, amelyekkel a végpontok működését, a JSON válaszstruktúrákat és a hitelesítési fejléceket validáltam a frontend fejlesztésétől függetlenül.
+* **DB Browser for SQLite:** Vizuális adatbázis-kezelő eszköz a séma ellenőrzéséhez, az adatok konzisztenciájának vizsgálatához és a Sequelize migrációk validálásához.
+* **Mailtrap:** Virtuális SMTP tesztszerver, amely lehetővé tette az e-mail küldési logika biztonságos tesztelését anélkül, hogy valós postafiókokba kéretlen üzenetek kerültek volna.
+* **Git:** Verziókezelő rendszer a fejlesztési fázisok követésére és a kód biztonságos tárolására.
+
+#### Általános működési elv
+
+Az ElitPort backendje a **REST (Representational State Transfer)** alapelveire épül. A kliens és a szerver közötti kommunikáció minden esetben JSON formátumban történik, biztosítva a rugalmas integrációt a frontend réteggel.
+
+**A rendszer logikai folyamata:**
+
+1. **Publikus hozzáférés:** A látogatók bejelentkezés nélkül is böngészhetik a klinika szakembereit és az elérhető szolgáltatásokat. A rendszer ezen a szinten kizárólag olvasási jogosultságot biztosít; a tényleges foglalási folyamat elindítása és rögzítése már hitelesített regisztrációhoz kötött.
+2. **Autentikáció:** A foglalási műveletekhez a felhasználónak regisztrálnia kell. Sikeres bejelentkezéskor a szerver egy digitálisan aláírt **JSON Web Token-t (JWT)** állít ki.
+3. **Védett végpontok:** A kliensnek minden védett kérés fejlécében (`Authorization: Bearer <token>`) szerepeltetnie kell a tokent, amelyet a szerver minden kérés kiszolgálása előtt validál.
+4. **Szerepkör-alapú hozzáférés-vezérlés (RBAC):** A backend ellenőrzi a tokenben tárolt jogosultságokat. A kritikus műveletek (pl. időpontok generálása, felhasználók kezelése) kizárólag `Admin` vagy `Staff` szerepkörrel érhetőek el.
+5. **Adatbiztonság:** A rendszer követi a **Clean Code** elveit. Az érzékeny adatokat, például a jelszavakat, a szerver kizárólag egyirányú kriptográfiai hasheléssel, sózott formában tárolja, és soha nem továbbítja nyers formában.
+
+### 3.1.3. Adatbázis felépítés és Adatmodell
+
+A rendszer adatstruktúráját a klinikai hierarchia rugalmas lekövetésére terveztem: külön entitásként kezelve a felhasználókat, az egészségügyi szakembereket és a dinamikusan változó idősávokat. 
+
+Az adatintegritás fenntartásáért a **Sequelize ORM (Object-Relational Mapping)** felel, amely az alábbi mechanizmusokkal biztosítja a konzisztenciát:
+
+* **Hivatkozási integritás:** A Sequelize kényszeríti az adatbázis-szintű kapcsolatokat, így garantálva például a kényszerített törlési szabályok (Cascade Delete) révén, hogy ne maradhassanak hivatkozás nélküli rekordok.
+* **Séma-migrációk:** A fejlesztés során migrációs fájlok segítségével verzióztam az adatbázis sémáját, ami biztosítva a reprodukálható környezetet.
+* **Tranzakciókezelés:** A foglalás rögzítése és az idősáv státuszának módosítása (isAvailable: false) egyetlen atomi műveletként fut le, megakadályozva a versenyhelyzeteket (double booking).
+
+#### Adatbázis sémák (Táblák részletezése)
+
+A rendszer az alábbi relációs adatmodell segítségével strukturálja az Elit Klinika adatait, biztosítva a normalizált adattárolást és a hatékony lekérdezhetőséget:
+
+* **users:** Központi felhasználói tábla.
+    * *Főbb mezők:* `id`, `name`, `email`, `password` (BCrypt hash), `roleId`, `verified` (e-mail megerősítés állapota), `verificationToken`.
+* **roles:** Statikus tábla a jogosultsági szintek (RBAC) elkülönítéséhez.
+    * *Értékek:* `0: user` (páciens), `1: staff` (orvos/asszisztens), `2: admin` (rendszergazda).
+* **staff:** Az egészségügyi szakemberek kiterjesztett profilja, amely **1:1 kapcsolatban** áll a `users` táblával.
+    * *Főbb mezők:* `userId` (FK), `specialty` (szakterület), `bio`, `image` (elérési út), `isActive`.
+* **consultations:** A szolgáltatás-katalógus entitása.
+    * *Főbb mezők:* `name`, `duration` (percben), `price`, `specialty` (kategória).
+* **slots:** A naptárrendszer alapelemei (idősávok).
+    * *Főbb mezők:* `staffId` (FK), `date`, `startTime`, `endTime`, `isAvailable` (boolean).
+    * *Logika:* Ez a tábla biztosítja a dinamikus naptárkezelést. Foglaláskor az érintett slot állapota módosul, megakadályozva az ütközéseket.
+* **staff_consult:** **Many-to-Many kapcsolótábla**, amely definiálja az orvosok és az általuk végezhető kezelések közötti relációt.
+* **bookings:** A rendszer központi tranzakciós táblája, amely összefűzi a foglalási folyamat résztvevőit.
+    * *Főbb mezők:* `patientId`, `staffId`, `consultationId`, `slotId`, `status` (pending, confirmed, cancelled). 
+
+
+### API UML
+
+A rendszer architektúrája az **MVC (Model-View-Controller)** mintát követi, elválasztva az adatokat a logikától és a megjelenítéstől.
+
+Az adatbázis sémáját és a táblák közötti kapcsolatokat az alábbi diagram szemlélteti:
+
+![Adatmodell diagram](./datamodel.png)
+
+*Megjegyzés: A diagram forrásfájlja az [datamodel.dia](./datamodel.dia) állományban érhető el.*
+A rendszer logikai felépítését és az entitások közötti kapcsolatokat az alábbi dokumentum tartalmazza:
+
+
+#### Relációk és Adatintegritás
+
+A szoftver logikai vázát az entitások közötti pontos relációk adják, amelyeket a Sequelize asszociációs szabályai tartanak fent:
+
+1.  **Egy-a-többhöz (1:N) kapcsolatok:**
+    * Egy **Szerepkörhöz** (Role) tetszőleges számú felhasználó tartozhat, de minden felhasználó szigorúan egy szerepkörbe sorolható be.
+    * Egy **Szakemberhez** (Staff) számos szabad **Idősáv** (Slot) rendelhető a naptárban.
+2.  **Egy-az-egyhez (1:1) kapcsolat:**
+    * A **User** és a **Staff** profil között fennálló kapcsolat. Ez biztosítja, hogy a szakmai adatok (mint a biográfia vagy szakterület) egyértelműen egy adott bejelentkezési fiókhoz kötődjenek.
+3.  **Több-a-többhöz (M:N) kapcsolat:**
+    * A **Személyzet** és a **Szolgáltatások** között. Egy orvos több típusú beavatkozást is végezhet, és egy adott kezelést (pl. kontroll vizsgálat) több különböző orvos is nyújthat. Ezt a rugalmasságot a `staff_consult` kapcsolótábla biztosítja.
+
+#### Biztonsági architektúra az adatbázis szintjén
+
+Az érzékeny adatok védelme érdekében a tervezés során kiemelt figyelmet fordítottam a biztonságra:
+* **Jelszavas védelem:** A jelszavak tárolása soha nem nyers szövegként történik; a **Bcrypt** algoritmus gondoskodik a biztonságos hashelésről.
+* **Adatkonzisztencia:** Az adatbázis szintű `unique` (egyedi) kényszerek (például az e-mail címeknél) garantálják, hogy ne jöhessenek létre duplikált rekordok.
+* **Tranzakcionális integritás:** A foglalási folyamat során a rendszer garantálja, hogy a foglalás rögzítése és az idősáv foglalttá tétele egyetlen atomi műveletként menjen végbe, kiküszöbölve a versenyhelyzeteket (race condition).
+
+#### 3.1.4 Projektstruktúra és könyvtárszerkezet
+
+Az alkalmazás tiszta, moduláris felépítést követ, amely élesen elválasztja a forráskódot a konfigurációs állományoktól. Az `app/` könyvtár tartalmazza a rendszer üzleti logikáját, míg a gyökérkönyvtár a globális beállításokért és az adatbázis-állományok tárolásáért felel.
+
+**A projekt felépítése:**
+
+```text
+EPApi/
+├── app/
+│   ├── controllers/         
+│   │   ├── authController.js         # Regisztráció és bejelentkezés
+│   │   ├── userController.js         # Felhasználói adatok kezelése
+│   │   ├── staffController.js        # Orvosi személyzet menedzselése
+│   │   ├── consultationController.js  # Konzultációk/Szakrendelések
+│   │   ├── bookingController.js      # Foglalások logikája
+│   │   └── slotController.js         # Idősávok (generálás, szabad helyek) kezelése
+│   ├── database/             
+│   │   └── db.js                     # Sequelize kapcsolat inicializálása
+│   ├── middleware/           
+│   │   ├── auth.js / authjwt.js      # Hitelesítés és JWT validálás
+│   │   ├── checkRole.js              # Jogosultság ellenőrzés
+│   │   └── upload.js                 # Fájlfeltöltés kezelése
+│   ├── models/               
+│   │   ├── role.js, user.js, staff.js, slot.js, 
+│   │   ├── consultation.js, booking.js
+│   │   └── models.js                 # Modell asszociációk (Kapcsolatok)
+│   ├── routes/               
+│   │   └── api.js                    # API végpontok (Routing)
+│   ├── services/             
+│   │   ├── bookingService.js         # Foglalási üzleti logika
+│   │   └── emailService.js           # Nodemailer / Mailtrap integráció
+│   └── utils/                
+│       ├── path.js, logger.js        # Segédfüggvények
+├── database/                 
+│   ├── migrations/                   # Adatbázis sémák verziói
+│   └── seeders/                      # Tesztadatok (feltöltő scriptek)
+├── docs/                             # Dokumentációk
+│   ├── dev_doc.md                    # Fejlesztői útmutató
+│   ├── endpoints.md                  # API végpontok részletezése
+│   ├── quick_install.md              # Gyors telepítési útmutató
+│   └── user_doc.md                   # Felhasználói dokumentáció
+├── test/                             # Automata tesztek
+│   ├── mocha.set.up.js               # Tesztkörnyezet konfigurációja
+│   └── full_flow-spec.js             # Teljes folyamat (End-to-End) teszt
+├── .env                              # Környezeti változók
+├── database.sqlite                   # SQLite adatbázis fájl
+├── package.json                      # Projekt leíró és függőségek
+└── README.md                         # Általános tájékoztató
+
+```
+
+**A legfontosabb könyvtárak és fájlok:**
+
+* **`/controllers`:** A kérések (request) feldolgozását és a válaszok (response) összeállítását végző üzleti logika.
+* **`/migrations`:** Az adatbázis sémájának verziókövetését és módosítását leíró fájlok.
+* **`/models`:** A Sequelize entitások és a táblák közötti relációk definíciói.
+* **`/routes`:** Az API végpontok (endpoint) definíciói és a hozzájuk rendelt controllerek összekapcsolása.
+* **`/seeders`:** Tesztadatok generálására szolgáló állományok (pl. alapértelmezett admin és szakmák feltöltése).
+* **`.env`:** Környezeti változók (portok, titkos kulcsok, adatbázis elérhetőségek) biztonságos tárolása.
+* **`app.js`:** Az alkalmazás belépési pontja, a middleware-ek és a szerver inicializálása.
+  
+#### A könyvtárstruktúra és az architektúra szakmai elemzése:
+
+A backend felépítése a **Separation of Concerns (SoC)** elvét követi, szigorúan elválasztva az adatréteget, az üzleti logikát és a kérések kiszolgálását.
+
+1.  **Controllers (Kéréskezelési réteg):** Az alkalmazás belépési pontjai. Feladatuk a HTTP kérések fogadása, a bemeneti paraméterek (req.body, req.params) dekonstruálása, majd a megfelelő szervizmetódusok meghívása. A kontrollerek "vékonyak" (Thin Controllers), nem tartalmaznak üzleti logikát, csupán a kérés-válasz folyamat vezérléséért és a megfelelő HTTP státuszkódok (pl. 200 OK, 201 Created, 400 Bad Request) visszaadásáért felelnek.
+
+2.  **Models (Data Access Layer - DAL):** A Sequelize-alapú entitásdefiníciók helye. Ez a réteg reprezentálja az adatbázis sémáját JavaScript osztályokként. Itt implementáltam a validációs szabályokat (pl. e-mail formátum, kötelező mezők) és az adatbázis-szintű kényszereket. A `models.js` fájl szolgál az aggregációs pontként, ahol a relációk (HasMany, BelongsTo) inicializálása történik, biztosítva a hivatkozási integritást.
+
+3.  **Middleware (Interceptors & Guards):** Olyan köztes szoftverkomponensek, amelyek aspektus-orientált módon (AOP) kezelik a keresztező feladatokat. Az `auth.js` implementálja a JWT-alapú hitelesítési stratégiát, míg a `checkRole.js` egy magasabb szintű autorizációs rétegként (RBAC) szolgál, amely még a kontroller logikája előtt szűri a jogosulatlan kéréseket.
+
+4.  **Services (Business Logic Layer):** A rendszer magja a komplex folyamatoknál a szerviz-réteg, amely biztosítja az üzleti logika elszigetelését, a kód újrahasznosíthatóságát és a hatékony tesztelhetőséget. Ez a réteg felel a kritikus műveletek végrehajtásáért, tehermentesítve a kontrollereket a bonyolult algoritmusok alól.
+* **bookingService.js (Foglaláskezelés):** A foglalási folyamat üzleti logikájának központi kezelője. A folyamat komplexitása – az idősávok (slots) elérhetőségének ellenőrzése, az atomi tranzakciók kezelése és az e-mail értesítések koordinálása – indokolja a külön logikai réteg használatát. A szerviz elsődleges feladata a foglalások integritásának biztosítása, elválasztva az összetett algoritmusokat a HTTP kéréskezeléstől.
+* **emailService.js (Rendszerüzenetek):** Az e-mail küldési mechanizmus absztrakciója, amely a Nodemailer segítségével kezeli a rendszerüzenetek (pl. visszaigazolások, regisztráció) összeállítását és továbbítását. Az interfész lehetővé teszi a küldési logika egységes kezelését, így a technikai részletek (SMTP konfiguráció, sablonok) módosítása nem érinti az üzleti folyamatokat.
+
+**Szakmai indoklás:**
+Az alkalmazás során **hibrid szerviz-architektúrát** alkalmaztam. Míg a foglalás és az e-mail kommunikáció esetében a műveletek összetettsége megkövetelte a dedikált szerviz-réteget, addig az egyszerűbb CRUD műveleteknél a logika közvetlenül a kontrollerekben kapott helyet. Ez a tudatos tervezési döntés megakadályozza a rendszer túlbonyolítását (over-engineering), miközben garantálja a kritikus funkciók modularitását.
+  
+5.  **Routes (Routing Table):** Az alkalmazás API térképe. Deklaratív módon rendeli hozzá a URI útvonalakat a kontroller-metódusokhoz. Itt történik a middleware-ek láncolása is (Middleware Chaining), meghatározva az adott végpont védelmi szintjét.
+
+6.  **Database (Persistence & Versioning):** 
+      * **Migrations:** Az adatbázis séma inkrementális verziókövetését biztosítják, lehetővé téve a séma szinkronizálását a különböző környezetek között adatvesztés nélkül.
+      * **Seeders:** Fejlesztői és tesztelési célú adatfeltöltők, amelyek konzisztens állapotba hozzák az adatbázist az automatizált tesztek futtatásához vagy a bemutató környezethez.
+
+
+### 3.1.5. Környezeti változók - .env
+
+A szoftver tervezése során követtem a **Twelve-Factor App** módszertan elveit, melynek egyik alapkövetelménye a konfiguráció és a kód szigorú szétválasztása. Ezt a gyakorlatban egy `.env` fájl alkalmazásával valósítottam meg a backend gyökerében.
+
+Ez a megoldás biztosítja, hogy a szenzitív adatok (mint a JWT titkos kulcsok vagy az adatbázis elérési útvonalak) ne kerüljenek bele a verziókezelőbe (Git), és a különböző környezetek (fejlesztői, teszt, produkciós) közötti váltás kódmódosítás nélkül, csupán a környezeti változók cseréjével megoldható legyen.
+
+**A konfigurációs fájl felépítése:**
+
+```env
+# Szerver konfiguráció
+PORT=8000
+DB_STORAGE=./database.sqlite
+
+# Biztonsági kulcsok
+JWT_SECRET=titkos_szoveg_a_token_alairashoz
+APP_KEY=egyedi_api_kulcs_az_alkalmazashoz
+
+# Email transzport beállítások (Mailtrap SMTP teszteléshez)
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=az_on_mailtrap_felhasznaloneve
+MAIL_PASS=az_on_mailtrap_jelszavat
+
+```
+
+### 3.1.6. Végpont kifejtés (REST API Specifikáció)
+
+Az ElitPort backend az alábbi RESTful végpontokon keresztül biztosítja az adatok elérését. Az architektúra állapotmentes, a védett végpontok eléréséhez érvényes `JSON Web Token` (Bearer Token) szükséges. A jogosultságkezelésért a `verifyToken` és a `checkRole` middleware-ek felelnek (1: Staff, 2: Admin).
+
+#### 1. 🔐 Hitelesítés (Auth)
+A regisztrációs és jelszókezelési folyamatokért felelős publikus végpontok.
+
+| Metódus | Végpont | Leírás | Védettség |
+|:---|:---|:---|:---|
+| POST | `/register` | Új felhasználó regisztrációja | Publikus |
+| POST | `/login` | Bejelentkezés és JWT token generálása | Publikus |
+| GET | `/verify-email/:token` | E-mail cím megerősítése (Double Opt-in) | Publikus |
+| POST | `/forgot-password` | Elfelejtett jelszó (reset link küldése) | Publikus |
+| POST | `/reset-password` | Új jelszó beállítása a kapott tokennel | Publikus |
+
+#### 2. 👤 Felhasználók és Profilok (Users)
+A felhasználók saját adatai, valamint az adminisztrátori felhasználókezelés.
+
+| Metódus | Végpont | Leírás | Védettség |
+|:---|:---|:---|:---|
+| GET | `/profile/me` | Saját profiladatok lekérése | [Token] |
+| PUT | `/profile/update` | Saját adatok módosítása | [Token] |
+| GET | `/users` | Összes felhasználó listázása | [Admin] |
+| GET | `/users/:id` | Egy konkrét felhasználó adatai | [Token] |
+| POST | `/users/:id/password` | Jelszómódosítás admin által | [Admin] |
+| POST | `/users/:id/status` | Felhasználói státusz (aktív/inaktív) állítása | [Admin] |
+| PUT | `/users/:id` | Felhasználó adatainak módosítása | [Admin] |
+| DELETE | `/users/:id` | Felhasználó végleges törlése | [Admin] |
+
+#### 3. 👨‍⚕️ Egészségügyi Személyzet (Staff)
+Az orvosok és szakemberek kezelése, valamint szolgáltatásaik társítása.
+
+| Metódus | Végpont | Leírás | Védettség |
+|:---|:---|:---|:---|
+| GET | `/staff` | Összes szakember listázása | Publikus |
+| GET | `/staff/public` | Publikusan látható orvosi profilok | Publikus |
+| GET | `/staff/:id/treatments` | Az orvoshoz rendelt szolgáltatások | Publikus |
+| POST | `/staff/:id/treatments`| Szolgáltatások rendelése az orvoshoz | [Admin] |
+| POST | `/staff` | Új személyzeti tag manuális rögzítése | [Admin] |
+| POST | `/staff/promote` | Meglévő felhasználó előléptetése orvossá | [Admin] |
+| DELETE | `/staff/:id` | Szakember törlése | [Admin] |
+
+#### 4. 📅 Konzultációk, Idősávok és Foglalások
+A klinika operatív működését biztosító végpontok.
+
+| Metódus | Végpont | Leírás | Védettség |
+|:---|:---|:---|:---|
+| GET | `/consultations` | Elérhető vizsgálatok listája | Publikus |
+| POST/PUT | `/consultations` | Szolgáltatások menedzselése | [Admin] |
+| DELETE | `/consultations` | Szolgáltatás kivezetése a rendszerből | [Admin] |
+| GET | `/slots` | Az összes rögzített idősáv lekérése | [Token] |
+| POST | `/slots/generate` | Idősávok tömeges generálása intervallumra | [Token] |
+| POST | `/slots` | Egyedi idősáv létrehozása | [Staff/Admin] |
+| GET | `/bookings` | Saját foglalások vagy adminisztrátori lista | [Token] |
+| POST | `/bookings` | Új időpont lefoglalása és slot zárolása | [Token] |
+| PUT | `/bookings/:id` | Foglalási adatok módosítása | [Token] |
+| DELETE | `/bookings/:id` | Foglalás lemondása és slot felszabadítása | [Token] |
+
+
+### 3.1.6.1. Az API végpontok funkcionális célkitűzései
+
+A rendszer végpontjait úgy alakítottam ki, hogy lefedjék az egészségügyi klinika teljes digitális munkafolyamatát, a páciens belépésétől az orvosi naptár menedzseléséig.
+
+* **Hitelesítési végpontok célja:** Biztosítják a felhasználók biztonságos azonosítását és az állapotmentes (stateless) munkamenet-kezelést. Ide tartozik a jelszavak biztonságos, kriptográfiai hashelése, az e-mail alapú fiókvalidáció a visszaélések kiszűrésére, valamint az elfelejtett jelszavak token-alapú helyreállítása.
+* **Felhasználókezelő végpontok célja:** Lehetővé teszik a személyes adatok karbantartását a páciensek számára, míg adminisztrátori oldalról teljes kontrollt biztosítanak a profilok felett. Ezen a rétegen keresztül valósul meg a fiókok inaktiválása vagy archiválása (soft törlése).
+* **Személyzeti (Staff) végpontok célja:** Összekapcsolják a felhasználói fiókokat az orvosi profilokkal. Feladatuk a szakmai adatok (szakterület, bemutatkozás, profilkép) kezelése, valamint az orvos-szolgáltatás hozzárendelések (melyik szakember milyen típusú beavatkozást végezhet) menedzselése.
+* **Szolgáltatás-katalógus (Consultations) végpontok célja:** A klinika által kínált kezelések központi kezelése. Itt határozható meg a vizitek ára és időtartama, amely adatok alapvetően befolyásolják a foglalási logikát és a naptár ütemezését.
+* **Naptárkezelő (Slots) végpontok célja:** A rendszer legdinamikusabb része, amely az orvosi munkaidőt diszkrét idősávokra bontja. Lehetővé teszik a szabad időpontok szűrését a pácienseknek, és a hatékony, naptár-generálást a személyzet számára, minimalizálva az ütközések kockázatát.
+* **Foglalási (Bookings) végpontok célja:** A rendszer tranzakcionális magja. Feladatuk az orvos, a páciens, a szolgáltatás és a konkrét idősáv összekapcsolása. Itt fut le a kritikus validáció, amely garantálja az idősávok exkluzivitását (egy időpontra csak egy érvényes foglalás születhet), valamint a státuszkezelést (pl. lemondás).
+
+A teljes végpontlista és azok technikai specifikációja a mellékelt `EPApi/docs/endpoints.md` fájlban található.
+
+* *(A teljes lista a dokumentáció (docs mappában) található.)*
+**Hivatkozás:** [EPApi/docs/endpoints.md](../EPApi/docs/endpoints.md)
+
+
+### 3.1.7. Tipikus adatszerkezetek és interfész-specifikációk
+
+Az alkalmazás kliens-szerver architektúrája állapotmentes (stateless) **REST API** protokollra épül, az adatcsere pedig szabványosított JSON formátumban valósul meg. Ebben a fejezetben a rendszer üzleti logikáját meghatározó legfontosabb adatszerkezeteket és azok szerepét mutatom be fejlesztői szempontból.
+
+#### Hitelesítési és biztonsági adatstruktúrák
+A felhasználói adatok kezelése során az adatintegritás és a biztonság az elsődleges. A jelszavak tárolása nem nyers szövegként, hanem **Bcrypt hashing** eljárással történik (10-es salt-fokozattal).
+
+* **Regisztrációs séma (POST `/auth/register`):** A backend validálja az adatok teljességét és az e-mail cím egyediségét. A `confirmPassword` mező csak a kliensoldali validációt és a biztonságos adatátvitelt szolgálja, az adatbázisba nem kerül rögzítésre.
+* **Token-alapú munkamenet:** Sikeres bejelentkezés után a szerver egy **JWT (JSON Web Token)** objektumot ad vissza, amely tartalmazza a felhasználó azonosítóját és szerepkörét (`role`), biztosítva a későbbi kérések autorizációját.
+
+#### Entitás-kapcsolati modellek (Sequelize)
+A backend a **Sequelize ORM** segítségével definiálja az adatmodelleket. A fejlesztés során kiemelt figyelmet kaptak az alábbi összefüggések:
+
+* **Idősávok (Slots) és Foglalások (Bookings):** A rendszer `1:1` kapcsolatot tart fenn a generált szabad idősávok és a tényleges foglalások között, ahol a `slotId` idegen kulcsként (Foreign Key) biztosítja a kényszerfeltételek betartását.
+* **Szakmai hierarchia:** A személyzet (`Staff`) és a szolgáltatások (`Consultations`) kapcsolata lehetővé teszi a komplex lekérdezéseket (Eager Loading), így a frontend hatékonyan, minimális kérésszámmal érheti el a kapcsolt adatokat.
+
+#### Példa struktúrák a legfontosabb műveletekhez
+
+| Funkció | Végpont | Kulcsfontosságú mezők | Típus |
+| :--- | :--- | :--- | :--- |
+| **Idősáv generálás** | `/slots/generate` | `staffId`, `date`, `startTime`, `interval` | Number, Date, String, Number |
+| **Időpont foglalás** | `/bookings` | `slotId`, `consultationId`, `staffId` | Number, Number, Number |
+| **Szolgáltatás létrehozás**| `/consultations` | `name`, `duration`, `price` | String, Number, Number |
+
+**Példa 1: Időpont foglalás adatstruktúrája (POST /bookings)**
+```json
+{
+  "slotId": 105,
+  "consultationId": 3,
+  "staffId": 12,
+  "notes": "Fogászati implantáció konzultáció"
+}
+
+**Példa 2: Hitelesítés és Regisztráció **
+A backend validálja az adatok teljességét és az e-mail egyediségét, mielőtt a Bcrypt hashing folyamat elindulna.
+* **POST `/register`**
+```json
+{
+  "name": "Teszt Páciens",
+  "email": "paciens@example.com",
+  "password": "strongPassword123",
+  "confirmPassword": "strongPassword123"
+}
+---
+További a backend végpontok által elvárt JSON objektumok szerkezetek. 
+
+* **POST `/login`**
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+* **POST `/forgot-password`**
+    ```json
+    {
+      "email": "string"
+    }
+    ```
+* **POST `/reset-password`**
+    ```json
+    {
+      "token": "string",
+      "newPassword": "string",
+      "confirmPassword": "string"
+    }
+    ```
+
+#### Felhasználókezelés (Admin)
+
+* **POST `/users/:id/password`**
+    ```json
+    {
+      "newPassword": "string"
+    }
+    ```
+* **POST `/users/:id/status`**
+    ```json
+    {
+      "verified": "boolean"
+    }
+    ```
+
+#### Személyzet és Szolgáltatások (Staff & Consultations)
+
+* **POST `/staff`**
+    ```json
+    {
+      "userId": "number",
+      "specialty": "string",
+      "bio": "string",
+      "image": "string (URL/Path)"
+    }
+    ```
+* **POST `/staff/:id/treatments`**
+    ```json
+    {
+      "consultationIds": "number[] (Array of IDs)"
+    }
+    ```
+* **POST `/consultations`**
+    ```json
+    {
+      "name": "string",
+      "description": "string",
+      "duration": "number (minutes)",
+      "price": "number",
+      "specialty": "string"
+    }
+    ```
+
+#### Naptár és Foglalás (Slots & Bookings)
+
+* **POST `/slots/generate`**
+    ```json
+    {
+      "staffId": "number",
+      "date": "YYYY-MM-DD",
+      "startTime": "HH:mm",
+      "endTime": "HH:mm",
+      "interval": "number (minutes)"
+    }
+    ```
+* **POST `/bookings`**
+    ```json
+    {
+      "consultationId": 3,
+      "slotId": 105,
+      "patientId": 25,
+      "notes": "Opcionális megjegyzés a pácienstől"
+    }
+
+  ```
+
+
+#### 3.1.8. Funkciók és szervizek: Kiemelt algoritmusok és technikai implementációk
+
+A backend architektúra központi eleme a **Service Layer** (szolgáltatási réteg), amely leválasztja a komplex üzleti logikát a kontrollerekről. Ez a megközelítés biztosítja a kód újrahasznosíthatóságát, tesztelhetőségét és a kontrollerek "vékonyságát".
+Az egyszerű adatkezelési (CRUD) feladatokat a kontrollerek, míg az összetett üzleti logikát dedikált szerviz-osztályok kezelik.
+
+#### 1. Dinamikus Idősáv-generátor (Slot Generator Algorithm)
+Az adminisztratív terhek csökkentése érdekében fejlesztettem egy algoritmust, amely tetszőleges intervallumú naptárbejegyzések tömeges, konzisztens létrehozására képes.
+
+**Az algoritmus logikai menete:**
+1.  **Előfeltétel-ellenőrzés:** A szerviz validálja, hogy az adott dátumra és szakemberre vonatkozóan léteznek-e már átfedő idősávok az adatbázisban.
+2.  **Időintervallum iteráció:** Egy `while` ciklus fut a kezdő időponttól (`startTime`) a záró időpontig (`endTime`).
+3.  **Inkrementális léptetés:** Az algoritmus minden iterációban hozzáadja a definiált `interval` (perc) értékét az aktuális időbélyeghez.
+4.  **Batch beszúrás:** A generált idősávokat a rendszer validált rekordokként menti a `Slots` táblába, amelyek azonnal elérhetővé válnak a páciensek számára.
+
+#### 2. Foglalási motor és tranzakciókezelés (Booking Engine)
+A rendszer legkritikusabb szakmai kihívása a **versenyhelyzetek (Race Condition)** hatékony kezelése volt az időpontfoglalások során.
+
+* **Ütközésvizsgálat:** Mielőtt a foglalás rögzítésre kerülne, a szerviz egy adatbázis-szintű tranzakciót indít.
+* **Atomi műveletvégrehajtás:** A foglalás létrehozása és az idősáv zárolása (`isAvailable: false`) egyetlen, oszthatatlan műveletként fut le. Amennyiben a folyamat során bármilyen hiba lép fel, a **Rollback** mechanizmus visszaállítja az eredeti állapotot, garantálva, hogy ne jöhessen létre kettős foglalás ugyanarra a slotra.
+
+#### 3. Biztonsági architektúra (Authentication & Security)
+A felhasználói adatok védelme érdekében többszintű biztonsági logikát implementáltam:
+
+* **Bcrypt Hashing:** A jelszavak tárolása előtt a rendszer adaptív hashing algoritmust használ egyedi sóval (salt). Ez technikai védelmet nyújt a "Rainbow table" és a brute-force alapú támadások ellen.
+* **Stateless Autorizáció (JWT):** A hitelesítés után a szerviz egy aláírt **JSON Web Tokent** állít ki. A token tartalmazza a felhasználó azonosítóját és szerepkörét, így a szervernek nem kell munkamenet-állapotot tárolnia, ami javítja a skálázhatóságot.
+
+#### 4. Aszinkron Értesítési Szolgáltatás (Email Service)
+Az időigényes hálózati műveletek (e-mail küldés) aszinkron módon, a fő szál blokkolása nélkül futnak le.
+
+* **Biztonsági funkciók:** A szerviz kezeli a fiókaktiváláshoz és jelszó-visszaállításhoz szükséges egyedi, időkorlátos (TTL - Time To Live) tokenek generálását és kiküldését.
+* **Monitorozás:** A fejlesztési fázisban a **Mailtrap** SMTP szerverét integráltam, ami lehetővé tette a kimenő forgalom és a HTML sablonok validálását sandbox környezetben.
+
+* **Implementáció:** A **Nodemailer** modult integráltam, amely a regisztrációs folyamat során generált egyedi aktivációs tokeneket és jelszó-visszaállító linkeket továbbítja.
+* **Tesztelési workflow:** A fejlesztési szakaszban **Mailtrap SMTP** proxyt használtam, amely lehetővé tette a kimenő levelek tesztelését sandbox környezetben, elkerülve a valós postafiókok kéretlen levelekkel való terhelését.
+
+#### 5. Dinamikus erőforrás-kezelés és profilalkotás (Staff Management)
+Az orvosi profilok vizualizációja során a rendszer nem igényel manuális fájlfeltöltést, helyette egy automatizált képhozzárendelési logikát alkalmazunk.
+* **Feltételes logika alapú képkezelés:** A `StaffController` a felhasználó neme (gender) alapján határozza meg a megjelenítendő profilt. Ez csökkenti a szerveroldali tárhelyigényt és egyszerűsíti a regisztrációs folyamatot.
+* **Adatbázis-szintű hivatkozás:** A rendszer az entitáshoz tartozó nem attribútumát vizsgálva, egy statikus erőforrás-tárból rendeli hozzá a megfelelő (férfi vagy női) alapértelmezett avatar elérési útját. Ez biztosítja az egységes UI megjelenést anélkül, hogy a fájlrendszert komplex írási műveletekkel terhelnénk.
+
+#### 6. Robusztus hibakezelés és validációs réteg
+A backend védelmét egy többszintű validációs és egy egységes hibaformázó algoritmus látja el.
+
+* **Adatbiztonság:** A **Bcrypt** algoritmus használatával a jelszavak tárolása előtt 10-es erősségű salt-ot alkalmazunk, védve a rendszert a szótár alapú támadások ellen.
+* **Standardizált API válaszok:** Bevezetésre került egy globális hibaformátum, amely minden kivétel esetén egységes JSON objektumot ad vissza:
+    ```json
+    {
+      "status": "error",
+      "code": 403,
+      "message": "Access denied"
+    }
+    ```
+Ez a struktúra lehetővé teszi a frontend oldali hibakezelő (Error Interceptor) hatékony működését.
+
+### 3.1.9. Fejlesztési lehetőségek
+
+Az ElitPort backend jelenlegi változata egy stabil alapokon nyugvó applikáció. A jövőbeni skálázhatóság és a felhasználói élmény fokozása érdekében az alábbi fejlesztési irányokat határoztam meg:
+
+1. **Fizetési gateway integráció (Stripe / Barion)**
+   A foglalási folyamat kiegészíthető egy online fizetési modullal. Ez lehetővé tenné a vizsgálati díjak előre történő fizetését vagy egy fix összegű foglalási depozit beszedését, ami jelentősen csökkentené a lemondások és a meg nem jelenések (no-show) arányát a klinikán.
+
+2. **Valós idejű értesítések (Socket.io / Web Push)**
+   Az e-mail alapú értesítési rendszer mellett érdemes WebSocket technológiát vagy Push API-t implementálni. Ezáltal a páciensek azonnali böngésző-értesítést kaphatnának, ha egy orvos lemond egy időpontot, vagy ha közeledik a lefoglalt vizsgálat kezdete. Az adminisztrátorok számára pedig valós idejű Dashboard frissítést tenne lehetővé.
+
+3. **Kifinomultabb jogosultságkezelés (RBAC)**
+   A jelenlegi Staff/Admin felosztás tovább finomítható egy teljes körű szerepkör alapú hozzáférés-szabályozási (Role-Based Access Control) rendszerrel. Így külön jogosultsági szinteket kaphatnának a recepciósok (naptárkezelés), a szakorvosok (saját páciensek kezelése) és a pénzügyi vezetők (üzleti statisztikák elérése).
+
+4. **Kiterjesztett statisztikai modul és BI (Business Intelligence)**
+   Az adminisztrátori irányítópult bővíthető üzleti intelligencia funkciókkal. Ez magában foglalná a páciensek visszatérési rátájának elemzését, a legnépszerűbb idősávok hőtérképes vizualizációját, valamint a szezonális trendek előrejelzését a klinikai kapacitás optimalizálása érdekében.
+
+5. **Kétfaktoros hitelesítés (2FA)**
+   Az egészségügyi adatok védelme kiemelt prioritás. A rendszer biztonsága jelentősen növelhető SMS vagy hitelesítő alkalmazás (pl. Google Authenticator) alapú kétlépcsős azonosítás bevezetésével a bejelentkezési folyamatnál, különösen az adminisztrátori hozzáférések esetében.
+   
+
+### 3.1.10. Nemzetköziesítés és többnyelvűség (i18n)
+
+A modern szoftverfejlesztési követelményeknek megfelelően az alkalmazást felkészítettem a nemzetközi piacra. A megoldás nem csupán a szövegek lefordítását, hanem egy skálázható **kulcs-érték alapú** architektúrát jelent.
+
+#### Implementáció részletei:
+* **Szótárfájlok:** A statikus szövegeket elkülönített JSON állományokban tárolom (pl. `hu.json`, `en.json`). Ez lehetővé teszi új nyelvek hozzáadását a forráskód módosítása nélkül.
+* **Kulcs alapú hivatkozás:** A forráskódban nem égetett szövegek (hard-coded strings), hanem szemantikus kulcsok szerepelnek (pl. `AUTH.LOGIN_SUCCESS`), amelyeket a futtatókörnyezet a kiválasztott nyelvnek megfelelően helyettesít be.
+* **Dinamikus nyelvváltás:** A felhasználó a felületen bármikor válthat a támogatott nyelvek (Magyar/Angol) között, ami azonnali UI frissítést eredményez az oldal újratöltése nélkül.
+
+#### Szakmai előnyök:
+* **Karbantarthatóság:** A fordítások egy helyen kezelhetők, így a nyelvi javításokhoz nem kell belenyúlni a logikai komponensekbe.
+* **SEO és UX:** A többnyelvűség javítja a felhasználói élményt és szélesebb pácienskör elérését teszi lehetővé a klinika számára.
+
+---
+
+### 3.2. Frontend
+
+#### 3.2.1. Mappa struktúra
+
+Az alkalmazás az Angular keretrendszer modern, moduláris és Standalone komponens-alapú architektúráját követi. A projekt felépítése a könnyű karbantarthatóságot és a logikai elkülönítést (Separation of Concerns) tartja szem előtt.
+
+
+```text
+EPWEB/
+├── public/                     # Statikus erőforrások
+│   ├── i18n/                   # Nyelvi fájlok (hu.json, en.json)
+│   └── images/                 # Grafikai elemek és szakemberek fotói
+│
+├── src/                        # A forráskód gyökere
+│   ├── app/                    # Alkalmazás logika
+│   │   ├── components/         # UI komponensek
+│   │   │   ├── about/
+│   │   │   ├── admin/
+│   │   │   ├── booking/
+│   │   │   ├── consultation/
+│   │   │   ├── home/
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   ├── forgot-password/
+│   │   │   ├── reset-password/
+│   │   │   ├── verify-email/
+│   │   │   ├── my-booking/
+│   │   │   ├── staff/
+│   │   │   ├── staffcard/
+│   │   │   ├── nopage/
+│   │   │   └── shared/         # Közös szolgáltatások és interfészek
+│   │   │       ├── interfaces/
+│   │   │       ├── auth.interceptor.ts
+│   │   │       ├── auth.service.ts
+│   │   │       ├── admin.service.ts
+│   │   │       ├── booking.service.ts
+│   │   │       ├── consultation.service.ts
+│   │   │       ├── staff.service.ts
+│   │   │       └── logger.service.ts
+│   │   │
+│   │   ├── auth-guards.ts      # Útvonalvédelem (közvetlenül az app-ban)
+│   │   ├── app.routes.ts       # Routing
+│   │   └── app.config.ts       # Globális konfiguráció
+│   │
+│   ├── environments/           # Környezeti beállítások (app mellett)
+│   │   ├── environment.development.ts
+│   │   └── environment.ts
+│   │
+│   ├── index.html
+│   ├── main.ts                 # Belépési pont
+│   └── styles.css              # Globális stílus
+│
+├── frontend_dev.md             # Front-end specifikus dokumentáció
+├── package.json                # Függőségek és scriptek
+├── README.md                   # Általános leírás
+└── tsconfig.json               # TypeScript konfiguráció
+
+```
+
+#### 3.2.2. Fejlesztéshez használt eszközök, technológiák
+
+#### Hardver ismertetése és a választás indoklása
+A fejlesztés egy INTEL I5-8365U processzorral és 32GB memóriával szerelt konfiguráción történt. A választást az **Angular CLI** erőforrásigényes build folyamatai (különösen az AOT fordítás és az optimalizáció), valamint a backend és frontend szerverek párhuzamos futtatása közbeni stabilitás fenntartása indokolta.
+
+#### Szoftverek ismertetése és a választás indoklása
+* **Visual Studio Code:** Az alkalmazás elsődleges integrált fejlesztői környezete (IDE). Választását a gazdag bővítménykínálat (Angular Language Service, ESLint), az integrált terminál és a hatékony TypeScript támogatás indokolta, amely jelentősen gyorsítja a fejlesztési ciklust.
+* **Angular (v20.3.16):** A legújabb generációs frontend keretrendszer. A választás mellett szólt a **Standalone architektúra** okozta alacsonyabb overhead, a **Signal-alapú állapotkezelés** nyújtotta teljesítményoptimalizálás (felesleges Change Detection futások elkerülése) és a magas szintű típusbiztonság.
+* **Bootstrap 5.3.8 & @ng-bootstrap:** A reszponzivitás alapköve. Azért esett a választás az `ng-bootstrap` könyvtárra, mert natív Angular komponenseket biztosít, így az interaktív elemek (modálok, dropdown-ok) használatakor elkerülhető a nehézkes és biztonsági kockázatokat hordozó jQuery könyvtár betöltése.
+
+#### Alkalmazott specifikus könyvtárak
+* **RxJS (~7.8.0):** Reaktív programozási könyvtár, amely elengedhetetlen az aszinkron adatfolyamok és a HTTP-kérések megfigyelhető (Observable) alapú kezeléséhez.
+* **SweetAlert2 (11.26.18):** A felhasználói élmény (UX) javítása érdekében alkalmazott könyvtár; esztétikusabb és testreszabhatóbb visszacsatolást nyújt a felhasználónak, mint a natív böngésző-alert.
+* **@ngx-translate/core (17.0.0):** Nemzetköziesítési (i18n) motor, amely lehetővé teszi a skálázható többnyelvűséget és a dinamikus nyelvváltást a magyar és angol nyelvek között.
+* **jsPDF (4.2.1) & jsPDF-AutoTable (5.0.7):** Kliensoldali PDF generáló motorok, amelyek lehetővé teszik a strukturált adatok exportálását közvetlenül a böngészőből, tehermentesítve ezzel a szerveroldalt.
+
+
+### 3.2.3. Komponens-architektúra és moduláris felépítés
+
+#### Az alkalmazás komponenseinek részletes technikai bemutatása
+
+Az alkalmazás komponens-alapú felépítése biztosítja a moduláris működést és a funkciók tiszta elkülönítését. A fejlesztés során a modern **Standalone** architektúrát alkalmaztam, amely elhagyja a hagyományos NgModules rendszert, így csökkentve az alkalmazás komplexitását és növelve a karbantarthatóságot.
+
+#### 3.2.3.1. App Komponens (`src/app/app.component.*`)
+Az alkalmazás gyökérkomponense (Root Component), amely a teljes rendszer "keretéért" és a globális elrendezés koordinálásáért felelős. Feladata a navigációs sáv (`app-navbar`) és a dinamikus tartalommegjelenítő (`router-outlet`) szinkronizálása.
+
+* **Layout vezérlés:** Dinamikusan szabályozza a navigációs sáv láthatóságát az aktuális útvonal függvényében. A konstruktorban feliratkozik a `Router` eseményeire, és a `NavigationEnd` esemény bekövetkezésekor ellenőrzi a tartózkodási helyet.
+* **Kivételkezelés:** Amennyiben a felhasználó a `/login` vagy a `/passwordchange` oldalon tartózkodik, a rendszer elrejti a navigációs menüt, biztosítva a zavartalan autentikációs folyamatot.
+* **Technikai megvalósítás:** Az osztályban definiált `showNavbar: boolean` változó az Angular modern kontroll struktúráján, az **@if** blokkon keresztül szabályozza a navigációs sáv feltételes megjelenítését. Ez a megoldás hatékonyabb változásdetektálást tesz lehetővé, mint a korábbi direktíva-alapú megközelítések.
+
+#### 3.2.3.2. Admin Dashboard Komponens (`src/app/components/dashboard/*`)
+Az Admin Dashboard az alkalmazás üzleti intelligencia központja. Feladata a nyers adatok (felhasználók, foglalások, konzultációk) aggregálása és vizuális prezentálása a döntéshozók számára.
+
+**I. Főbb üzleti funkciók:**
+* **KPI (Key Performance Indicators) elemzés:** A rendszer automatikusan számítja a bruttó árbevételt, a lemondási rátát és a szakemberek hatékonyságát (Staff Efficiency) a foglalások száma és az elvárt kapacitás alapján.
+* **Időpont Heatmap:** Egy heti bontású hőtérképet generál, amely vizuálisan szemlélteti a klinika legforgalmasabb idősávjait.
+* **Automatizált PDF Riport:** A `jsPDF` és `autoTable` könyvtárak segítségével azonnali, többnyelvű statisztikai jelentést generál nyomtatható formátumban.
+
+**II. Főbb osztályváltozók:**
+| Változó neve | Típus | Leírás |
+| :--- | :--- | :--- |
+| `isLoading` | `boolean` | Az adatbetöltés alatti várakozási állapotot jelzi. |
+| `stats` | `Object` | KPI mutatók (bevétel, lemondási arány, foglalások száma). |
+| `staffEfficiency`| `any[]` | Szakemberek kihasználtsági mutatóit tartalmazó tömb. |
+| `topServices` | `any[]` | Az 5 legnépszerűbb szolgáltatás statisztikái. |
+| `heatmapData` | `any` | Kétdimenziós mátrix a heti foglaltsági hőtérképhez. |
+| `hours` | `string[]` | Fix idősávok listája (pl. 08:00 - 19:00). |
+| `weekDays` | `string[]` | Munkahét napjainak kulcsai (MONDAY-FRIDAY). |
+
+**III. Metódusok és Technikai megvalósítás:**
+* **Függőség-injektálás:** A komponens a modern `inject()` függvényt használja (`AdminService`, `StaffService`, `ConsultationService`, `TranslateService`).
+* **`loadDashboardData()`**: A `forkJoin` operátor használatával párhuzamosan kéri le az adatokat több forrásból, minimalizálva a várakozási időt.
+* **`calculateFinancials()`**: Kiszűri a törölt foglalásokat és reaktív módon (`reduce`, `filter`) számítja az árbevételt.
+* **`generateHeatmap()`**: Dátum és idő alapján csoportosítja a foglalásokat, a `getHeatmapColor()` algoritmus pedig dinamikus színkódot rendel a cellákhoz a foglaltság sűrűsége alapján.
+
+#### 3.2.3.3. Staff és Slot Management
+Ez a modul felelős a szakemberek profiljának adminisztrációjáért és az elérhető idősávok kezeléséért.
+
+**I. Főbb osztályváltozók:**
+| Változó neve | Típus | Leírás |
+| :--- | :--- | :--- |
+| `staffData` | `any` | A bejelentkezett szakember profilinformációi. |
+| `slots` | `any[]` | Az aktuális szakemberhez tartozó összes időpont. |
+| `consultations` | `any[]` | A szakember által végezhető szolgáltatások listája. |
+| `isGenerating` | `boolean` | Tömeges slot-generálás állapotjelzője. |
+
+**II. Metódusok és algoritmusok:**
+* **`loadStaffProfile()` & `loadStaffSlots()`**: Betölti a szakember specializációit és frissíti a naptárnézetet az adatbázisból.
+* **`generateDailySlots()`**: Automatikus algoritmus, amely adott időintervallumban (munkaidő) és felosztásban hoz létre szabad időpontokat.
+* **`toggleSlotStatus()`**: Időpontok manuális zárolása vagy felszabadítása az adatbázisban.
+* **`updateBookingStatus()`**: Páciens foglalásának jóváhagyása vagy lezárása, amely közvetlen hatással van a dashboard statisztikáira.
+* **Állapotkezelés:** Az `AuthService` Signal-jait felhasználva biztosítja a személyre szabott nézetet és a jogosultság-ellenőrzést.
+
+#### 3.2.3.4. Booking (Foglalási) Komponens
+Páciens oldali felület, amely lehetővé teszi a szolgáltatások böngészését és az időpontfoglalást.
+
+**I. Főbb osztályváltozók:**
+| Változó neve | Típus | Leírás |
+| :--- | :--- | :--- |
+| `availableSlots` | `Slot[]` | A szerverről lekérdezett, aktuálisan foglalható szabad időpontok. |
+| `weekDays` | `Date[]` | Az aktuálisan megjelenített munkahét napjait tartalmazó tömb. |
+| `selectedSpecialty` | `string` | A felhasználó által választott szakterület szűrője. |
+| `isLoading` | `boolean` | Az aszinkron szűrések és lekérések állapotjelzője. |
+
+**II. Metódusok és logika:**
+* **`generateWeek(refDate)`**: Kiszámítja a hét napjait hétfőtől kezdődően, kezelve a navigációt a hetek között.
+* **`getSlotsForHour(day, hour)`**: Segédfüggvény a naptárnézet rendereléséhez a sablonban.
+* **`loadInitialData()`**: Az oldal betöltésekor `forkJoin` segítségével szinkronizálja a szakemberek és szolgáltatások listáját.
+* **`executeBooking(slot)`**: Összeállítja a foglalási objektumot (ár, időtartam, státusz), és sikeres válasz után a `SweetAlert2` segítségével ad visszacsatolást.
+
+#### 3.2.3.5. Login és Autentikáció
+A felhasználók hitelesítéséért és a munkamenet (session) inicializálásáért felelős egység.
+
+**I. Főbb osztályváltozók:**
+| Változó neve | Típus | Leírás |
+| :--- | :--- | :--- |
+| `loginForm` | `FormGroup` | Erősen típusos (`nonNullable`) reaktív űrlap email és jelszó validátorokkal. |
+| `errorMessage` | `string` | A szerveroldali hibaüzenetek (pl. hibás hitelesítés) tárolója. |
+
+**II. Metódusok és biztonság:**
+* **`login()`**: Ellenőrzi az űrlap érvényességét, majd a válaszban kapott JWT tokent és felhasználói objektumot a `localStorage`-ba menti.
+* **Dinamikus routing:** Vizsgálja a felhasználói szerepkört (`roleId`). Az adminok és szakemberek a műszerfalra, a páciensek a foglalási oldalra kerülnek átirányításra.
+* **`cleanupModal()`**: Manuálisan eltávolítja a Bootstrap modális ablakok maradványait (backdrop) a DOM-ból a sikeres navigáció előtt, megelőzve a felület lefagyását.
+* **Session Security:** Biztosítja a titkosított kommunikációhoz szükséges fejlécadatok (Auth Header) alapfeltételeit.
+
+
+#### 3.2.4. Szervizek (Services) és Adatkezelés
+
+Az alkalmazás üzleti logikájának és a hálózati kommunikációnak a gerincét a szerviz réteg alkotja. Az Angular **Dependency Injection (DI)** rendszerét kihasználva a szervizek `providedIn: 'root'` dekorátorral vannak ellátva, így az egész alkalmazásban egyetlen példányban (singleton) érhetőek el. Ez a tervezési minta garantálja, hogy az adatok (például a bejelentkezett felhasználó állapota) konzisztensek maradjanak a különböző komponensek között.
+
+#### 3.2.4.1. Hálózati architektúra és Biztonság
+
+Az API kommunikáció során az alkalmazás szigorú biztonsági protokollokat követ, elkülönítve a nyers adatátvitelt az üzleti logikától.
+
+* **Autentikációs stratégia (JWT Flow):** A védett végpontok eléréséhez a rendszer **JSON Web Token (JWT)** alapú hitelesítést használ. Az **AuthService** felelős a `localStorage`-ban tárolt token menedzseléséért.
+* **Környezetfüggő konfiguráció (Environment-driven API):** Az alkalmazás követi a *Separation of Concerns* (feladatkörök elkülönítése) elvet. A backend címe nem statikus karakterláncként szerepel a kód blokkjaiban, hanem az `environment.ts` állományból töltődik be. Ez biztosítja a skálázhatóságot és a könnyű hordozhatóságot a fejlesztői és az éles szerverek között.
+
+---
+
+#### 3.2.4.2. HTTP Interceptor – A kérések globális kezelése
+
+A modern Angular (v15+) irányelveit követve a projektben **funkcionális alapú Interceptort** (`HttpInterceptorFn`) implementáltam. Ez a megoldás központosítja a hálózati kérések módosítását, levéve a terhet az egyes szervizekről, és biztosítva az alkalmazásszintű egységességet. Ez a tervezési minta (Middleware pattern) lehetővé teszi, hogy minden kimenő kérést és bejövő választ egyetlen közös logikai ponton vezessünk keresztül.
+
+**A megvalósított `authInterceptor` implementációja:**
+
+```typescript
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const platformId = inject(PLATFORM_ID);
+  const router = inject(Router);
+  const authService = inject(AuthService);
+
+  let authReq = req;
+
+  // 1. Környezetellenőrzés (Browser vs Server)
+  if (isPlatformBrowser(platformId)) {
+    const token = localStorage.getItem('token');
+    const lang = localStorage.getItem('lang') || 'en';
+
+    // 2. Alapértelmezett fejlécek beállítása (Nyelvkezelés)
+    let headers = req.headers.set('Accept-Language', lang);
+
+    // 3. Autentikációs token csatolása
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    // A kérés megismételhetetlen (immutable), ezért klónozni kell az új fejlécekkel
+    authReq = req.clone({ headers }); 
+  }
+
+  // 4. Hibakezelés és válasz-stream feldolgozása reaktív módon
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 && !req.url.includes('login')) {
+          // Automatikus kijelentkeztetés érvénytelen vagy lejárt token esetén
+          authService.logout();
+          router.navigate(['/login'], {
+            queryParams: { returnUrl: router.url }
+        });
+      }
+      return throwError(() => error);
+    })
+  );
+};
+
+```
+
+Az alkalmazásban egy HTTP Interceptort alkalmaztam, amely központi helyen kezeli az összes kimenő kérést. Ez a megoldás szakmailag sokkal magasabb szintű, mintha minden szervizben külön-külön állítanánk be a fejléceket.
+
+**Főbb feladatai:**
+1.  **Token injektálás:** Minden kimenő kéréshez automatikusan csatolja az érvényes JWT tokent az `Authorization` fejlécben.
+2.  **Globális hibakezelés:** Elkapja a szerver felől érkező HTTP hibaüzeneteket (pl. 401 Unauthorized), és automatikus kijelentkeztetést vagy hibaüzenet-megjelenítést indít.
+
+---
+
+#### 3.2.4.3. AuthService – Hitelesítés és Session Management
+Az **AuthService** az alkalmazás biztonsági központja. Nem csupán adatokat kér le, hanem reaktív módon tárolja a felhasználói munkamenet állapotát.
+
+* **Reaktív állapotkezelés:** A szerviz `BehaviorSubject` vagy `Signal` segítségével teszi lehetővé, hogy az alkalmazás bármely pontján értesüljünk a bejelentkezett felhasználó adatainak változásáról.
+* **Főbb metódusok:**
+    * `login(credentials)`: Hitelesíti a felhasználót és perzisztens módon tárolja a munkamenetet.
+    * `logout()`: Biztonságosan törli a bizalmas adatokat és alaphelyzetbe állítja az alkalmazás állapotát.
+    * `getAuthHeaders()`: Segédfüggvény a manuális fejléc-összeállításhoz (amennyiben nem az interceptor végzi).
+
+---
+
+#### 3.2.4.4. StaffService – Szakember,  Kompetencia Menedzsment és és ConsultationService
+Ez a szerviz felelős a klinikai állomány digitális reprezentációjáért és az adatbázis `Staff` táblájához kapcsolódó műveletekért.
+
+* **Logikai törlési stratégia (Soft Delete):** Az `archiveStaff` metódus implementálásával a rendszer megőrzi az adatbázis integritását. A szakember nem törlődik fizikailag, így a múltbeli statisztikák (pl. korábbi bevételek) pontosak maradnak.
+* * **Szolgáltatási katalógus:** A **ConsultationService** kezeli a kezelések árait és időtartamait. Itt dől el, hogy egy foglalás mekkora időintervallumot foglal majd el a szakember naptárában.
+* **Dinamikus szolgáltatás-hozzárendelés:** Itt valósul meg az a logika, amely a szakembereket és a konzultációs típusokat (treatments) kapcsolja össze, kezelve a több-a-többhöz típusú relációkat kliensoldalon.
+
+---
+
+#### 3.2.4.5. BookingService – Foglalási logika és dinamikus naptárkezelés
+
+A `BookingComponent` felelős a páciensek és a szabad időpontok (slotok) közötti interakció menedzseléséért. Ez a modul az alkalmazás egyik technológiai csomópontja, ahol a dátumkezelés, a reaktív szűrés és a tranzakcionális adatbeküldés találkozik.
+
+#### I. Dinamikus naptárgeneráló algoritmus
+
+A felhasználói élmény alapja egy heti nézetű naptár, amely nem statikus adatokkal dolgozik, hanem a kiválasztott referenciaidőpont alapján dinamikusan számítja ki a munkahét napjait.
+
+```typescript
+generateWeek(refDate: Date): void {
+  const start = new Date(refDate);
+  const day = start.getDay(); // 0: vasárnap, 1: hétfő...
+
+  // Hétfőre való visszaléptetés kiszámítása
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+  start.setDate(start.getDate() + diffToMonday);
+  
+  this.weekDays = [];
+  for (let i = 0; i < 5; i++) { // Csak a munkanapok (hétfő-péntek) generálása
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    this.weekDays.push(d);
+  }
+}
+```
+**Szakmai elemzés:** Az algoritmus precízen kezeli a JavaScript `Date` objektumának sajátosságait (például, hogy a vasárnap a 0. index). A `diffToMonday` változó kiszámítása garantálja, hogy a naptár nézet minden esetben hétfővel kezdődjön, függetlenül attól, hogy a felhasználó a hét melyik napján navigál az oldalra. A ciklus szándékosan csak előre két hetet és heti öt napot generál le, illeszkedve a klinika hétköznapi nyitvatartási rendjéhez, ezzel is szűkítve a hibás adatbevitel lehetőségét.
+
+#### II. Reaktív szűrés és Adatkonzisztencia
+
+A komponens egy többszintű, láncolt szűrési logikát valósít meg, ahol az egyes választások (szakterület → szakember → kezelés) egymásra épülve határozzák meg a valid foglalási opciókat.
+
+1.  **Szakterület alapú szűrés:** Az `onSpecialtyChange` metódus az aszinkron adatfolyam segítségével azonnal szűri a szakemberek listáját, miközben biztonsági okokból alaphelyzetbe állítja a korábbi választásokat. Ez megakadályozza, hogy a felhasználó inkonzisztens adatokat (pl. egy fogorvoshoz bőrgyógyászati kezelést) küldjön be.
+2.  **Paraméteres szinkronizáció:** A `syncSelectionFromParams` metódus az `ActivatedRoute` segítségével lehetővé teszi a külső forrásból (pl. marketing kampányból vagy orvos-specifikus linkről) érkező kérések feldolgozását. Így a komponens képes "emlékezni" a navigáció előtt kiválasztott entitásokra.
+3.  **Időintervallum szűrés (Lead Time):**
+    ```typescript
+    const now = new Date();
+    const limitTime = new Date(now.getTime() + (minimumLeadTimeHours * 60 * 60 * 1000));
+    this.availableSlots = allData.filter((slot: any) => {
+      const slotDateTime = new Date(`${slot.date}T${slot.startTime}`);
+      return slotDateTime > limitTime;
+    });
+    ```
+    Ez az üzleti logika kritikus a klinika működése szempontjából: megakadályozza a múltbeli időpontok foglalását, valamint lehetővé teszi egy minimális felkészülési idő (lead time) beállítását, így elkerülhetők a kezelés megkezdése előtt pár perccel beérkező váratlan foglalások.
+
+#### III. Idősáv-leképezési algoritmus (`getSlotsForHour`)
+
+A naptár felhasználói felületén (UI Grid) az adatok megjelenítése nem egyszerű listázással történik, hanem egy koordináta-alapú keresőalgoritmussal. A `getSlotsForHour` metódus felelős azért, hogy az adatbázisból érkező slotokat a megfelelő naphoz és órához rendelje a nézetben.
+
+* **Logika:** A metódus karakterlánc-manipulációval (`substring`, `padStart`) normalizálja a dátumokat és az órákat a backend formátumára, majd egy szűrt részhalmazt ad vissza a sablonnak.
+* **Vizuális integritás:** Ez a megközelítés lehetővé teszi a naptár rácsának konzisztens megjelenítését akkor is, ha bizonyos órákban nincsenek szabad időpontok, így a páciens számára átlátható marad a szakember napi beosztása.
+
+#### IV. Tranzakcionális foglalási folyamat és Hibakezelés
+
+A foglalás véglegesítése egy kritikus tranzakció, amely magas fokú adatbiztonságot és pontos felhasználói visszacsatolást igényel.
+
+1.  **Vizuális megerősítés:** A `SweetAlert2` könyvtár integrálásával a rendszer egy interaktív kérdőíves modált jelenít meg. Ez a lépés tartalmazza a választott szolgáltatás nevét, az időpontot és az árat, jelentősen csökkentve a téves foglalásokból eredő adminisztrációs terheket.
+2.  **Munkamenet-ellenőrzés:** Az `executeBooking` metódus ellenőrzi az `AuthService`-en keresztül a felhasználó hitelesítési állapotát. Amennyiben a munkamenet nem aktív, a rendszer a `returnUrl` paraméter mentésével átirányítja a pácienst a bejelentkezéshez, majd annak sikeressége után automatikusan visszavezeti a foglalási folyamathoz.
+3.  **Szerveroldali hibaüzenetek transzformálása:** A hibaágon (`error`) a rendszer megkísérli a szerver által küldött specifikus hibaüzenet-kulcsok (pl. "ALREADY_BOOKED", "INSUFFICIENT_FUNDS") lefordítását. Ez biztosítja, hogy a felhasználó ne technikai jellegű hibaüzenetet kapjon, hanem a saját nyelvén értesüljön a hiba pontos okáról.
+
+#### V. Lokalizált formátumok és i18n Getterek
+
+A komponens dedikált gettereket (`dayFormat`, `dateFormat`, `currentLocale`) tartalmaz, amelyek az Angular `DatePipe`-jával és a `TranslateService`-szel szorosan együttműködve biztosítják, hogy a dátumok és napok formátuma (pl. magyar nyelv esetén: "ápr. 16, kedd", angol esetén: "Tuesday, Apr 16") mindig megfeleljen a kulturális konvencióknak és a választott nyelvi beállításoknak.
+
+A rendszer egyik legkomplexebb egysége, amely a páciens igényeit szinkronizálja a szakemberek szabad naptárával.
+
+* **Tranzakcionális szemlélet:** A `createBooking` metódus felelős a foglalási objektum validált beküldéséért.
+* **Slot-kezelés:** A `getAvailableSlots` metóduson keresztül érhető el a naptár-algoritmus válasza, amely biztosítja, hogy a felhasználó csak valós, ütközésmentes időpontokat választhasson.
+
+---
+
+#### 3.2.4.6. Adminisztrációs üzleti logika és adatanalitika
+
+Az `AdminDashboardComponent` az alkalmazás egyik legösszetettebb modulja, amely a nyers adatbázis-rekordokat alakítja át üzleti mutatókká (KPI). A komponens megvalósítása során törekedtem a reaktív programozási elvek betartására és a kliensoldali erőforrások hatékony kihasználására.
+
+#### I. Párhuzamos adatfolyam-szinkronizáció (`forkJoin`)
+
+Az adatok betöltésekor kritikus szempont volt a hálózati késleltetés (latency) minimalizálása. Ahelyett, hogy a kéréseket egymás után (szekvenciálisan) indítanám el, az RxJS `forkJoin` operátorát alkalmaztam:
+
+```typescript
+loadDashboardData(): void {
+  this.isLoading = true;
+  forkJoin({
+    users: this.adminService.getAllUsers(),
+    bookings: this.adminService.getAllBookings(),
+    consultations: this.consultationService.getConsultations(),
+    staffs: this.staffService.getStaff()
+  }).pipe(
+    finalize(() => this.isLoading = false) // Minden esetben lefut (error/success)
+  ).subscribe({
+    next: (res: any) => {
+      // Adatok szanálása és elosztása a számítási metódusoknak
+      this.calculateFinancials(res.bookings);
+      this.calculateStaffEfficiency(res.staffs, res.bookings);
+      this.calculateTopServices(res.bookings, res.consultations);
+      this.generateHeatmap(res.bookings);
+    },
+    error: (err) => {
+      // Hiba esetén lokalizált visszacsatolás és SweetAlert2 modal
+      Swal.fire({ icon: 'error', title: this.translate.instant('COMMON.ERROR.TITLE') });
+    }
+  });
+}
+```
+
+**Szakmai indoklás:** A `forkJoin` használatával az összes API hívás egyszerre, párhuzamosan indul el. A rendszer csak akkor kezdi meg az összetett adatfeldolgozási folyamatot, ha minden válasz sikeresen megérkezett. Ez a megközelítés megakadályozza a részleges adatokból eredő hibás statisztikák megjelenítését (inconsistent state), és jelentősen javítja a felhasználói élményt a rövidebb várakozási idő révén.
+
+#### II. Adataggregációs algoritmusok
+
+A backend kiszolgálótól érkező nyers tömböket több szempont szerint dolgozom fel a kliensoldalon, ezzel tehermentesítve a szerver processzorát és csökkentve a hálózati forgalmat.
+
+1.  **Bevétel- és Lemondási ráta kalkuláció:**
+    A `calculateFinancials` metódus az RxJS streamekből érkező adatokat a JavaScript modern tömbkezelő függvényeivel (`filter`, `reduce`) aggregálja. A lemondási arányt a törölt státuszú foglalások és az összes foglalás hányadosaként határozza meg, míg a teljes bevételt kizárólag a ténylegesen megvalósult vagy aktív foglalások árai alapján összesíti, garantálva a pénzügyi mutatók pontosságát.
+
+2.  **Szakember hatékonyság (Utilization):**
+    A hatékonysági mutatót egy elvárt heti kapacitáshoz (példánkban 40 időpont/hét) viszonyítom. Ez a számítás alapja a szakemberek rangsorolásának, amely segít az adminisztrátoroknak az erőforrások optimalizálásában és a klinika leterheltségének kiegyensúlyozásában.
+
+3.  **Heti forgalmi hőtérkép (Heatmap Logic):**
+    A `generateHeatmap` metódus egy komplex, kétdimenziós objektumstruktúrát épít fel.
+    * **Adatszerkezet:** Az adatok elérése a `this.heatmapData[nap][óra]` logikai útvonalon történik.
+    * **Algoritmus:** A metódus végigiterál a foglalásokon, a dátumértékekből kinyeri a nap angol nyelvű megnevezését, a kezdési időpontból pedig az óra értékét, majd inkrementálja a megfelelő adatcellát.
+    * **Vizuális kódolás:** A `getHeatmapColor(count)` metódus egy küszöbérték-alapú algoritmus, amely az adatsűrűség függvényében (0, 1-3, 3-6, 6 felett) rendel hozzá CSS-kompatibilis színkódokat a cellákhoz, vizuálisan segítve a forgalmi csúcsidőszakok azonnali felismerését.
+
+#### III. Dinamikus PDF riportgenerálás (`jsPDF`)
+
+A rendszer egyik kiemelt funkciója a statisztikai adatok exportálása. Ez a folyamat teljes egészében kliensoldalon történik, ami azonnali válaszidőt eredményez és csökkenti a szerver terhelését.
+
+```typescript
+exportToPDF() {
+  const doc = new jsPDF();
+  const locale = this.translate.currentLang === 'hu' ? 'hu-HU' : 'en-GB';
+  const timestamp = new Date().toLocaleString(locale);
+  
+  // Lokalizált szövegek betöltése az aktuális nyelv alapján
+  const title = this.translate.instant('DASHBOARD.PDF_TITLE');
+  
+  // Táblázat adatainak transzformálása (Heatmap mátrixból táblázatos sorokká)
+  const body = this.hours.map(time => [
+    time,
+    this.heatmapData['MONDAY']?.[time] ?? 0,
+    this.heatmapData['TUESDAY']?.[time] ?? 0,
+    this.heatmapData['WEDNESDAY']?.[time] ?? 0,
+    this.heatmapData['THURSDAY']?.[time] ?? 0,
+    this.heatmapData['FRIDAY']?.[time] ?? 0
+  ]);
+
+  autoTable(doc, {
+    head: [headers],
+    body: body,
+    startY: 35,
+    theme: 'grid',
+    headStyles: { fillColor: [13, 110, 253] }, // Bootstrap Primary Blue
+    styles: { fontSize: 9 }
+  });
+
+  doc.save(`${fileName}_${new Date().getTime()}.pdf`);
+}
+```
+
+**Technikai innováció:** Az exportáló algoritmus teljes mértékben támogatja a nemzetköziesítést (i18n). A táblázat fejlécei, a dátumformátum és a PDF dokumentum elnevezése is dinamikusan igazodik az alkalmazásban beállított aktív nyelvhez. Az `autoTable` bővítmény integrációjával a generált dokumentum professzionális elrendezést kap, amely rácsos szerkezetével és kiemelt fejléceivel alkalmas hivatalos klinikai riportok vagy vezetői összefoglalók benyújtására is.
+
+#### IV. Osztályszintű definíciók és Állapotkezelés
+
+A típusbiztonság és a kód tisztasága érdekében a komponens az alábbi kulcsfontosságú elemekkel dolgozik, amelyek meghatározzák az adatvezérelt működést:
+
+* **`isLoading`**: Logikai állapotjelző változó, amely az aszinkron hálózati műveletek alatt vizuális visszacsatolást ad a felhasználónak, és zárolja a kritikus felületi elemeket, megelőzve ezzel a többszöri, felesleges adatlekérést.
+* **`stats`**: Strukturált, interfész-alapú objektum a globális KPI mutatók (bevétel, foglalások száma, lemondási ráta) központi tárolására.
+* **`keepOrder`**: Egy speciális "keyvalue" pipe segédfüggvény (arrow function), amely felülbírálja az Angular keretrendszer alapértelmezett (alphabetical) rendezési logikáját. Ez kritikus fontosságú a hőtérkép megjelenítésekor, mivel biztosítja, hogy az idősávok és a napok ne betűrendben, hanem kronológiai sorrendben jelenjenek meg a felhasználói felületen.
+* **`hours` és `weekDays`**: `protected readonly` típusú konstans tömbök, amelyek az alkalmazás időbeli kereteit definiálják, és alapul szolgálnak mind a hőtérkép-generáló algoritmusnak, mind a PDF exportáló logikának.
+
+* **Adminisztratív aggregáció:** Az **AdminService** biztosítja a Dashboard vizualizációihoz szükséges statisztikai adatokat, közvetítve a backend komplex lekérdezéseit.
+
+---
+
+#### 3.2.5. Útvonalfigyelők (Guards) és Hozzáférés-kezelés
+
+Az Angular keretrendszer útvonalfigyelői (Guards) képezik az alkalmazás első védelmi vonalát a kliensoldalon. Feladatuk a navigációs folyamat monitorozása és szükség esetén annak megszakítása a felhasználó hitelesítési állapota vagy jogosultsági szintje alapján. Az alkalmazás fejlesztése során a modern, **funkcionális Guard** megközelítést alkalmaztam, amely jelentősen csökkenti a boilerplate kódot és javítja az alkalmazás tesztelhetőségét.
+
+#### 3.2.5.1. Szerepkör-alapú hozzáférés-szabályozás (AdminGuard)
+
+Az **AdminGuard** kritikus fontosságú a rendszer integritása szempontjából, mivel ez az egység védi az emelt szintű jogosultságot igénylő útvonalakat (például az adminisztrációs felületet, a felhasználókezelést és a globális pénzügyi statisztikákat).
+
+* **Implementációs logika:** A Guard nem csupán a bejelentkezés tényét ellenőrzi, hanem egy mélyebb jogosultsági vizsgálatot végez. Az `AuthService` segítségével lekéri a kliensoldalon tárolt felhasználói modellt, és validálja a `roleId` vagy az `isAdmin` flag értékét a memóriában és a perzisztens tárolóban egyaránt.
+* **Biztonsági mechanizmus:**
+    * **Integritás ellenőrzés:** Megvizsgálja, hogy a `localStorage`-ban tárolt token formátumilag helyes-e, és rendelkezik-e a szükséges biztonsági fejlécekkel.
+    * **Lejárat kezelés:** Amennyiben a token lejárati ideje (Expiration Time) elmúlt, a Guard a navigációt azonnal elutasítja, megelőzve, hogy a felhasználó lejárt munkamenettel kíséreljen meg adatokat módosítani.
+* **Navigációs fallback:** Jogosulatlan hozzáférési kísérlet esetén a rendszer „Silent Redirect” stratégiát alkalmaz: a felhasználót automatikusan a bejelentkezési oldalra irányítja, miközben hibaüzenetet jelenít meg, elrejtve ezzel az adminisztrációs felület belső szerkezetét.
+
+#### 3.2.5.2. Általános hitelesítési figyelő (AuthGuard)
+
+Az **AuthGuard** biztosítja, hogy a privát funkciók (időpontfoglalás, saját profil kezelése, jelszómódosítás) kizárólag érvényes hitelesítéssel rendelkező felhasználók számára legyenek elérhetőek.
+
+* **Működési elv:** A Guard a navigációs esemény bekövetkeztekor reaktív módon ellenőrzi az aktuális hitelesítési állapotot. Ez egy kettős validálást jelent: ellenőrzi az RxJS stream-ben tárolt állapotot és a `localStorage` tartalmát.
+* **Felhasználói státusz validáció:** A hitelességen felül a Guard ellenőrzi a felhasználói fiók aktuális státuszát is. Amennyiben egy fiók adminisztratív úton felfüggesztésre került (pl. inaktív státusz), a Guard a bejelentkezett állapot ellenére is megakadályozza a védett tartalmak elérését.
+* **Munkamenet-folytonosság (UX):** A Guard a `RouterStateSnapshot` segítségével elmenti a megkísérelt útvonalat (target URL). Ez lehetővé teszi, hogy sikeres bejelentkezés után a rendszer ne a kezdőlapra, hanem pontosan arra az aloldalra navigálja vissza a pácienst, ahol a munka folyamata megszakadt.
+
+#### 3.2.5.3. A Guard-ok integrációja az útvonal-architektúrába
+
+A biztonsági figyelők hatékonyságát az `app.routes.ts` fájlban megvalósított hierarchikus védelem biztosítja. Az útvonalak deklaratív módon vannak ellátva a szükséges Guard-okkal, lehetővé téve a védelmi szintek egymásra épülését.
+
+```typescript
+export const routes: Routes = [
+  { 
+    path: 'admin', 
+    component: AdminLayoutComponent, 
+    canActivate: [authGuard, adminGuard], // Többszintű védelem: bejelentkezés + admin szerepkör
+    children: [
+      { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'users', component: UserManagementComponent }
+    ]
+  },
+  { 
+    path: 'booking', 
+    component: BookingComponent, 
+    canActivate: [authGuard] // Alapszintű védelem: csak bejelentkezés szükséges
+  }
+];
+```
+**Szakmai indoklás:** Az útvonalak ilyen módon történő, deklaratív védelme biztosítja az **üzleti logika integritását** és az alkalmazás magas szintű biztonságát. A megoldás legfőbb előnye, hogy a Guard-ok a komponensek példányosítása és az erőforrás-igényes API kérések elindítása *előtt* futnak le. Ezáltal:
+
+1.  **Erőforrás-optimalizálás:** Megakadályozzuk, hogy a böngésző feleslegesen töltsön be olyan modulokat vagy indítson el olyan hálózati kéréseket, amelyekhez a felhasználónak végül nem lesz hozzáférése.
+2.  **Adatvédelem:** Garantáljuk, hogy illetéktelen felhasználók még a kezelőfelület vázlatát (template) vagy a navigációs struktúrát se láthassák a jogosultsági szintjük felett.
+3.  **Karbantarthatóság:** A központosított Guard-logika lehetővé teszi, hogy a biztonsági szabályok változása esetén ne kelljen minden egyes komponenst módosítani; elegendő az adott Guard-függvényt vagy az útvonal-konfigurációt frissíteni.
+
+Ez a megközelítés nem csupán technikai kényszer, hanem egy olyan stratégiai tervezési minta, amely biztosítja, hogy az alkalmazás skálázható és auditálható maradjon a későbbi fejlesztési szakaszokban is.
+
+---
+
+#### 3.2.6. Továbbfejlesztési lehetőségek
+
+Az alkalmazás jelenlegi verziója stabil alapot nyújt a szakemberek és páciensek közötti foglalások kezeléséhez, azonban a hosszú távú skálázhatóság és a felhasználói élmény fokozása érdekében az alábbi fejlesztési irányok jelölik a továbblépést:
+
+#### Dashboard és Adatvizualizáció
+* **Prediktív analitika:** A múltbeli foglalási adatok alapján – gépi tanulási algoritmusok bevonásával – előrejelezhetővé válna a várható forgalom, segítve a szakemberek beosztásának és az erőforrásoknak az optimalizálását.
+* **Valós idejű frissítés (WebSockets):** A foglalások és státuszmódosítások azonnali, oldalfrissítés nélküli megjelenítése az adminisztrációs felületen, amely az RxJS stream-ek kiterjesztésével biztosítaná a hatékonyabb munkaszervezést.
+* **Bővített exportálási opciók:** A jelenlegi PDF alapú riportálás kiegészítése Excel (.xlsx) vagy CSV exportálási lehetőségekkel, támogatva a külső üzleti elemző szoftverekbe (pl. PowerBI) történő adatimportálást.
+
+#### Foglalási rendszer és Naptárkezelés
+* **Várólista funkció:** Egy automatizált értesítési rendszer bevezetése, amely lemondás esetén azonnal tájékoztatja a várólistán szereplő pácienseket a felszabadult időpontról, maximalizálva a klinika kihasználtságát.
+* **Külső naptár szinkronizáció:** Google Calendar és Microsoft Outlook integráció megvalósítása, hogy a szakemberek a saját privát naptárukban is valós időben követhessék munkahelyi beosztásukat.
+* **Ismétlődő foglalások kezelése:** Olyan kezelési sorozatok támogatása, amelyek több alkalomból állnak (pl. fizioterápiás kúra vagy kontrollvizsgálatok), lehetővé téve a teljes sorozat rögzítését egyetlen foglalási folyamaton belül.
+
+#### Automatizált Értesítések
+* **Push-értesítések:** Web-push technológia alkalmazása a böngészőn keresztüli közvetlen emlékeztetők küldéséhez, növelve a páciensek elköteleződését.
+* **SMS-integráció:** Kritikus emlékeztetők és hitelesítési kódok küldése SMS-ben, amely iparági adatok alapján bizonyítottan a leghatékonyabb eszköz a meg nem jelenések (no-show) arányának csökkentésére.
+
+#### Integrált Fizetési Megoldások
+* **Online bankkártyás fizetés:** Stripe vagy PayPal integráció, amely lehetővé tenné a konzultációs díj előre történő kifizetését vagy foglalási depozit zárolását. Ez a funkció nemcsak a kényelmet szolgálja, hanem pénzügyi garanciát is nyújt a szolgáltatónak a fenntartott időpontokra vonatkozóan.
+
+
+### 3.2.7. Nemzetköziesítés és többnyelvűség (i18n)
+
+Az ElitPort alkalmazás teljes körű többnyelvűségi támogatással rendelkezik, amely biztosítja a rendszer használhatóságát külföldi páciensek és szakemberek számára is.
+
+* **Felhasználói felület (UI):** A navigációs sávban (Navbar) elhelyezett nyelvi váltógomb (HU/EN) lehetővé teszi a felhasználó számára a nyelv azonnali módosítását. 
+* **Technikai megvalósítás (Angular Signals):** A nyelvváltás egy központi `LanguageService`-en keresztül valósul meg. A választott nyelvi kód egy **Angular Signal**-ban tárolódik, így a komponensek reaktív módon, azonnal frissülnek, amint a felhasználó átvált.
+* **Külső nyelvi fájlok:** A fordítások nem a forráskódba égetve, hanem a `public/i18n/` mappában található `hu.json` és `en.json` fájlokban érhetőek el. Ez megkönnyíti a későbbi bővítést (pl. német nyelv hozzáadása) a kód módosítása nélkül.
+* **Kimenő e-mailek fordítása:** A rendszer konzisztenciája érdekében a tranzakciós e-mailek (regisztráció, foglalási visszaigazolás, jelszó-emlékeztető) is kétnyelvűek. A backend a kiküldés előtt ellenőrzi a felhasználó nyelvi preferenciáját, és a megfelelő (tegnap implementált) lokalizált sablont alkalmazza.
+   
+---
+
+## 4. Felhasználói kézikönyv
+
+Ez a fejezet a **ElitPort** időpontfoglaló rendszer használatához nyújt segítséget. Ez egy webalapú alkalmazás, amely orvosi időpontfoglalások kezelésére szolgál. A szoftver célja, hogy a Páciensek egyszerűen, sorban állás és telefonálás nélkül foglalhassanak időpontot a szakrendelésekre valamint klinikai Személyzet, Orvosok vagy az Adminisztrátor számára egyértelmű útmutatót adjon a szoftver funkcióinak eléréséhez, a regisztrációtól kezdve a foglalásig és az adminisztrációs feladatokig.
+
+---
+
+### 4.1. Rendszerkövetelmények
+Mivel az alkalmazás egy modern webes szoftver, nem igényel külön telepítést a számítógépére. Használatához az alábbiak szükségesek:
+* **Eszköz:** Számítógép, laptop, tablet vagy okostelefon. Az alkalmazás modern, reszponzív (RWD) alapokon nyugszik, amely biztosítja az eszközfüggetlen működést. A felület dinamikusan alkalmazkodik a kijelző felbontásához, így tableten és okostelefonon is teljes értékű felhasználói élményt nyújt.
+* **Internetkapcsolat:** Aktív szélessávú internetelérés.
+* **Szoftver:** Egy modern webböngésző (pl. Google Chrome, Microsoft Edge, Mozilla, Firefox vagy Safari legfrissebb verziói.).
+* **Azonosítás:** A Páciensnek érvényes e-mail címmel kell rendelkeznie a fiók létrehozásához.
+
+---
+### 4.2. Regisztráció és Első Lépések
+
+Amennyiben Ön új felhasználó, a szolgáltatások igénybevételéhez (időpontfoglalás) egy saját, jelszóval védett felhasználói fiókot kell létrehoznia.
+
+### 4.2.1. Nyelvválasztás
+A felület jobb felső sarkában található navigációs sávban a **"HU/EN"** feliratú gombra kattintva bármikor átválthat a magyar és az angol nyelv között. Javasoljuk, hogy a regisztráció megkezdése előtt állítsa be az Önnek megfelelő nyelvet.
+
+### 4.2.2. A regisztrációs felület megnyitása
+1.  A kezdőlapon kattintson a **"Jelentkezzen be a foglaláshoz"** gombra.
+2.  A megjelenő bejelentkező ablak alján keresse a **"Regisztráljon itt"** hivatkozást, majd kattintson rá. Ekkor megnyílik az üres regisztrációs adatlap.
+
+### 4.2.3. Az űrlap kitöltése és szabályai
+A regisztrációhoz az alábbi adatokat kell megadnia. Kérjük, ügyeljen a pontos kitöltésre, mert a rendszer ellenőrzi az adatok formátumát:
+
+* **Teljes név:** Adja meg saját nevét (vezeték- és keresztnév).
+* **E-mail cím:** Olyan élő címet adjon meg, amelyhez hozzáfér, mivel a visszaigazolásokat ide fogja kapni.
+* **Jelszó:** Válasszon egy biztonságos, legalább **6 karakterből** álló jelszót.
+* **Jelszó megerősítése:** Gépelje be a jelszót még egyszer. A rendszer csak akkor engedi tovább, ha a két mező tartalma **karakterre pontosan megegyezik**.
+
+Miután kitöltött minden mezőt kattintson a **"Regisztráció"** gombra. Ha a gomb nem kattintható (szürke marad), ellenőrizze, hogy a jelszava legalább 6 karakter hosszú-e, és megegyezik-e a két jelszómező tartalma.
+
+### 4.2.4. Vizuális segédlet a regisztrációhoz
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/registracios_urlap.png" alt="Üres regisztrációs űrlap" style="width: 800%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Az üres regisztrációs űrlap</b><br>A kötelező mezők jelölésével.</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/kitoltott_urlap.png" alt="Kitöltött regisztrációs űrlap" style="width: 800%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Kitöltött űrlap: minden mező valid, a jelszavak egyeznek (6+ karakter), a gomb aktívvá vált.</p>
+    </td>
+  </tr>
+</table>
+
+### 4.2.5. A fiók aktiválása és érvényesítése
+A regisztrációs űrlap sikeres beküldése után a rendszer biztonsági okokból egy automatikus visszaigazoló e-mailt küld a megadott címre. **A fiók használatba vétele előtt ezt az e-mailt kötelező aktiválni.**
+
+#### Az aktiváló e-mail megjelenése:
+
+<div align="center">
+  <img src="./screenshots/verif_email_minta.png" alt="Aktiváló e-mail minta" style="width: 60%; max-width: 500px; border: 1px solid #eaeaea; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 5px;">
+  <p><i>1. ábra: A rendszer által küldött aktiváló levél mintája.</i></p>
+</div>
+
+> [!TIP]
+> A hivatalos e-mail formátumot PDF dokumentumban is megtekintheti: 
+> [Aktiváló e-mail minta (PDF)](./emails/welcome_en_gmail.pdf)
+
+1. **Ellenőrizze e-mail fiókját:** Keresse a Elitport@... - "Üdvözöljük az ElitPort rendszerében!" tárgyú üzenetet. (Amennyiben nem érkezik meg 1-2 percen belül, kérjük, ellenőrizze a "Levélszemét/Spam" mappát is!)
+2. **Aktiváló hivatkozás:** Az üzenetben található egy egyedi link és gomb ("Verify Email Address"). Kattintson erre a fiók hitelesítéséhez.
+3. **Időkorlát:** Figyelem! Biztonsági okokból az aktiváló link a kiküldéstől számított **30 percig érvényes**. Amennyiben ezen az időn belül nem kattint rá, a regisztrációs folyamatot meg kell ismételnie.
+4. **Bejelentkezés és Foglalás:** Sikeres aktiválás után a böngésző visszairányítja a bejelentkező oldalra. Most már a megadott e-mail címmel és jelszóval beléphet, és azonnal elindíthatja az első időpontfoglalását.
+   
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/f2_verif_hu.png" alt="Üres regisztrációs űrlap" style="width: 70%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Sikeres aktiválás</b><br> Visszairányítás a Belépéshez.</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/f1_verif_en.png" alt="Angol nyelvű visszaigazolás" style="width: 70%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b> Sikeres aktiválás után a böngésző visszairányítja a bejelentkező oldalra a Pácienst-angol verzió</p>
+    </td>
+  </tr>
+</table>
+
+### 4.2.6. Bejelentkezés
+
+A már regisztrált felhasználók az alábbi módon léphetnek be:
+1.  A **"Bejelentkezés"** menüpont kiválasztása.
+2.  Az azonosításhoz szükséges e-mail cím és jelszó megadása.
+3.  A "Belépés" gombra kattintva a rendszer betölti a felhasználó személyes felületét.
+
+
+<div align="center">
+  <img src="./screenshots/f3_login.png" alt="bejelentkezés" style="width: 300%; max-width: 300px; border: 1px solid #eaeaea; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 5px;">
+  <p><i>2. ábra: Bejelentkezéskor nem pontos email vagy jelszó megadásakor hibát azonnal jelzi a rendszer és korrigálható.</i></p>
+</div>
+
+Ahogy a fenti képen látható, a bejelentkezéshez a felhasználónak két adatra van szüksége: a pontos e-mail címre és a jelszóra. A sikeres azonosítást követően a rendszer visszairányítja a kezdőoldalra, ahonnan a **"Szakembereink"** menüpontot választva is elindíthatja a foglalását vagy az oldalon található **"Időpontfoglalás Indítása"** gombra kattintva.
+
+---
+
+## 4.3. Időpontfoglalás menete
+
+Az időpontfoglalás egy interaktív folyamat, amely segít Önnek megtalálni a legmegfelelőbb szakembert és időpontot.
+
+### 3.1. Szakember és szolgáltatás kiválasztása
+1. Kattintson a fejlécben található **"Szakembereink"** menüpontra. Itt láthatja az összes elérhető orvost/szakembert.
+2. Minden szakember kártyán található az orvos képe a szakterülete, Profile megtekintésre kattintva található egy rövid bemutatkozás és elérhető szolgáltatások (ár, vizsgálat időtartama). 
+3. Válassza ki az Önnek megfelelő szakembert, majd kattintson a kártyán levő **"Időpontfoglalás"** gombra.
+
+### 3.2. Az időpont kiválasztása (Naptárnézet)
+A gomb megnyomása után megjelenik a szakember személyes naptára:
+* **Szabad időpontok:** Az elérhető időpontok a képernyő bal oldalán heti felbontásban a rendszer jól látható  kék színnel jelöli.
+* **Foglalt időpontok:** Ezek a mezők fehérek (nem kattinthatóak), jelezve, hogy az adott órában a szakember már nem elérhető.
+* **Kiválasztás:** Kattintson a naptárban az Önnek megfelelő napra és órára. Jobb felső sarokban a következő hétre kattintva lehet további időpontok közül választani.
+
+### 3.3. Foglalás véglegesítése és visszaigazolás
+1. Az időpont kiválasztása után egy összegző ablak jelenik meg, ahol ellenőrizheti a dátumot és a szakember nevét.
+2. Kattintson a **"Foglalás megerősítése"** gombra.
+3. Az időpont kiválasztása után egy felugró ablak (úgynevezett *SweetAlert* panel) jelenik meg az adatok ellenőrzéséhez.
+4. A foglalás véglegesítéséhez kattintson a **"Igen, lefoglalom"** gombra.
+4. **Megerősítés:** * Magyar nyelvű felületen kattintson az **"Igen, lefoglalom"** gombra.
+    * Angol nyelvű felületen (**EN**) kattintson a **"Yes, book it"** feliratú gombra.
+5.  **Elvetés:** Amennyiben véletlenül kattintott, vagy mégis más időpontot választana, a **"Mégsem" / "Cancel"** gombbal visszatérhet a naptárhoz.
+6. A sikeres foglalásról a rendszer **azonnal küld egy visszaigazoló e-mailt**, amely tartalmazza a találkozó részleteit és a lemondási feltételeket.
+ **Figyelem!** Foglalásait bármikor megtekintheti vagy kezelheti a saját **"Foglalásaim"** menüpontja alatt (menűsáv középen ikonnal), ahol a korábbi és a jövőbeli időpontjai is listázva vannak.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 40%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/confirm_booking.png" alt="Foglalás visszaigazolás" style="width: 200%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Foglalás megerősítése vagy elvetés lehetősége(modal ablak a foglalási adatokkal), hátárben az interaktív naptár nézet.</p>
+    </td>
+    <td style="width: 40%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/booking_hu.png" alt="Email a foglalásról" style="width: 200%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Visszaigazoló email a foglalásról.</p>
+    </td>
+     <td style="width: 40%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/booking_conf_en.png" alt="Email angol verzió" style="width: 200%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Visszaigazoló email angolul a foglalásról.</p>
+    </td>
+  </tr>
+</table> 
+
+A felhasználói jogkörrel bíró felhasználók egy limitált felületet láthatnak, amit a fenti bejelentkezés előz meg.
+
+---
+
+## 4.4. Saját adatok és foglalások kezelése
+
+A Páciens a saját profilján keresztül teljes kontrollal rendelkezik a korábbi és jövőbeli tevékenységei felett.
+
+1.  **Dashboard / Profil:** A bejelentkezés után elérhető felületen látható a következő esedékes időpont.
+2.  **Foglalások megtekintése:** A felhasználó visszakeresheti korábbi kezeléseit és ellenőrizheti azok státuszát.
+3.  **Lemondási protokoll:** Amennyiben a foglalás időpontja nem megfelelő, a felhasználó a "Időpont lemondása" gomb segítségével törölheti azt. Ekkor az időpont felszabadul és újra elérhetővé válik a többi Páciens számára. 
+Az időpontok lemondása a Páciens felületén csak a látogatást megelőző 24. óráig engedélyezett. 24 órán belüli módosításra vagy törlésre kizárólag Adminisztrátori jogosultsággal van lehetőség. Ilyenkor kérjük, vegye fel a kapcsolatot az intézmény Adminisztrátorával.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/sajat_Profil_hu.png" alt="Felhaszn Foglalásai" style="width: 70%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b> A páciens foglalásai:</b><br> 
+        <p>A Páciens saját foglalását az időpont előtt maximum 24 órával mondhatja le. A 24 órán belüli időpontok véglegesítettnek minősülnek, ezeket csak az <b>Adminisztrátor</b> tudja töröltetni.</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/fogl_lemondas.png" alt="Foglalás lemondás" style="width: 70%; border: 1px solid #ddd; border-radius: 8px;">
+       <p><b>Lemondható a foglalás:</b><br> 
+      <p>Az időpont előtt csak 24 órán kivül mondható le a saját foglalás. </p>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 4.5. Hibaelhárítás és támogatás
+
+## 4.5.1 Elfelejtett jelszó  - E-mail értesítés és biztonsági hivatkozás
+
+Amennyiben elfelejtette bejelentkezési jelszavát, a rendszer lehetőséget biztosít annak biztonságos megváltoztatására az Ön által regisztrált e-mail cím segítségével.
+
+A rendszer pár percen belül egy automatikus üzenetet küld az Ön postafiókjába, amely tartalmazza a jelszó módosításához szükséges adatokat.
+
+* **Aktiváló gomb:** Az e-mailben található egy **"Új jelszó megadása"** feliratú gomb. Erre kattintva a rendszer visszairányítja Önt a szoftver biztonságos felületére.
+* **Időkorlát:** A biztonság érdekében ez a link **30 perc múlva lejár**. Amennyiben túllépi ezt az időkeretet, a folyamatot biztonsági okokból elölről kell kezdenie.
+* **Biztonsági záradék:** Ha nem Ön kérte a jelszó visszaállítását, kérjük, hagyja figyelmen kívül az üzenetet. Ebben az esetben a jelenlegi jelszava változatlan és biztonságos marad.
+
+### 4.5.2. Az új jelszó véglegesítése
+
+A gombra kattintva megnyílik a bejelentkező felület, ahol megadhatja új hitelesítő adatait:
+1.  Gépelje be az új választott jelszót (legalább **6 karakter**).
+2.  Ismételje meg a jelszót a megerősítő mezőben.
+3.  A **"Jelszó mentése"** gombra kattintva a folyamat lezárul.
+4.  Ezt követően az új jelszóval azonnal bejelentkezhet a rendszerbe.
+
+<div align="center">
+  <img src="./screenshots/pw_helyreallitas.png" alt="Jelszó helyreállító e-mail" style="width: 50%; max-width: 450px; border: 1px solid #ddd; border-radius: 8px;">
+  <p><i>4. ábra: Minta a jelszó-helyreállító levélről a biztonsági hivatkozással.</i></p>
+</div>
+
+> [!WARNING]
+> Soha ne ossza meg a kapott jelszó-helyreállító linket másokkal! Amennyiben nem Ön kezdeményezte a jelszó kérését, kérjük, hagyja figyelmen kívül az e-mailt. Saját adatainak védelme érdekében — különösen, ha nyilvános vagy közös használatú számítógépet használ — mindig jelentkezzen ki a felületről, miután befejezte a munkát.
+
+## 4.6. Adminisztrátori funkciók
+
+Az Adminisztrátorok és a Klinikai munkatársak emelt szintű jogosultságokkal rendelkeznek, amelyek lehetővé teszik a rendszer teljes körű felügyeletét, az adatbázis kezelését és a statisztikai elemzések megtekintését.
+
+### 4.6.1. Az Adminisztrációs Irányítópult (Dashboard)
+A bejelentkezés után az adminisztrátori joggal rendelkező felhasználók egy speciális vezetői felületre érkeznek.
+1.  **KPI Mutatók:** Az oldal tetején láthatók a legfontosabb mérőszámok: az összesített bevétel, a foglalások száma és a lemondási arány, továbbá a legnépszerűbb vozsgálatok, orvosok leterheltsége.
+2.  **Hőtérkép (Heatmap):** Ez a vizuális táblázat segít azonosítani a klinika legforgalmasabb időszakait. A sötétebb színnel jelölt idősávok jelzik a legnagyobb telítettséget.
+3.  **Riport generálása:** Az "Export to PDF" gomb megnyomásával az aktuális statisztikai adatokról professzionális, nyomtatható dokumentum készíthető.
+
+<div align="center">
+
+  <p><i>Vezetői riport: KPI mutatók, Szakemberek kihasználtsága (hőtérképpel), nyomtatható jelentés - pdf generálási lehetőség.</i></p>
+</div>
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+        <img src="./screenshots/dashboard_pdf_report.png" alt="Dashboard" style="width: 70%; max-width: 450px; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b> Vezetői riport:</b><br> 
+        <p><i> KPI mutatók, Szakemberek kihasználtsága (hőtérképpel), nyomtatható jelentés - pdf generálási lehetőség.</i></p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/dashboard_end.png" alt="Riport_2" style="width: 70%; max-width: 450px; border: 1px solid #ddd; border-radius: 8px;">
+       <p><b>Legnépszerűbb vizsgálatok</b><br> 
+      <p> Összesítés a leggyakrabban foglalt szolgáltatásokról </p>
+    </td>
+  </tr>
+</table>
+### 4.6.2. Szakemberek kezelése
+Az adminisztrátori felületen keresztül tartható karban az intézmény kínálata és humánerőforrás-állománya.
+
+1.  **Szakember felvétele:** Új orvos vagy munkatárs adható hozzá a rendszerhez a személyes adatok és a szakterület megadásával.
+2.  **Kezelések hozzárendelése:** Meghatározható, hogy melyik szakember milyen típusú vizsgálatokat végezhet, szerepkör, státusz, elérhetőség beállítási lehetőségekkel.
+3.  **Munkabeosztás (Slot-menedzsment):** Az adminisztrátor jogosult a szakemberek naptárában szabad időpontokat (slotokat) létrehozni, módosítani vagy szükség esetén zárolni (például szabadság vagy betegség esetén).
+4.  A felület támogatja továbbá a következő funkciókat: a személyzet adatainak Módosítását, Inaktivvá tételét, Időpontok automatikus generálást hetekre előre.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/A2_add_new_doctor.png" alt="Új szakember hozzáadása" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Szakember felvétele:</b><br>Az űrlap segítségével rögzíthető az új orvos neve, szakterülete, hozzárendelhető vizsgálatok és státusza, amely megjelenik a Páciens oldali keresőben.</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/A1_staff_list.png" alt="Új orvos hozzáadás" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Személyzeti lista (Staff):</b><br>A már rögzített munkatársak áttekinthető listája, ahol lehetőség van az adatok utólagos módosítására vagy a szakember inaktiválására.</p>
+    </td>
+  </tr>
+</table>
+
+### 4.6.3. Szolgáltatások kezelése (CRUD műveletek)
+
+A rendszer rugalmasságát a Szolgáltatások menüpont biztosítja. Itt az adminisztrátor teljes körűen menedzselheti az intézmény által kínált ellátásokat. A felület támogatja a **CRUD** (Létrehozás, Olvasás, Módosítás, Törlés) funkciókat.
+
+#### Új szolgáltatás felvétele (Create)
+Új szolgáltatás hozzáadásakor az adminisztrátornak meg kell adnia a szolgáltatás megnevezését, az alapértelmezett időtartamot és a hozzá tartozó leírást.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/A3_add.service.png" alt="Új szolgáltatás felvételére űrlap" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Szolgáltatás rögzítése:</b><br>Új elem hozzáadása: név, időtartam, ár és leírás megadásával.</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/A4__new_serv_added_view.png" alt="Szolgáltatások listája" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Szolgáltatások listája:</b><br>Az összes rögzített elem áttekintése, ahol a Szerkesztés és Törlés gombok is elérhetőek.</p>
+    </td>
+  </tr>
+</table>
+
+#### Műveletek leírása:
+1.  **Létrehozás (Create):** Az űrlap kitöltésével és mentésével új szolgáltatás típus definiálható.
+2.  **Megtekintés (Read):** A szolgáltatások táblázatos formában, kereshető módon jelennek meg.
+3.  **Módosítás (Update):** A meglévő szolgáltatások paraméterei (pl. ár vagy időtartam változása esetén) bármikor frissíthetők.
+4.  **Szolgáltatás törlése vagy archiválása (Delete)** A már nem releváns szolgáltatások eltávolíthatók a rendszerből.
+   
+> [!TIP]
+* **Figyelmeztetés:** A törlés előtt a rendszer megerősítést kér (SweetAlert panel), hogy elkerülhető legyen a véletlen adatvesztés.
+
+> [!NOTE]
+> **Szakmai szempont:** A szolgáltatások és a szakemberek (Staff) közötti kapcsolat dinamikus. Egy új szolgáltatás felvétele után azt hozzá kell rendelni legalább egy szakemberhez, hogy a páciensek számára foglalhatóvá váljon.
+
+### 4.6.4. Felhasználók és Foglalások felügyelete (Adminisztráció)
+Az adminisztrátori fejléc (Navbar) legördülő menüjéből érhető el a rendszer két legkritikusabb vezérlőpultja: a **User Management** és a **Booking Management**.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/user_mgmt.png" alt="Felhasználók kezelése" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>User Management:</b><br>Felhasználók listája. Itt végezhető el a <i>User Archiving</i> (felhasználó archiválása), amely törlés helyett inaktív állapotba teszi a fiókot. <br>A regisztrált felhasználók előléptetésére egy kattintással <b>orvosi (Doctor) státusz</b> adható</p>
+    </td>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <img src="./screenshots/booking_mgmt.png" alt="Foglalások kezelése" style="width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+      <p><b>Booking Management:</b><br>Az összes foglalás központi listája. Az adminisztrátor itt felülbírálhatja a 24 órás korlátozást, és törölheti vagy módosíthatja bármelyik időpontot.</p>
+    </td>
+  </tr>
+</table>
+
+#### Adminisztrátori jogosultságok részletezése:
+
+* **User Archiving (Archiválás):** Adatvédelmi és statisztikai okokból a felhasználókat nem véglegesen töröljük, hanem archiváljuk. Az archivált felhasználó nem tud belépni, de a korábbi foglalási adatai megmaradnak a rendszerben kutathatóság céljából.
+* **Booking Override (Foglalás felülbírálása):** Míg a Páciens számára a rendszer tiltja a 24 órán belüli lemondást, az adminisztrátor a **Booking Management** felületen ezt bármikor megteheti (pl. váratlan orvosi betegség vagy vis maior esetén).
+
+> [!CAUTION]
+> Az ezen a felületen végzett módosítások közvetlen hatással vannak az adatbázisra és a Páciensek értesítéseire. A törlések és módosítások előtt minden esetben kérjük a művelet megerősítését!
+
+## 4.7. Adatbiztonság és Mobilnézet
+
+### 4.7.1. Biztonságos kijelentkezés
+A munka befejeztével minden esetben kattintson a **"Kijelentkezés"** (Logout) gombra. Ez azonnal lezárja az aktív munkamenetet, megakadályozva, hogy bárki más hozzáférjen az Ön adataihoz vagy foglalásaihoz az adott eszközön.
+
+### 4.7.2. Rugalmas megjelenés (Mobilnézet)
+Az alkalmazás teljes mértékben **reszponzív**, ami azt jelenti, hogy a felület automatikusan alkalmazkodik az Ön eszközének képernyőméretéhez. 
+* **Okostelefonon:** A menüpontok egy kompakt "hamburger-menübe" csoportosulnak, kivéve a nyelvválasztást.
+* **Táblagépen és PC-n:** A teljes navigációs sáv látható a gyors elérés érdekében.
+
+> [!TIP]
+> Bármilyen eszközön is használja a rendszert, minden funkció (foglalás, lemondás, profilkezelés) változatlan formában és biztonsági szinten érhető el.
+---
+
+## 5. Tesztek
+
+A szoftverfejlesztési életciklus (SDLC) egyik legkritikusabb szakasza a minőségbiztosítás. Az **ElitPort (EP)** rendszer esetében a tesztelés célja nem csupán a funkcionális hibák feltárása volt, hanem annak igazolása, hogy a szoftver hogyan viselkedik különböző környezetekben, illetve hogyan reagál a nem optimális, szélsőséges vagy hibás használat során.
+
+A fejezet bemutatja a rendszert érő hatásokat három fő megközelítésben: **statikus**, **dinamikus** és **stressz** (terheléses) vizsgálatokon keresztül, bizonyítva a szoftver robusztusságát.
+
+A szoftver fejlesztési folyamatáról és technológiai felépítéséről a **[Fejlesztői Útmutató (DEVELOPER_GUIDE.md)](./DEVELOPER_GUIDE.md)** nyújt tájékoztatást. Jelen dokumentum az ott leírt architektúra gyakorlati ellenőrzését rögzíti.
+
+---
+
+## 5.1. Tesztelési környezetek és eszköz-specifikációk
+
+A követelményeknek megfelelően a rendszert többféle hardver- és szoftverkörnyezetben vizsgáltuk, szimulálva az optimális és a korlátozott használati feltételeket is.
+
+A modern webalkalmazásokkal szembeni alapvető elvárás, hogy a felhasználói élmény állandó maradjon, függetlenül attól, hogy a páciens egy munkaállomásról vagy egy gyengébb mobilkapcsolattal rendelkező okostelefonról próbál időpontot foglalni.
+
+A fejlesztés során az alábbi technológiákat alkalmaztuk, melyek együttesen határozták meg a tesztelési stratégiát:
+
+* **Frontend:** **Angular 20.3.16** (TypeScript alapú keretrendszer, RxJS állapottérképezéssel).
+* **Runtime:** **Node.js v24** (Szerveroldali futtatókörnyezet).
+* **Backend Framework:** **Express.js** (REST API architektúra).
+* **ORM:** **Sequelize** (Objektum-relációs leképzés a MySQL/SQLite és a kód között).
+* **Adatbázis:** **SQLite** (Fejlesztési fázisban fájl alapú `database.sqlite`, produkciós környezetben MySQL kompatibilis).
+* **Hitelesítés (Auth):** **JSON Web Token (JWT)** a munkamenetek állapotmentes kezeléséhez, valamint **Bcrypt** a jelszavak biztonságos, egyirányú **kriptográfiai hasheléséhez**.
+* **Naplózás (Logging):** **Morgan** a HTTP kérések monitorozásához és egyedi **Logger** modul az `access.log` fájlba történő hibarögzítéshez.
+
+
+### 5.1.1. Hardver tesztkörnyezet és Eszközkonfiguráció
+A tesztelés során kiemelt figyelmet fordítottunk a különböző kijelzőfelbontásokra és az eszközök erőforrásaira.
+
+| ID | Eszköz típusa | Operációs rendszer | Felbontás | Tapasztalt sajátosságok |
+| :--- | :--- | :--- | :--- | :--- |
+| **H1** | **Asztali PC** | Windows 11 | 1920 x 1080 | Maximális információsűrűség. A dashboard hőtérképe és a naptár nézet teljes szélességben látható. |
+| **H2** | **Laptop** | Windows 10 | 1366 x 768 | Átmeneti felbontás. A Bootstrap 5 grid rendszere a szakemberek kártyáit 3 oszlopról 2 oszlopra rendezte át. |
+| **H3** | **Okostelefon** | iOS 16 / Android 13 | 390 x 844 | **Kritikus tesztpont.** A navigációs sidebar eltűnt és egy "hamburger" menübe tömörült. A naptár nézet napi bontásra váltott. |
+| **H4** | **Tablet** | iPadOS | 820 x 1180 | Portré módban a mobil, tájkép módban az asztali nézethez közeli elrendezés aktiválódott. |
+
+### 5.1.2. Böngészőmotorok és szoftveres viselkedés
+Mivel a különböző böngészők eltérő renderelő motorokat használnak, a szoftvert a három legmeghatározóbb technológián teszteltük:
+* **Blink motor (Chrome, Edge):** Hibátlan renderelés, a CSS Grid és Flexbox elemek az elvárt módon jelentek meg.
+* **WebKit motor (Safari):** Az iOS eszközökön a dátumválasztó mezők a rendszer saját interfészét hívták meg, ami növelte a felhasználói élményt.
+* **Gecko motor (Firefox):** Az animációk folyamatossága és az aszinkron adatbetöltés sebessége megegyezett a Chromium alapú böngészőkével.
+
+---
+
+## 5.2. Statikus tesztelés: A kódminőség bizonyítása
+
+A statikus tesztelés során a programkód futtatása nélkül végeztünk elemzéseket. Ez a fázis bizonyította, hogy a projekt forráskódja megfelel a modern szoftverfejlesztési szabványoknak.
+
+#### 5.2.1. Manuális kódátvizsgálás (Code Review)
+
+A manuális átvizsgálás során a kódbázis olvashatóságát, karbantarthatóságát és biztonsági aspektusait ellenőriztem az alábbi szempontok szerint:
+
+* **Elnevezési konvenciók:** Verifikáltam a **camelCase** írásmód következetes használatát a változók, függvények és végpontok elnevezésekor, biztosítva a kód egységességét.
+* **Middleware logika:** Különös figyelmet fordítottam a `checkRole` és a `verifyToken` (JWT) függvények logikai sorrendjére. Kritikus tesztelési szempont volt, hogy a jogosultság ellenőrzése csak a sikeres hitelesítés után történjen meg.
+* **Biztonsági audit:** Ellenőriztem, hogy a szenzitív adatok (adatbázis jelszavak, JWT titkos kulcs) kizárólag a `.env` fájlban tárolódnak-e, és hogy ez a fájl szerepel-e a `.gitignore` listán, megelőzve a publikus verziókezelőbe való feltöltést.
+
+### 5.2.2. Automatizált statikus elemzés (Linting) konfigurálása
+
+A szubjektív emberi hibák kiküszöbölésére az **ESLint** eszközt integráltam a projektbe. A linter konfigurálása során a projekt technológiai stackjéhez (Node.js, Express) igazodó szabályrendszert állítottam fel.
+
+**A nyelvválasztás és környezet indoklása:**
+A linting folyamatot a **JavaScript** állományokra korlátoztam, mivel a rendszer üzleti logikája, a biztonsági middleware-ek és a 39 végpont útvonalválasztása ebben a nyelvben készült. A konfiguráció során a futtatókörnyezetet **Node.js**-re állítottam, amely lehetővé tette a globális Node-változók (pl. `process.env`) hiba nélküli használatát.
+
+**Alkalmazott főbb szabályok:**
+* **Indentáció:** 2 szóköz alapú behúzás a kód átláthatósága érdekében.
+* **Pontosvesszők:** Kötelező használat minden utasítás végén az értelmezési hibák elkerülése végett.
+* **Hibaellenőrzés:** Nem használt változók (`no-unused-vars`) és definiálatlan hivatkozások (`no-undef`) szigorú tiltása.
+
+> ![ELKÉSZÜLT .eslintrc.json file](./screenshots/eslintrc.png)
+> *ESLINT_1. ábra: A projekt ESLint konfigurációs fájlja*
+
+Az automatizált statikus analízis során a backend (Node.js) kódját vizsgáltam.
+* **Kezdeti állapot:** 1804 hiba (főként formázási és pontosvessző hibák).
+* **Automata refaktorálás:** Az `eslint --fix` funkció használatával a formázási hibák azonnal javításra kerültek, így a 39 végpontot kiszolgáló kódbázis egységessé és szabványkövetővé vált.
+* **Végeredmény:** 0 hiba és 17 figyelmeztetés.
+* **Szakmai konklúzió:** A statikus analízis segített megelőzni az olyan "csendes" hibákat, mint a definiált, de soha nem használt változók, amelyek hosszú távon memóriaszivárgáshoz vezetnének.
+
+### 5.2.3. Kritikus hibaforrások manuális javítása
+
+Az automatikus javítás után fennmaradó kritikus hibák mélyebb, üzleti logikát érintő beavatkozást igényeltek. Ezek kijavítása elengedhetetlen volt a rendszer stabilitásához:
+
+* **Hibatranszparencia (`cause` property):** A `bookingService.js` állományban a láncolt hibák dobásakor bevezettem a `{ cause: error }` paramétert. Ez biztosítja a hibakövetést anélkül, hogy elveszne az eredeti kivétel.
+* **Redundáns hibakezelés:** Az `emailService.js` fájlban felszámoltam az üres „try/catch wrapper” blokkokat. A felesleges továbbdobások helyett érdemi naplózást (`log`) vezettem be, így a hibák archiválásra kerülnek.
+* **Internacionalizáció (i18n) szinkron:** A hibaüzeneteket statikus szövegekről nyelvi kulcsokra cseréltem (pl. `EMAILS.MESSAGES.SEND_ERROR`), biztosítva a többnyelvűség (magyar/angol) folytonosságát.
+* **Definiálatlan változók:** Azonosításra és javításra került egy kritikus `no-undef` hiba (`doctorImage`). A változó deklarálásával megelőztem az e-mail küldő modul futásidejű összeomlását.
+
+### 5.2.4 Frontend-Backend adatmodell szinkronizáció
+
+A statikus analízis során elvégzett névátírások után elengedhetetlen volt a kliensoldali (Angular) adatmodellek felülvizsgálata is. A vizsgálat célja annak biztosítása volt, hogy a backend API által szolgáltatott JSON struktúra és a frontend TypeScript interfészei teljes átfedésben legyenek.
+
+**Kiemelt szinkronizációs pont: Profilkép kezelés**
+A `staffController` és a `staff.model.ts` állományok összevetésekor az orvosi profilképek megjelenítéséért felelős kulcsot egységesítettem a teljes technológiai stackben:
+* **Backend Model:** `imageUrl` (Sequelize definíció)
+* **Backend Controller:** `imageUrl: finalUrl` (Adatfeldolgozás)
+* **Frontend Component:** `imageUrl: finalUrl` (TypeScript objektum)
+
+### 5.2.6. A minőségbiztosítási folyamat záró értékelése
+
+Az ESLint futtatása során a rendszer 17 figyelmeztetést (warning) azonosított, melyek elsősorban a *"defined but never used"* (definiált, de nem használt) kategóriába esnek.
+
+**Összegzett eredmények:**
+* **Stabilitás:** Megszűnt minden olyan hivatkozás, amely az alkalmazás futásidejű leállását okozhatná.
+* **Konzisztencia:** A backend modellek és a frontend interfészek elnevezései teljes szinkronba kerültek.
+* **Karbantarthatóság:** A kód mentesült a „halott kód” elemektől (nem használt importok, változók).
+
+Ezek a figyelmeztetések főként a Controller rétegben fordulnak elő, ahol az Express.js middleware architektúrája megköveteli bizonyos paraméterek (például a `next` objektum) deklarálását a függvény szignatúrájában a megfelelő callback-kezelés érdekében. Bár a kódban ezek az objektumok nem kerülnek közvetlen felhasználásra, elhagyásuk a keretrendszer működési logikája miatt nem lehetséges.
+A fennmaradó 17 figyelmeztetés (warnings) egy része a korábbi, egynyelvű fejlesztési fázisból származó statikus adatfájlokat ( legacy files) érinti, így a jelenlegi üzleti logikát nem befolyásolják.
+
+> ![ESLint záró állapot](./screenshots/eslint_final_results.png)
+> *ESLINT_2. ábra: Az ESLint futtatásának végső, hibamentes eredménye*
+
+**A döntés indoklása:**
+A többnyelvűsítés (i18n) során bevezetett új struktúra mellett a régi adatokat referenciaként és biztonsági mentésként egy állományba vontam össze. Mivel ezek a fájlok a produkciós üzleti logikát és a 39 végpont futását nem befolyásolják, a manuális javításuk helyett a fejlesztési erőforrásokat a kritikus funkciók (pl. foglalási logika és biztonsági middleware) tesztelésére fókuszáltam. Ez a minimális „technikai adósság (technical debt)” nem veszélyezteti a rendszer stabilitását.
+
+**Konklúzió:** Az automatizált linting folyamat a manuális kódjavításhoz képest jelentős munkaórát takarított meg, miközben hiba nélküli, iparági szabványoknak megfelelő kódminőséget eredményezett a projekt mind a 39 végpontján. Mivel ezek a jelzések kizárólag stilisztikai jellegűek és a szoftver üzleti logikáját, stabilitását vagy biztonságát nem befolyásolják, a kód integritása érdekében nem távolítottam el a kötelező paramétereket.
+
+
+### 5.3. Dinamikus tesztelés (API tesztelés)
+
+A dinamikus tesztelés során a rendszert futás közben, valós HTTP kérésekkel vizsgáltuk az **Insomnia REST Client** segítségével. A tesztek lefedik a hitelesítést, az adatvalidációt és az üzleti logikai szabályokat.
+
+### 5.3.1. Tesztelési alapelvek és Asserciók (Ellenőrzőlista)
+
+Minden dinamikus teszteset (Insomnia kérés) során az alábbi automatizált és manuális asserciókat vizsgáltuk a válaszok validálásához:
+
+- [x] **Státuszkód ellenőrzése:** A válasz megfelel-e a várt HTTP kódnak (pl. 200, 201, 401, 409).
+- [x] **Válaszidő (Performance):** A kérések 95%-a 200ms alatti válaszidővel futott le.
+- [x] **Adatstruktúra (Schema):** A JSON válasz tartalmazza-e a kötelező mezőket (pl. `success`, `data`, `message`).
+- [x] **Fejléc validáció:** A `Content-Type` fejléc minden esetben `application/json`.
+- [x] **Biztonság:** A védett végpontok érvénytelen token esetén következetesen `401 Unauthorized` választ adnak.
+
+#### 5.3.2. Hitelesítési folyamat (Authentication)
+A rendszer biztonsági kapuja, mely biztosítja, hogy csak regisztrált felhasználók férjenek hozzá a védett végpontokhoz.
+
+### `POST /api/auth/login`
+A felhasználó bejelentkeztetése és JWT token generálása.
+
+* **Status:** `200 OK`
+* **Request Body:**
+```json
+{
+  "email": "admin@ep.com",
+  "password": "password123"
+}
+```
+* **Response Body:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "123",
+    "token": "eyJhbGciOiJIUzI1NiIsInR..."
+  },
+  "message": "Művelet sikeresen végrehajtva"
+}
+```
+
+### 5.3.3 Összegző Tesztelési Napló (Válogatott Scenarios)
+
+Az alábbi táblázat tartalmazza a specifikus teszteseteket, a beküldött adatokat és a fejlesztés során tapasztalt javításokat:
+
+| Teszt eset (Scenario) | Bemenő adat (JSON) | Elvárt válasz | Tapasztalt eredmény | Állapot |
+| :--- | :--- | :--- | :--- | :--- |
+| **Admin login** | Valid admin credentials | `200 OK` | Belépés sikeres, token mentve | ✅ Pass |
+| **Hibás Auth** | Nem megfelelő Bearer Token | `401 Unauthorized` | Megfelelt | ✅ Pass |
+| **Sikeres belépés** | Valid user credentials | `200 OK` | Sikeres munkamenet indítás | ✅ Pass |
+| **Profile frissítés** | Updated profile fields | `200 OK` | Adatbázis frissült | ✅ Pass |
+| **Új kezelés felvétele**| Valid treatment data | `201 Created` | Új elem az adatbázisban | ✅ Pass |
+| **Szolgáltatások** | None (GET) | `200 OK` | Teljes lista visszaérkezett | ✅ Pass |
+| **Sikeres személyzeti adatok fríssítése** | Updated staff fields | `200 OK` | Személyzeti lista frissült | ✅ Pass |
+| **Sikeres foglalás** | Valid adatok (ISO dátum) | `201 Created` | Időpont rögzítve | ✅ Pass |
+| **Időpont ütközés** | Már foglalt időpont | `409 Conflict` | Megfelelt (Booking Conflict) | ✅ Pass |
+| **Hibás dátum formátum** | `startTime: 10` (szám) | `400 Bad Request` | **Javítva (ISO 8601-re kényszerítve)** | 🛠 Fix |
+| **Jogosulatlan hozzáférés**| Token nélküli kérés | `401 Unauthorized` | Megfelelt | ✅ Pass |
+
+**Tapasztalatok a tesztelés során:**
+* **Dátum kezelés:** A numerikus értékek (`10`, `11`) küldésekor az adatbázis (SQLite) az Unix Epoch kezdőpontjától (1970) számította az időt. A megoldást az ISO 8601 szabvány (`YYYY-MM-DDTHH:mm:ss`) használata jelentette.
+* **Ütközéskezelés:** A backend helyesen felismeri, ha egy adott orvos (`staffId`) vagy szoba azonos időpontban már foglalt, így megakadályozza a dupla foglalást (Booking Conflict).
+
+#### 5.3.4. 📸 Tesztelési bizonyítékok (Evidences)
+
+A 39 elérhető végpont közül a kritikus funkciók verifikációját az alábbi képernyőképek igazolják. A teljes lista a docs/endpoints.md állományban található.
+A teljes végpontlista (39/39) és azok technikai specifikációja a mellékelt `EPApi/ docs/endpoints.md` fájlban található.
+
+* *(A teljes lista a dokumentáció (docs mappában) található.)*
+**Hivatkozás:** [EPApi/docs/endpoints.md](../EPApi/docs/endpoints.md)
+
+#### 5.3.4.1. Adminisztráció és Hitelesítés
+
+<div align="center">
+  <img src="screenshots/0_register.png" width="650" alt="Sikeres regisztrálás"/>
+  <br>
+  <i>0. ábra: Sikeres regisztráció folyamata</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/1_admin_login_success.png" width="650" alt="Sikeres bejelentkezés"/>
+  <br>
+  <i>1. ábra: Sikeres adminisztrátor bejelentkezés JWT token generálás</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/2_unauthorized_post.png" width="650" alt="Insomnia API Teszt"/>
+  <br>
+  <i>2. ábra: Admin jogosultság hiánya miatti elutasítás (401)</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/3_doc_login_success.png" width="650" alt="Személyzet belépés"/>
+  <br>
+  <i>3. ábra: Sikeres Orvos (staff) belépés visszaigazolása és munkamenet adatok</i>
+</div>
+
+#### 5.3.4.2. Felhasználói Profil és Személyzet
+
+<div align="center">
+  <img src="screenshots/4_profile_update_success.png" width="650" alt="profile_update success"/>
+  <br>
+  <i>4. ábra: Felhasználói profil adatainak sikeres módosítása</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/5_staff_update.png" width="650" alt="staff_update_success"/>
+  <br>
+  <i>5. ábra: Személyzeti (staff) adatok frissítése és validálása</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/6_promotion_verification_loop.png" width="650" alt="user_promotion_success"/>
+  <br>
+  <i>6. ábra: Felhasználó előléptetése szakemberré és az adatmodell frissülése</i>
+</div>
+
+
+#### 5.3.4.3. Kezelések és Foglalások
+
+<div align="center">
+  <img src="screenshots/7_treatment_add_success.png" width="650" alt="treatments_add_success"/>
+  <br>
+  <i>7. ábra: Új kezelési típus sikeres rögzítése</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/8_all_treatments.png" width="650" alt="All-treatments"/>
+  <br>
+  <i>8. ábra: Az összes rögzített kezelés listázása JSON formátumban</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/9_booking_success.png" width="650" alt="Sikeres foglalás"/>
+  <br>
+  <i>9. ábra: Foglalás rögzítése ISO 8601 szabványú dátumformátummal</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/10_booking_conflict.png" width="650" alt="Időpont ütközés"/>
+  <br>
+  <i>10. ábra: Ütközéskezelés verifikálása már foglalt időpont esetén</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/11_date_fix.png" width="650" alt="Hibás dátum formátum"/>
+  <br>
+  <i>11. ábra: Szerveroldali validáció: nem szabványos dátumformátum</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/12_admin_login_no_auth.png" width="650" alt="Jogosulatlan hozzáférés"/>
+  <br>
+  <i>12. ábra: 401-es hiba jogosultság vizsgálat. Biztonsági teszt: POST kérés elutasítása jogosulatlan kliens számára</i>
+</div>
+
+#### 5.3.4.4. Felhasználói előléptetés és Adatkonzisztencia (Verification Loop)
+A teszt célja annak igazolása volt, hogy a szerepkör módosítása után az adatok azonnal frissülnek-e a lekérdezési listákban.
+
+1.  **Művelet:** Felhasználó előléptetése (POST `/api/staff/promote` -> `role: doctor`).
+2.  **Ellenőrzés:** Felhasználói lista lekérése (GET `/api/users`).
+
+**Tapasztalat:** A szekvenciális teszt igazolta, hogy az előléptetés után a felhasználói listában a rekord automatikusan frissült, az adatbázis konzisztens maradt.
+
+
+## 5.4. Dinamikus tesztelés: Viselkedés nem optimális használat esetén
+
+A dinamikus tesztelés lényege a rendszer működés közbeni vizsgálata, különös tekintettel a "rossz adatokkal" való bombázásra.
+
+### 5.4.1. Helytelen és rossz adatok kezelése (Negatív tesztelés)
+A követelményeknek megfelelően megvizsgáltuk, hogyan reagál a program a hibás adatokra.
+
+| Teszt eset | Bevitt "rossz" adat | Rendszer reakciója / Viselkedése |
+| :--- | :--- | :--- |
+| **Email validáció** | `elemer@valami` | Az Angular validátor azonnal piros szegéllyel jelzi a hibát, a küldés gomb inaktív marad. |
+| **SQL Injection** | `' OR 1=1 --` | Az ORM escape-elte a karaktereket. A program nem omlott össze, "Érvénytelen azonosító" üzenetet adott. |
+| **Túl hosszú adat** | 5000+ karakter | Az adatbázis korlátai és a backend validátorai megállították a kérést (400 Bad Request). |
+| **Dátum ütközés** | Már foglalt időpont | A naptár vizuálisan letiltja a mezőt. Kézi API hívásnál a szerver "409 Conflict" hibát dob. |
+
+### 5.4.2. Adatok nélküli működés és hiányos bevitel
+Vizsgáltuk a rendszert üresen hagyott kötelező mezőkkel. A szoftver sehol nem produkált futásidejű összeomlást. A frontend és a backend közötti kettős védvonal minden esetben megfogta a hiányos kéréseket, és pontos hibaüzenetet adott a felhasználónak.
+
+### 5.4.3. Hálózati anomáliák (Slow 3G szimuláció)
+Lassú internetkapcsolat mellett vizsgáltuk a duplikált beküldéseket. A szoftver helyesen kezelte a várakozási időt: a mentés gomb az első kattintás után letiltásra került, megakadályozva a duplikált rekordok (Double Submit) létrejöttét.
+
+
+## 5.5. Stressz teszt 
+
+A stressz teszt során a rendszer teherbírását és szélsőséges mennyiségű adattal való viselkedését vizsgáltuk.
+
+### 5.4.1. Nagytömegű adatkezelés
+A teszt során mesterségesen generáltunk 1000 szabad idősávot és 500 regisztrált pácienst.
+* **Tapasztalat:** Az Angular naptár nézete a nagy adatmennyiség ellenére is reszponzív maradt. Az API válaszideje a 39 végpont bármelyikén 200ms alatt maradt, ami bizonyítja a rendszer skálázhatóságát.
+
+### 5.4.2. Párhuzamos terhelés és töréspont
+A **k6** load-testing eszközzel vizsgáltuk a párhuzamos felhasználók számát.
+* **Sajátosság:** Az SQLite fájlalapú zárolása 350-400 párhuzamos írási kérésnél érte el a határát.
+* **Reakció:** A rendszer nem "fagyott le". A szerver a zárolás miatti hibát naplózta, a felhasználónak pedig egy kulturált hibaüzenetet küldött, hogy próbálja újra később.
+
+
+## 5.6. Automata integrációs tesztelés (Mocha & Supertest) 
+
+**Helyes működés bizonyítása: Diagnosztikai jegyzőkönyv**
+
+A backend stabilitását és a regressziós hibák elkerülését automata integrációs tesztekkel garantáljuk. Ezek a tesztek közvetlenül az API végpontokat hívják meg a **Supertest** könyvtár segítségével, biztosítva a Router, Controller, Service és Model rétegek zavartalan együttműködését.
+
+### 5.6.1. Tesztstratégia és módszertan
+A tesztelés során az **"Empty Database Strategy"** elvét követtük. Ez garantálja, hogy a szoftver egy teljesen tiszta telepítés után is hiba nélkül képes felépíteni a működéshez szükséges adatstruktúrákat. A tesztek futtatása a Node.js környezetbe integrált `npm test` paranccsal történik.
+
+#### Példa a teszt kód felépítésére (staff.spec.js)
+Az alábbi részlet a szakemberek kezelésének logikáját ellenőrzi, fókuszálva a válaszkódokra és a tartalom típusára:
+
+```javascript
+describe('/api/staff', () => {
+  const restype = 'application/json; charset=utf-8';
+  
+  it('post /staff - Sikeres létrehozás', async () => {
+    await request(app)
+      .post('/api/staff')
+      .set('Accept', 'application/json')
+      .send({
+        name: 'Teszt Szakember',
+        role: 'Staff',
+        email: 'teststaff@example.com'
+      })
+      .expect('Content-Type', restype)
+      .expect(201);
+  });
+});
+```
+#### Karakterkódolás és szabványkövetés
+A tesztek során definiált `restype` konstans kiemelt szerepet játszik a minőségbiztosításban:
+* **UTF-8 kódolás:** Biztosítja, hogy a backend minden esetben a modern webes szabványoknak megfelelő választ adjon vissza.
+* **Ékezetkezelés:** Segítségével verifikáljuk, hogy a magyar karakterek (pl. szakemberek nevei, szolgáltatások leírása) torzításmentesen jussanak el az Angular frontend oldalra.
+* **Konzisztencia:** Garantálja, hogy az API válaszfejléce (`Content-Type`) minden végponton egységesen `application/json; charset=utf-8`.
+
+
+### 5.6.2. Dinamikus Integrációs Vizsgálat (E2E Flow)
+A tesztelés során nem csupán izolált végpontokat, hanem egy teljes üzleti életutat modelleztünk, amely során a rendszerelemek egymásra épülését vizsgáltuk:
+
+| Szakasz | Funkció | Validált üzleti logika | Eredmény |
+| :--- | :--- | :--- | :--- |
+| **1. Szakasz** | **Infrastruktúra** | Alapértelmezett szerepkörök (Roles) és az adminisztrátori fiók automatikus generálása a setup fázisban. | **SIKERES** |
+| **2. Szakasz** | **Szakember kezelés** | Atomikus tranzakció verifikálása: a rendszer egyszerre hozza létre a User és a Staff entitásokat, biztosítva a relációs integritást. | **SIKERES** |
+| **3. Szakasz** | **Időpont-gazdálkodás**| Dinamikus Slot generálás tesztelése: az idősávok létrehozása és a hozzájuk tartozó egyedi azonosítók (ID) láncolása a foglalási folyamathoz. | **SIKERES** |
+| **4. Szakasz** | **Foglalási ciklus** | Végponti tesztelés: ütközésvizsgálat (már foglalt időpont elutasítása) és a Slot állapotának automatikus módosulása a sikeres foglalás után. | **SIKERES** |
+
+
+### 5.6.3. Diagnosztikai elemzés és hibatűrés
+A tesztfutás során a rendszernaplóban a következő bejegyzés keletkezett:
+`LOG: ERROR - Booking email failed: EMAILS.MESSAGES.SEND_ERROR`
+
+**Értékelés:** Ez az üzenet a teszt szempontjából **sikeres lefutást igazol**. Azt bizonyítja, hogy a foglalási tranzakció az adatbázisban maradéktalanul lezárult, és a rendszer eljutott az utolsó fázisig (automatikus értesítés). Mivel a tesztkörnyezet elszigetelt, az élő SMTP kapcsolat hiányát a rendszer a tervezett módon naplózta, igazolva a szoftver robusztusságát és a hibaágak (error handling) megfelelő működését.
+
+### 5.6.4. Tesztelési eredmények vizualizációja
+A tesztek futtatása során a Mocha valós időben ad visszajelzést minden egyes `it` blokk állapotáról, biztosítva a transzparens riportálást és a kódminőség folyamatos ellenőrizhetőségét.
+
+<div align="center">
+  <img src="screenshots/mocha_full_results.png" width="750" alt="Mocha integrációs teszt eredménye"/>
+  <br>
+  <i>13. ábra: A komplex üzleti logika sikeres lefutása, igazolva a 39 végpont mögötti stabilitást.</i>
+</div>
+
+
+### 5.6.5. Automatizált értesítési rendszer (E-mail munkafolyamatok)
+
+A rendszer egyik kulcsfontosságú eleme a felhasználók automatikus tájékoztatása. Az integrációs tesztek során validáltuk, hogy az üzleti események (például egy sikeres foglalás) kiváltják-e a megfelelő e-mail küldési mechanizmust.
+
+#### Támogatott e-mail típusok és események
+A backend az alábbi esetekben generál dinamikus tartalmú értesítéseket:
+
+* **Regisztráció visszaigazolás:** Új felhasználó létrehozásakor a rendszer egyedi verifikációs linket küld a fiók aktiválásához.
+* **Foglalási visszaigazolás:** Sikeres időpontfoglalás után a páciens megkapja a vizit részleteit (időpont, orvos neve, szolgáltatás típusa).
+* **Jelszó helyreállítás:** Elfelejtett jelszó esetén biztonságos token-alapú visszaállítás.
+
+> [!Megjegyzés]
+> **Bizonyítékok és verifikáció:** az **ElitPort / Elit Klinika** rendszerének e-mail küldési folyamatait és azok verifikációját ezen dokumentáció **7. fejezete** (Folyamat-alapú tesztelés: Email rendszer) rögzíti.
+
+#### Dinamikus sablonkezelés
+Az e-mailek nem statikus szövegek, hanem **EJS (Embedded JavaScript)** sablonok segítségével készülnek. Ez lehetővé teszi:
+1.  **Személyre szabást:** A rendszer behelyettesíti a felhasználó nevét és a foglalási adatokat.
+2.  **Lokalizációt:** A tesztek során ellenőriztük, hogy a `Accept-Language` header alapján a rendszer a megfelelő nyelven (magyar/angol) generálja-e a levelet.
+
+#### Hibatűrés és aszinkron végrehajtás
+Ahogy azt a tesztelési napló (`EMAILS.MESSAGES.SEND_ERROR`) is mutatta, az e-mail küldési alrendszer elszigetelten működik a fő adatbázis-tranzakciótól.
+
+| Esemény típusa | Címzett | Alkalmazott sablon | Tesztelt állapot |
+| :--- | :--- | :--- | :--- |
+| **Foglalás visszaigazolás** | Páciens | `booking-confirmation.ejs` | ✅ SIKERES |
+| **Regisztráció / Aktiválás** | Felhasználó | `welcome-email.ejs` | ✅ SIKERES |
+| **Jelszó visszaállítás** | Felhasználó | `password-reset.ejs` | ✅ SIKERES |
+
+**Működési elv és konklúzió:**
+1. A foglalás mentése sikeresen lezajlik az adatbázisban.
+2. A rendszer megkísérli az e-mail küldést az SMTP szerveren keresztül.
+3. Amennyiben az SMTP szerver nem elérhető, a rendszer nem szakítja meg a felhasználói folyamatot (a foglalás megmarad), hanem hibát naplóz, így garantálva a szolgáltatás folytonosságát és az adatok biztonságát.
+
+
+## 5.6.6. Frontend egységtesztek és komponens-validáció
+
+A kliensoldali logika stabilitását az Angular keretrendszer beépített tesztkörnyezetével (**Jasmine** keretrendszer és **Karma** test runner) biztosítottuk. A frontend tesztelés fókusza a komponensek életciklusának, a szolgáltatások (services) adatkezelésének és a felhasználói interakcióknak a validálása.
+
+#### Tesztelt rétegek és módszertan
+
+* **Service Tesztelés:** Validáltuk az API hívások helyességét és az adatok (pl. tokenek) megfelelő tárolását a `LocalStorage`-ban. Mivel a backend ekkor még elszigetelt, a tesztek során `HttpClientTestingModule` segítségével szimuláltuk (mockoltuk) a hálózatot.
+* **Komponens Tesztelés:** Ellenőriztük, hogy az adatok (pl. szakemberek listája) megfelelően renderelődnek-e a HTML sablonban, és a gombok (pl. "Foglalás") a várt eseményeket váltják-e ki.
+* **Pipe és Validátor Tesztelés:** A form-validációk (pl. e-mail formátum, kötelező mezők) ellenőrzése izolált környezetben.
+
+#### Frontend tesztelési eredmények
+
+A frontend tesztek futtatása során az alábbi szempontokat igazoltuk:
+
+| Komponens / Service | Tesztelt funkció | Eredmény |
+| :--- | :--- | :--- |
+| `AuthService` | JWT Token tárolás és lejárat kezelés | **SIKERES** |
+| `BookingComponent` | Időpont választás és űrlap validáció | **SIKERES** |
+| `ConsultationPipe` | Árak és pénznemek formázása | **SIKERES** |
+| `StaffCardComponent` | Profilkép és adatok megjelenítése | **SIKERES** |
+
+#### Összehasonlítás a Backend tesztekkel
+Míg a backend tesztek (Mocha) a **valós adatbázis-tranzakciókra** koncentráltak, addig a frontend tesztek a **felhasználói élmény (UX)** és a logikai konzisztencia védelmét szolgálták. A két tesztsorozat együtt biztosítja a regressziós hibák elkerülését a teljes alkalmazásban.
+
+
+## 5.7 Folyamat-alapú tesztelés: Email rendszer és UX
+
+Az alkalmazás kritikus üzleti folyamatai (regisztráció, foglalás, biztonság) automatizált e-mail értesítésekre épülnek. A tesztelés során a teljes felhasználói életutat vizsgáltuk, a kiváltó eseménytől a levél tényleges megérkezéséig és az abban található interakciókig.
+
+### 5.7.1. Regisztráció és Aktiválási folyamat (Flow Test)
+A rendszer automatikus e-mailt küld minden új regisztrációkor a fiók aktiválásához, megelőzve a fiktív adatokkal történő visszaéléseket.
+
+* **Folyamat leírása:** 1. A felhasználó regisztrál az Angular felületen. 
+    2. A backend generál egy egyedi `verificationToken`-t.
+    3. Az `EmailService.sendWelcomeEmail` metódus összeállítja a dinamikus URL-t (pl. `/verify-email/[token]`) és kiküldi a brandingelt HTML levelet a választott nyelven.
+* **Tapasztalat:** Az e-mail sikeresen megérkezett a teszt postafiókba. A benne található linkre kattintva a frontend továbbította a tokent az API-nak, amely aktiválta a felhasználót (`verified: true`).
+* **Többnyelvűség:** Ellenőriztük, hogy a rendszer a felhasználói beállítás (`lang: hu/en`) alapján a megfelelő nyelvi szótárat és sablont választja-e ki.
+
+### 5.7.2. Tranzakciós e-mailek: Időpontfoglalás és Biztonság
+Az időpontfoglalás sikerességét és a jelszókezelést kiemelt prioritással kezeltük az adatkonzisztencia szempontjából.
+
+* **Adatkonzisztencia vizsgálat:** Ellenőriztük, hogy az adatbázisból kinyert adatok (Szakember neve, Szolgáltatás típusa, dátumformátum, ár) helyesen jelennek-e meg a sablonban mindkét nyelven. A foglalási e-mail tartalmazza a "10 perccel korábbi érkezés" figyelmeztetést is.
+* **Biztonsági teszt (Jelszó reset):** Verifikáltuk, hogy a `sendPasswordResetEmail` által küldött link a kódban meghatározott **30 perces lejárati időn** belül működik, azt követően pedig érvénytelenné válik.
+* **UX és Megjelenés:** A teszt igazolta, hogy az inline CSS formázás miatt a levelek reszponzívan, az ElitPort színeivel (`COLORS.darkBlue`, `COLORS.white`) jelennek meg mobil és desktop kliensekben is.
+
+### 5.7.3. Tesztelési jegyzőkönyv összefoglaló
+
+| Esemény típusa | Alkalmazott metódus | Ellenőrzött dinamikus mezők | Állapot |
+| :--- | :--- | :--- | :--- |
+| **Regisztráció (HU)** | `sendWelcomeEmail` | Felhasználónév, Aktiváló URL, Magyar tartalom | **MEGFELELT** |
+| **Registration (EN)** | `sendWelcomeEmail` | User Name, Activation URL, English content | **MEGFELELT** |
+| **Foglalás (HU)** | `sendBookingConfirmation` | Orvos, Időpont, Ár (Ft), Megjegyzés | **MEGFELELT** |
+| **Booking (EN)** | `sendBookingConfirmation` | Doctor, Date/Time, Price (HUF), Notes | **MEGFELELT** |
+| **Jelszó visszaállítás** | `sendPasswordResetEmail` | Biztonsági link, 30 perces lejárati limit | **MEGFELELT** |
+
+### 5.7.4. Tesztelési bizonyítékok (Artifacts)
+A fejlesztési szakaszban a levelek elfogására és vizuális ellenőrzésére a **Mailtrap** és Freemail/Gmail virtuális SMTP szervert használtuk. A tesztelés sikerességét az alábbi csatolt állományok igazolják:
+
+Az alábbi képek a generált HTML levelek hiteles másolatai:
+
+#### Regisztrációs folyamat (HU/EN)
+
+<div align="center">
+  <img src="screenshots/welcome_mobil_hu.png" width="400" alt="Üdvözlő levél Magyar"/>
+  <br>
+  <i>14. ábra: Magyar nyelvű üdvözlő levél mobil nézetben.</i>
+</div>
+
+<br>
+
+#### Tranzakciós levelek (Foglalás visszaigazolás) (EN/HU)
+
+<div align="center">
+  <img src="screenshots/booking_en.png" width="650" alt="Booking Confirmation English"/>
+  <br>
+  <i>15. ábra: Angol nyelvű sikeres foglalás visszaigazolása levél asztali nézetben.</i>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/booking_hu.png" width="650" alt="Foglalás Magyar"/>
+  <br>
+  <i>16. ábra: Sikeres foglalás visszaigazolása (Magyar).</i>
+</div>
+
+<br>
+
+#### Biztonsági értesítők (Jelszó visszaállítás) (HU)
+
+<div align="center">
+  <img src="screenshots/pw_reset_hu.png" width="650" alt="Jelszó visszaállítás"/>
+  <br>
+  <i>17. ábra: Jelszó visszaállítás, biztonsági link új jelszó igénylésre, 30 perces limittel (Magyar).</i>
+</div>
+
+#### Letölthető dokumentumok (Audit trail)
+Amennyiben a forrásfájlok hitelesítése szükséges, az eredeti PDF és EML fájlok az alábbi linken érhetőek el a projekt mappájában:
+
+**Megjegyzés:** A fenti linkek relatív elérési utat használnak. A fájlok megtekintéséhez kattintson a linkre (megfelelő PDF olvasó bővítmény esetén), vagy keresse fel a `DOC/emails/` könyvtárat a projekt gyökerében.
+* [Összes e-mail bizonyíték megnyitása (Mappa)](./emails/)
+  
+> **Technikai megjegyzés:** A fenti hivatkozások relatív elérési utat használnak. Amennyiben a fejlesztői környezet (pl. VS Code) vagy a verziókezelő felülete (pl. GitHub) támogatja, a linkek közvetlen megnyitást tesznek lehetővé. Egyéb esetben a fájlok manuálisan is elérhetőek a `DOC/emails/` mappában.
+
+### 5.7.5. Manuális UI/UX tesztelési jegyzőkönyv
+
+Míg az automata tesztek a kód logikai helyességét verifikálják, a manuális tesztelés során a rendszer emberi szemmel történő vizsgálatára került sor. A tesztelés fókusza a felhasználói élmény (UX), a reszponzivitás és az összetett üzleti folyamatok (End-to-End) végigkísérése volt.
+
+#### Tesztelési módszertan
+A vizsgálat során előre definiált teszteseteken (Test Cases) haladtunk végig, dokumentálva a lépéseket, az elvárt működést és a tényleges tapasztalatokat. Külön figyelmet fordítottunk a különböző képernyőméretekre (Desktop, Tablet, Mobile) és a böngészők közötti kompatibilitásra.
+
+#### Kivonat az első tesztelési jegyzőkönyvből
+
+| Id | Teszteset | Elvárt eredmény | Státusz |
+| :--- | :--- | :--- | :--- |
+| **TC-01** | Regisztráció és aktiválás | Valid adatokkal a fiók létrejön és aktiválható. | **PASS** |
+| **TC-03** | Időpontfoglalási folyamat | A kiválasztott slot foglalttá válik, a naptár frissül. | **PASS** |
+| **TC-04** | Form validáció | Helytelen adatoknál azonnali, magyar nyelvű hibaüzenet. | **PASS** |
+| **TC-05** | Mobil reszponzivitás | A menü és a kártyák mobilon is kényelmesen kezelhetők. | **PASS** |
+
+##### Példa Teszt eset: Felhasználó regisztráció és e-mail folyamat
+
+**Leírás:** Új felhasználó létrehozása a `/register` végponton keresztül.
+
+**Várható eredmény:** 1. A felhasználó bekerül az adatbázisba.
+2. A rendszer kiküldi az üdvözlő e-mailt.
+
+**Szerver oldali logok (Bizonyíték):**
+> [!NOTE]
+> A logok alapján a regisztráció és az e-mail küldés közötti időkülönbség ~1.8 másodperc, ami megfelel az elvárásoknak.
+
+```log
+[2026-04-13T14:13:07.261Z] LOG: New user registered: kisfaludi@ep.com
+[2026-04-13T14:13:07.261Z] LOG: SUCCESS - User registered: kisfaludi@ep.com
+[2026-04-13T14:13:09.071Z] LOG: SUCCESS - Welcome email sent to: kisfaludi@ep.com
+
+```
+#### Teljes dokumentáció
+A részletes, minden lépést és képernyőképet tartalmazó manuális tesztelési jegyzőkönyv az alábbi linken érhető el:
+
+[👉 Manuális Tesztelési Jegyzőkönyv megtekintése (manual_test_report.md)](./manual_test_report.md)
+
+> **Megjegyzés:** A jegyzőkönyv tartalmazza a fejlesztés során észlelt és javított (FIXED) felületi hibákat is, bemutatva a szoftver fejlődési szakaszait.
+
+
+## 6. Összegzés és Következtetések
+
+A dokumentációban bemutatott többszintű tesztelési stratégia igazolta, hogy az alkalmazás stabil, biztonságos és felkészült a valós használatra. Az alkalmazott módszertanok és a vizsgálat során tett megállapítások a következők:
+
+### 6.1. Alkalmazott tesztelési rétegek
+1. **Statikai analízis (ESLint):** Biztosítja a kód egységes minőségét és a szintaktikai hibák korai kiszűrését.
+2. **Dinamikus API tesztek (Insomnia):** Verifikálták mind a 39 végpont helyes működését és a jogosultsági szintek (RBAC) elkülönítését.
+3. **Automata integrációs tesztek (Mocha, Chai & Supertest):** Garantálják a backend üzleti logika stabilitását és a regressziós hibák elkerülését a fejlesztés során.
+4. **Terheléses és stressztesztek:** Kijelölték a rendszer optimális működési tartományát és igazolták a konkurens adatbázis-műveletek stabil kezelését az alkalmazott környezetben.
+5. **Manuális UI/UX tesztelés:** Szubjektív és funkcionális vizsgálat során ellenőriztük a frontend felület reszponzivitását, a navigációt, valamint a felhasználói élményt (pl. betöltési állapotok és dinamikus hibaüzenetek).A manuális tesztelés során kiemelt figyelmet fordítottunk azokra az Edge Case-ekre (szélsőséges esetekre), amelyeket az automata tesztek nem fednek le, mint például a reszponzív töréspontok vizuális helyessége és az űrlapok valós idejű visszajelzései.
+
+### 6.2. Főbb megállapítások
+* **Stabilitás:** A backend végpontok terhelés alatt is konzisztensek maradnak, az adatbázis-relációk a komplex tranzakciók során is sértetlenek maradtak.
+* **Biztonság:** A JWT alapú hitelesítés hatékonyan védi a szenzitív adatokat; az illetéktelen hozzáférési kísérleteket a rendszer minden esetben elutasította.
+* **Folyamatkezelés:** Az automata email értesítések (regisztráció, foglalás) és a frontend validációk biztosítják a zökkenőmentes és intuitív használatot.
+
+### 6.3. Végső értékelés
+A fejlesztés során feltárt kisebb anomáliák javításra kerültek. Az alkalmazás a kritikus hibáktól mentes, a szoftver a tesztelési jegyzőkönyv alapján **MEGFELELT** minősítést kapott, így teljes mértékben alkalmas a vizsgaremekként való bemutatásra. A teszteredmények alapján a szoftver jelenlegi állapota stabil alapot nyújt a további funkció bővítésekhez.
+
+---
+
+## 7. Összefoglalás
+
+A dolgozat zárásaként áttekintem a fejlesztés során szerzett szakmai tapasztalatokat, értékelem a projekt sikerességét a kitűzött célok tükrében, és meghatározom a szoftver jövőbeni fejlődési irányait.
+
+## 7.1. A fejlesztés során szerzett tapasztalatok
+
+Az ElitPort rendszer megvalósítása egy komplex mérnöki feladat volt, amely a tervezéstől az implementáción át a dokumentált tesztelésig a teljes szoftverfejlesztési életciklust (SDLC) felölelte.
+
+### 7.1.1. Technológiai felismerések
+A Full-stack fejlesztés során szerzett legfontosabb tapasztalatom a technológiai rétegek közötti szoros függőség kezelése volt. 
+* **Angular és RxJS:** Megtanultam a reaktív programozás előnyeit és nehézségeit. Az adatfolyamok (Streams) kezelése jelentősen leegyszerűsítette a felhasználói felület frissítését, ugyanakkor komoly figyelmet igényelt a memóriakezelés (feliratkozások lezárása).
+* **REST API tervezés:** A 39 végpont kialakítása során rájöttem, hogy a jól megtervezett végpont-struktúra és a konzisztens hibaüzenetek (HTTP státuszkódok) jelentősen megkönnyítik a frontend fejlesztését és a későbbi hibakeresést.
+
+### 7.1.2. Problémamegoldás és "Lessons Learned"
+
+A fejlesztés legnagyobb kihívását a logikai folyamatok pontos megtervezése jelentette: a jogosultsági szintek elkülönítése, a biztonságos regisztrációs folyamat és a felhasználói felület ergonómiája. A munka során bebizonyosodott, hogy a sikeres szoftverfejlesztés alapja a higgadt, alapos tervezés és a folyamatos finomhangolás. Az alkalmazás több iteráción ment keresztül, amíg elérte jelenlegi formáját, amely már tartalmazza a legfontosabb alapfunkciókat:
+* **Jogosultság alapú hozzáférés kezelése** (Admin, Orvos, Páciens).
+* **Letisztult, reszponzív felhasználói felület.**
+* **E-mail alapú hitelesítés és jelszó-helyreállítás.**
+* **Hatékony szűrési és keresési mechanizmusok.**
+  
+A legnagyobb kihívást az aszinkronitás és az adatbázis-tranzakciók összehangolása jelentette. A fejlesztés korai szakaszában jelentkező dátumkezelési anomáliák (időzóna elcsúszások) megtanítottak arra, hogy kritikus rendszereknél (mint egy orvosi időpontfoglaló) elengedhetetlen a szabványosított adatformátumok (ISO 8601) szigorú alkalmazása már a tervezési fázistól kezdve.
+
+## 7.2. A projekt sikerességének értékelése
+
+A projekt sikerességét két fő szempont alapján értékeltem: a funkcionális követelmények teljesülése és a rendszer stabilitása alapján.
+
+### 7.2.1. Funkcionális megfelelőség
+A szoftver maradéktalanul teljesíti a specifikációban rögzített elvárásokat:
+* A páciensek számára egyszerű és átlátható foglalási folyamatot biztosít.
+* Az adminisztrátori felület alkalmas a szakemberek és idősávok hatékony kezelésére.
+* A hitelesítési és jogosultságkezelési rendszer (RBAC) biztonságosan különíti el a különböző felhasználói szinteket.
+
+### 7.2.2. Minőségi és stabilitási mutatók
+A tesztelési fejezetben bemutatott eredmények igazolják a szoftver sikerességét:
+* **Robusztusság:** A rendszer a hibás adatokra (SQL Injection kísérletek, érvénytelen formátumok) stabilan, összeomlás nélkül, megfelelő hibaüzenetekkel reagál.
+* **Eszközfüggetlenség:** A sikeres mobil-, tablet- és asztali tesztek bizonyítják a reszponzív architektúra hatékonyságát.
+* **Skálázhatóság:** Bár az SQLite jelenleg korlátot jelent a párhuzamos írási műveleteknél, a kód modularitása lehetővé teszi a gyors adatbázis-migrációt, így a projekt architektúrája sikeresen felkészült a növekedésre.
+
+## 7.3. Jövőbeli fejlesztési lehetőségek
+
+Az ElitPort jelenlegi verziója szilárd alapot nyújt, amelyre további üzleti modulok építhetők:
+1. **Online fizetési integráció:** Stripe vagy PayPal API-n keresztül a foglalási díjak azonnali rendezése.
+2. **Dedikált Orvosi Dashboard:** Egy speciális felület kialakítása, ahol az orvosok nemcsak a naptárukat, hanem a páciensek korábbi kórtörténetét és a szükséges orvosi eszközök elérhetőségét is nyomon követhetnék.
+3. **Telemedicina modul:** Videókonferencia-szolgáltatás integrálása a távoli konzultációkhoz.
+4. **Értesítési automatizmusok:** SMS és Push-notifikációk bevezetése a "nem megjelenési" arány csökkentése érdekében.
+
+## 7.4. Záró gondolatok
+
+Összességében a projektet sikeresnek értékelem. Sikerült egy olyan szoftvert létrehozni, amely valós problémára (egészségügyi adminisztráció kiváltására) kínál modern technológiai megoldást. A fejlesztés során megszerzett tudás – különösen a biztonságos API tervezés és a reaktív frontend fejlesztés területén – meghatározó alapja lesz jövőbeli szakmai munkámnak.
+
+---
+
+## 8. Egyéb információk
+
+## Mellékletek
+
+## 8.1 Szoftver Manuális Tesztelési Dokumentáció  
+
+Ez a dokumentum a rendszer funkcionális és nem-funkcionális manuális tesztelésének eredményeit tartalmazza.
+**A tesztelés elsődleges célja** annak igazolása volt, hogy a fejlesztett alkalmazás megfelel a funkcionális követelményeknek, stabilan kezeli a szélsőértékeket és a hálózati hibákat, valamint minden eszközön egységes és reszponzív felhasználói élményt nyújt.
+
+**Alkalmazott módszertan és eszközök:**
+* **Manuális tesztelés:** A funkciókat végfelhasználói szemszögből, előre meghatározott tesztforgatókönyvek alapján ellenőriztem.
+* **Füstteszt (Smoke Testing):** A kritikus útvonalak (bejelentkezés, foglalási folyamat) ellenőrzése minden build után.
+* **Reszponzív tesztelés:** A felület vizsgálata különböző képernyőfelbontásokon a Google Chrome DevTools segítségével.
+* **Keresztböngésző-vizsgálat:** Az alkalmazás tesztelése Chrome, Microsoft Edge ás Firefox böngészőkben.
+  
+## Részletes Teszt Folyamatok - teszt esetekkel 
+
+### P_01: Regisztrációs folyamat (Register Process)
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_01.1** | **Sikeres regisztráció** | Név: "Teszt Elek"<br>Email: teszt@email.com<br>Pw: "Abc12345!"<br>Confirm: "Abc12345!" | Az `onSubmit()` lefut, a `Swal.fire` sikert jelez. Sikeres automatikus beléptetés után átirányítás `/home` vagy `/admin/staff` oldalra a `roleId` függvényében. | A regisztráció lezajlott, a popup megjelent, az átirányítás megtörtént. | **PASSED** |
+| **P_01.2** | **Jelszó egyezés hiba (Mismatch)** | Pw: "Jelszo123"<br>Confirm: "MasJelszo" | A `createCompareValidator` detektálja az eltérést, a `confirmPassword` mező megkapja a `mismatch: true` hibát. A form `invalid` (Error Sweetalert). | A `confirmPassword` mező pirossal jelez, a "A két jelszó nem egyezik" hibaüzenet megjelenik, a kérés nem indul el, a beküldő gomb inaktív marad. | **PASSED** |
+| **P_01.3** | **Validációs korlátok (MinLength)** | Email: "test@email.com"<br>Pw: "123" | A `Validators.minLength` és `Validators.email` hibát jelez. Az `onSubmit` során a `markAllAsTouched()` érvényesül. | A SweetAlert hibaablak megjelent. A mezők alatt megjelennek a hibaüzenetek. A beküldő gomb inaktív marad, amíg a form invalid. | **PASSED** |
+| **P_01.4** | **Foglalt email (Szerver hiba)** | Már létező email cím | Az API `400` vagy `409` hibát ad vissza. Az `error` ág lefut, a `Swal.fire` megjeleníti a lefordított hibaüzenetet. | A hibaüzenet ("Ez az e-mail cím már használatban van!") sikeresen megjelent magyar nyelven a felületen. | **PASSED** |
+| **P_01.5** | **Loading állapot jelzése** | Kattintás a regisztrációra | A `this.isLoading` értéke `true`-ra vált, a felületen a spinner aktívvá válik a kérés befejezéséig. | A felhasználó vizuális visszajelzést (spinner/loading indikátor) kap a folyamatban lévő műveletről. | **PASSED** |
+
+## P_01.2 Fiók aktiválás
+
+Ez a folyamat a felhasználói fiók létrehozását és az email-alapú hitelesítést (aktiválást) fedi le.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_01.6** | **Regisztrációs űrlap küldése** | Név, Email, Jelszó | Valid adatok esetén a rendszer létrehozza a fiókot "inaktív" státusszal, és kiküldi az aktiváló emailt. | A backend rögzítette az adatokat, a Mailtrap-en keresztül az aktiváló levél megérkezett. | **PASSED** |
+| **P_01.7** | **Kliensoldali validáció** | Hibás email formátum | Az "Aktiválás" (Regisztráció) gomb inaktív marad, vagy hibaüzenet jelenik meg a mező alatt. | A ReactiveForms validátorok megakadályozták a hibás adatok elküldését, a gomb tiltva maradt. | **PASSED** |
+| **P_01.8** | **Duplikált regisztráció** | Már létező email cím | A rendszer hibaüzenetet dob, nem jön létre új rekord az adatbázisban. | A SweetAlert hibaablak megjelent a lefordított magyar üzenettel. | **PASSED** |
+| **P_01.9** | **Token kinyerése az URL-ből** | `token` paraméter | Az aktiváló linkre kattintva a rendszer kiolvassa a tokent az URL-ből a `route.snapshot` segítségével. | A komponens sikeresen kinyerte a tokent az URL-ből az inicializálás során. | **PASSED** |
+| **P_01.10** | **Email megerősítés (Verify)** | Valid aktivációs token | A rendszer elküldi a tokent a backendnek. Sikeres válasz esetén a felhasználó státusza "aktívra" változik. | Az API hívás sikeres volt, a felhasználó státusza frissült az adatbázisban. | **PASSED** |
+| **P_01.11** | **Hibás/Lejárt token kezelése** | Érvénytelen token | Ha a token lejárt vagy módosították, az API hibaágra fut, és a felület jelzi a sikertelen aktiválást. | A rendszer hibaüzenetet jelenített meg, a fiók aktiválása meghiúsult a vártnak megfelelően. | **PASSED** |
+
+---
+
+## P_02: Bejelentkezési folyamat, Hitelesítés és Munkamenet-kezelés
+
+Ez a szakasz a felhasználók azonosítását, a szerepkör-alapú átirányítást, a biztonsági token-kezelést és a UI-tisztítási folyamatokat ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_02.1** | **Sikeres login (Páciens)** | Valid páciens adatok | A rendszer elmenti a JWT tokent és a felhasználót a LocalStorage-ba. Alapértelmezett átirányítás a `/home` oldalra. | A `saveUserData` lefutott, a munkamenet létrejött, a navigáció sikeres. | **PASSED** |
+| **P_02.2** | **Sikeres login (Admin)** | Email: admin@ep.com (roleId: 2) | A rendszer felismeri a privilegizált szerepkört, és automatikusan az `/admin/staff` vagy `/admin/dashboard` oldalra navigál. | A `roleId` alapján a rendszer a megfelelő adminisztrációs felületre irányított. | **PASSED** |
+| **P_02.3** | **Login validációs hiba** | Rossz formátum / rövid jelszó | A `loginForm.invalid` miatt a rendszer nem küld API kérést. A mezők piros jelzést kapnak, `Swal` figyelmeztetés jelenik meg. | A kliensoldali validáció megakadályozta a felesleges hálózati forgalmat. | **PASSED** |
+| **P_02.4** | **Szerveroldali hiba kezelése** | Helyes formátum, rossz jelszó | Az API hibaüzenetére a rendszer a `serverKey` alapján lefordított, barátságos hibaüzenetet mutat a felhasználónak. | A `translate.instant` a szerver hibaüzenetét sikeresen magyarította a felugró ablakban. | **PASSED** |
+| **P_02.5** | **Átirányítás célzott URL-re** | `returnUrl` query paraméter | Bejelentkezés után a rendszer nem az alapértelmezett oldalra, hanem a `returnUrl`-ben tárolt címre (pl. `/profile`) navigál. | Az átirányítási logika sikeresen kezelte a `snapshot.queryParams` értékét. | **PASSED** |
+| **P_02.6** | **Modal és DOM tisztítás** | Belépés Modal ablakon át | Sikeres belépéskor a `cleanupModal()` eltávolítja a `modal-backdrop`-ot, így az UI nem akad be és a görgetés aktív marad. | A metódus iteratívan törölte a `modal-backdrop` elemeket, visszaállította a `body` overflow/padding értékeit, így a felület azonnal interaktívvá vált. | **PASSED** |
+| **P_02.7** | **Munkamenet perzisztencia** | Oldalfrissítés (F5) | A `loadStorage` a `isPlatformBrowser` ellenőrzés után visszaépíti a Signal-okat a LocalStorage-ból. | A felhasználó bejelentkezve maradt, a Signal-ok (név, role) frissültek. | **PASSED** |
+| **P_02.8** | **Kijelentkezés és biztonság** | Logout esemény | A `localStorage.clear()` lefut, a Signal-ok alaphelyzetbe állnak, a rendszer a login oldalra navigál. | A munkamenet lezárult, a Guard-ok blokkolják a későbbi jogosulatlan hozzáférést. | **PASSED** |
+
+---
+
+### P_03: Jelszókezelés és Helyreállítás
+
+Ez a szakasz a jelszó-emlékeztető folyamatot, a biztonságos token-alapú helyreállítást és a kapcsolódó felhasználói visszajelzéseket ellenőrzi.
+
+#### P_03.1: Helyreállító email kérése (Forgot Password)
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_03.1.1** | **Helyreállító email kérése** | Létező email cím | A rendszer generálja a tokent és elküldi a levelet. A felületen megjelenik a sikeres küldés visszaigazolása. | Az `authService.forgotPassword` sikeresen lefutott, a UI jelezte a folyamat befejezését. | **PASSED** |
+| **P_03.1.2** | **Nem létező email cím** | Ismeretlen email cím | A backend hibát jelez, a rendszer lefordítja a hibaüzenetet (pl. "Felhasználó nem található"). | Az `isError` állapot aktiválódott, a lokalizált hibaüzenet megjelent a képernyőn. | **PASSED** |
+| **P_03.1.3** | **Loading állapot kezelése** | Interakció a küldés gombbal | A `this.isLoading` változó letiltja a gombot a kérés idejére, megakadályozva a dupla küldést. | A vizuális visszajelzés (spinner/inaktív gomb) megfelelően működik a hálózati kérés alatt. | **PASSED** |
+| **P_03.1.4** | **Nyelvspecifikus kiküldés** | Aktuális nyelv: 'en'/'hu' | A kérés tartalmazza a nyelvi paramétert, így a levelező szerver a megfelelő nyelvű sablont használja. | A HTTP payload `lang` paramétere követte a felhasználó választott nyelvét. | **PASSED** |
+
+#### P_03.2: Jelszó felülírása (Password Reset Completion)
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_03.2.1** | **Sikeres jelszó módosítás** | Új jelszó + érvényes Token | A kérés után a rendszer a `/login` oldalra navigál `resetSuccess=true` query paraméterrel. | Az átirányítás sikeres, a login oldalon megjelent a zöld állapotjelző üzenet. | **PASSED** |
+| **P_03.2.2** | **Érvénytelen/lejárt token** | Hibás vagy lejárt token | A szerver elutasítja a módosítást. A UI megjeleníti a hiba okát a felhasználónak. | A biztonsági korlát működik, a rendszer nem engedett hozzáférést lejárt hitelesítővel. | **PASSED** |
+| **P_03.2.3** | **Űrlap validáció (Frontend)** | Üres mezők/eltérő jelszavak | A `markAllAsTouched()` megakadályozza a küldést és vizuálisan jelzi a hibás mezőket. | A kliensoldali validáció sikeresen megfogta a hibás adatbevitelt a kérés előtt. | **PASSED** |
+| **P_03.2.4** | **Manuális visszalépés** | `goToLogin()` hívása | A felhasználó mentés nélkül visszatérhet a bejelentkezéshez. | A `router.navigate` hiba nélkül visszairányított az alapértelmezett bejelentkező oldalra. | **PASSED** |
+
+---
+
+### P_04: Adminisztrációs funkciók és Felhasználókezelés
+
+Ez a szakasz az adminisztrátori jogosultságokkal végezhető műveleteket, a felhasználói adatbázis kezelését és a szerepkörök dinamikus módosítását ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_04.1** | **Felhasználói lista betöltése** | Automatikus lekérés (OnInit) | Az `adminService` lekéri az összes rekordot; a rendszer a `roleId` és `staffProfile` alapján szétválasztja a szakembereket és pácienseket. | A lista konzisztens, a szerepkörök szerinti megkülönböztetés pontosan megjelenik. | **PASSED** |
+| **P_04.2** | **Státusz módosítása (Inaktiválás)** | Felhasználó ID + `isActive` toggle | A státuszváltás után a backend frissíti a rekordot, a felületen pedig Toast értesítés igazolja a műveletet. | Az API hívás lezajlott, a felhasználó hozzáférése azonnal korlátozásra/engedélyezésre került. | **PASSED** |
+| **P_04.3** | **Adminisztrátori jelszó-reset** | Új jelszó (min. 6 karakter) | Az admin közvetlenül módosíthatja a jelszót. A beépített validátor blokkolja a túl rövid vagy nem biztonságos karakterláncokat. | A validáció sikeresen megfogta a hibás bevitelt; a sikeres mentés után a jelszó frissült. | **PASSED** |
+| **P_04.4** | **Előléptetés Szakemberré** | Kiválasztott szakterület (Specialty) | A kijelölt User profilja Staff szintre emelkedik, létrejön a kapcsolódó szakmai profil. A lista automatikusan frissül. | A szerepkör-váltás sikeres, a felhasználó bekerült a választható szakemberek közé a naptárban. | **PASSED** |
+| **P_04.5** | **Felhasználói adatok szerkesztése** | Módosított Név, Email, Role adatok | A komplex `Swal` űrlapon keresztül beküldött adatok validálásra kerülnek; hiányzó kötelező mezők esetén a mentés megszakad. | Az adatintegritás megmaradt, a módosítások azonnal megjelentek a listában. | **PASSED** |
+| **P_04.6** | **Felhasználó archiválása** | Törlési megerősítés (Warning) | A felhasználó biztonsági megerősítés után kikerül az aktív listából. Hiba esetén (pl. 404) a rendszer jelzi a sikertelenséget. | A törlési folyamat biztonságos, a véletlen adattörlés esélye minimalizált. | **PASSED** |
+| **P_04.7** | **Hiba kezelése betöltéskor** | Szerver hiba (szimulált) | Amennyiben az API nem válaszol, a `catchError` ág lefut, és egy tájékoztató hiba-modál jelenik meg a felhasználónak. | A rendszer hibatűrő képessége megfelelő, az alkalmazás nem omlott össze, a felhasználó értesült a problémáról. | **PASSED** |
+
+---
+
+### P_05: Foglalások kezelése – Adminisztrátori nézet
+
+Ez a szakasz a központi foglalási lista kezelését, az adminisztrátori felülbírálati jogköröket és a kapcsolódó időpontok (Slotok) automatikus állapotkezelését ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_05.1** | **Foglalások listázása és rendezése** | Automatikus lekérés (OnInit) | Az `adminService` lekéri az adatokat; a rendszer kliensoldalon kronológiai sorrendbe rendezi a foglalásokat. | A lista megjelent, a `sort()` metódus helyesen kezelte a dátum és idő alapú rendezést. | **PASSED** |
+| **P_05.2** |  **Aktív/Összes foglalás váltó** | `showOnlyActive` toggle | A gomb kapcsolásakor a lista szűrése megváltozik: csak a `Confirmed` státuszú és jövőbeli időpontok maradnak láthatóak. | A reaktív szűrés (Signal Effect vagy Pipe) azonnal elrejtette a lezárt/törölt elemeket, javítva az átláthatóságot. | **PASSED** |
+| **P_05.3** | **Foglalás törlése (Admin)** | `bookingId` | Megerősítés után a törlés lefut. A Signal `update()` metódusa azonnal, oldalfrissítés nélkül frissíti a nézetet. | Az elem eltűnt a táblázatból, az alkalmazás állapota (State) szinkronban maradt a backenddel. | **PASSED** |
+| **P_05.4** | **Múltbéli időpontok detektálása** | `isPast()` helper metódus | A rendszer validálja az időpontokat; a múltbéli foglalások státusza vagy megjelenítése korlátozott/módosított. | Az időpontok azonosítása pontos, a lejárt sávok nem módosíthatóak a páciensek számára. | **PASSED** |
+| **P_05.5** | **Hiba kezelése művelet közben** | API hiba (pl. 403 Forbidden) | Jogosultsági vagy hálózati hiba esetén a rendszer lokalizált hibaüzenetet mutat `Swal.fire` modálban. | A hibaág lefutott, a felhasználó értesült a művelet sikertelenségének okáról. | **PASSED** |
+| **P_05.6** | **Loading állapot visszajelzése** | `isLoading` Signal | Az adatlekérdezés alatt a spinner aktív, megakadályozva a felhasználói bizonytalanságot. | A vizuális visszajelzés pontosan követi az aszinkron folyamat életciklusát. | **PASSED** |
+| **P_05.7** | **Páciens ütközésvizsgálat** | Páciens ID + Időpont | Az adminisztrátori felületen is tilos az átfedő foglalás ugyanazon páciens számára. | A backend `BOOKING.CONFLICT` hibája megjelent, a rendszer blokkolta a dupla foglalást. | **PASSED** |
+| **P_05.8** | **Admin 24h felülbírálás** | Időpont < 24h | Míg a páciens korlátozva van, az adminisztrátor bármikor jogosult törölni vagy módosítani a közeli időpontokat is. | Az adminisztrátori jogosultság sikeresen felülbírálta az időkorlátot, a törlés hiba nélkül lezajlott. | **PASSED** |
+| **P_05.9** | **Státuszkonzisztencia és Slot felszabadítás** | Lemondás/Törlés | A foglalás törlésekor/lemondásakor a kapcsolódó slot azonnal újra szabad (`isAvailable: true`) állapotba kerül. | Az adatbázis-tranzakció garantálta az atomi műveletet: a slot azonnal újra foglalhatóvá vált a naptárban. | **PASSED** |
+| **P_05.10** | **Kényszerített törlés (Force Delete)** | `bookingId` + `hardDelete` | Karbantartási célból az adminisztrátor képes a rekord végleges eltávolítására az adatbázisból. | A fizikai törlés lezajlott, a rendszer hivatkozási integritása sértetlen maradt. | **PASSED** |
+
+---
+
+### P_06: Adminisztrációs Vezérlőpult és Üzleti Analitika
+
+Ez a szakasz a vezetői információs rendszer (Dashboard) pontosságát, az adatok komplex összesítését (KPI), a vizuális adatábrázolást és a riportálási funkciókat ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_06.1** | **Alapvető KPI statisztikák** | Összes foglalási adat | A rendszer kiszámítja az összes foglalás számát, a teljes bevételt, valamint a százalékos lemondási arányt. | A számlálók pontosan mutatják a forgalmat; a lemondási arány kalkulációja (lemondott/összes) hibátlan. | **PASSED** |
+| **P_06.2** | **Szakember hatékonyság (Utilization)** | Foglalások / Kapacitás (40) | Kiszámítja az orvosok százalékos kihasználtságát; a lista a legmagasabb terheltség szerint rendezve jelenik meg. | A `staffEfficiency` adatsor helyesen tükrözi a szakmai kihasználtságot, a 100%-os limitálás működik. | **PASSED** |
+| **P_06.3** | **Heti terheltségi hőtérkép** | `generateHeatmap()` metódus | Az algoritmus 5 munkanapra és 12 idősávra összesíti a foglaltságot a naptári adatok alapján. | A `heatmapData` objektum felépítése pontos, a vizualizáció hűen követi az adatsűrűséget. | **PASSED** |
+| **P_06.4** | **Globális Pénzügyi Összesítés** | Összes foglalás árai | A rendszer az adatbázisban tárolt árak alapján egyetlen, összesített értékként mutatja be a klinika teljes bevételét. | A pénzügyi modul helyesen szummázta az összes nem törölt foglalás értékét, egyetlen globális mérőszámot adva. | **PASSED** |
+| **P_06.5** | **Reaktív Dashboard frissítés** | Új foglalás vagy törlés | Bármilyen adatváltozás esetén a Dashboard számlálói (Signals) azonnal, manuális frissítés nélkül újraszámolódnak. | Az `effect` és `computed` mezők azonnal lereagálták a háttérben történt adatmódosításokat. | **PASSED** |
+| **P_06.6** | **Nyelvspecifikus riportálás** | Aktuális nyelv: 'hu' vagy 'en' | A riportok (pl. PDF export) fejlécei és kategóriái a `translate.instant` segítségével a választott nyelven generálódnak. | A kinyomtatott dokumentum nyelve és terminológiája konzisztens az alkalmazás aktuális beállításával. | **PASSED** |
+
+---
+
+### P_07: Szolgáltatások és Konzultációk kezelése
+
+Ez a szakasz a kínált egészségügyi szolgáltatások adminisztrációját, azok szakmai besorolását (Specialty) és a foglalási folyamatba való integrációját ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_07.1** | **Szolgáltatások szűrése** | `selectedStaff.specialty` | A rendszer csak az adott szakember szakterületéhez illeszkedő konzultációkat jeleníti meg a választási listában. | Az `applyFilter()` metódus pontosan szűri a kínálatot, megelőzve a szakmailag irreleváns foglalásokat. | **PASSED** |
+| **P_07.2** | **Új szolgáltatás hozzáadása** | Név, szakterület, ár, időtartam | A bevitt adatok alapján új rekord jön létre az adatbázisban. Sikeres mentés után a lista reaktívan frissül. | A `createConsultation` hívás sikeres, a modal bezárult, a lista azonnal frissült. | **PASSED** |
+| **P_07.3** | **Szolgáltatás szerkesztése** | Meglévő rekord módosítása | Az `editMode` aktiválásakor a form adatai feltöltődnek; a mentés az azonosító (ID) alapján frissíti a meglévő rekordot. | A `patchValue` metódus helyesen töltötte ki az űrlapot, a módosítások konzisztensen mentésre kerültek. | **PASSED** |
+| **P_07.4** | **Szolgáltatás törlése** | `consultationId` | Biztonsági megerősítés (Warning) után a rekord törlődik. A lista automatikusan frissül az elem eltávolítása után. | A megerősítő dialógus megakadályozza a véletlen törlést; a folyamat végén a rekord eltűnt a DB-ből. | **PASSED** |
+| **P_07.5** | **Űrlap validáció** | Hiányos vagy hibás adatok | A kliensoldali validátorok (min. ár, kötelező név) blokkolják a beküldést és vizuális visszajelzést adnak a hibáról. | A `Validators` logika megbízhatóan működik, nem engedélyezi az érvénytelen adatok mentését. | **PASSED** |
+| **P_06.6** | **Integrált navigáció** | Kiválasztott konzultáció ID | A szolgáltatás kiválasztása után a rendszer átirányít a foglalási felületre, továbbítva a szükséges paramétereket. | A router navigáció pontos, a foglalási folyamat zökkenőmentesen folytatódik a kiválasztott elemmel. | **PASSED** |
+
+---
+
+### P_08: Szakember menedzsment és Automatizált Működés
+
+Ez a szakasz a szakorvosi profilok kezelését, a kompetenciák társítását és az automatizált naptár-generálási folyamatokat ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_08.1** | **Szakember adat-transzformáció** | Backend JSON objektum | A rendszer az összetett relációkból egységesített listát képez. Hiányos adatoknál "Unknown" fallback értéket alkalmaz. | A lista minden orvost helyesen jelenít meg, függetlenül az adatstruktúra mélységétől. | **PASSED** |
+| **P_08.2** | **Szolgáltatások társítása** | `selectedTreatments` lista | Az orvos szerkesztésekor a rendszer szinkronizálja a választott kompetenciákat az `assignTreatments` hívással. | A szakember adatlapján a jelölőnégyzetek hűen tükrözik a mentett orvosi kompetenciákat. | **PASSED** |
+| **P_08.3** | **Automatikus idősáv generálás** | `generateAutoSlots` (14 nap) | A rendszer 14 napra előre generálja a slotokat. Az `sv-SE` lokáció használatával szabványos `YYYY-MM-DD` formátum jön létre. | Az adatbázis-konform dátumformátumok létrejöttek, a naptár automatikus feltöltése hibátlan. | **PASSED** |
+| **P_08.4** | **Elérhetőség és Státuszkezelés** | `isAvailable` / `isActive` | Az adminisztrátor bármikor módosíthatja a foglalhatóságot. Az inaktivált szakember eltűnik a páciens oldali keresőből. | Az állapotváltozások azonnal és konzisztensen érvényre jutnak a frontend minden felületén. | **PASSED** |
+| **P_08.5** | **Biztonsági jelszó-kezelés** | `password` (opcionális mező) | Szerkesztésnél a jelszó csak kitöltés esetén kerül küldésre. Üres mezőnél a meglévő hitelesítő adat változatlan marad. | Az adatintegritás megmarad: a jelszó nem íródik felül véletlenül üres értékkel. | **PASSED** |
+| **P_08.6** | **Folyamat-visszajelzés (UX)** | API válaszidő / Hibaág | A műveletek alatt az `isLoading` jelző aktív. Hiba esetén lokalizált `Swal.fire` hibaüzenet tájékoztatja a felhasználót. | A felhasználó pontos visszajelzést kap a háttérfolyamatokról; a hibakezelési kulcsok lefedettek. | **PASSED** |
+
+---
+
+### P_09: Szakember kártyák és Páciens navigáció
+
+Ez a szakasz a páciensek számára megjelenített orvosi adatlapokat, az intelligens képkezelési logikát és a foglalási folyamat zökkenőmentes elindítását ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_09.1** | **Aktív szakemberek szűrése** | `isActive` flag | A rendszer kizárólag az aktív státuszú orvosokat jeleníti meg a listában, az archivált profilokat automatikusan elrejti. | Az üzleti logika pontos; az inaktív szakemberek nem érhetőek el a páciensek számára. | **PASSED** |
+| **P_09.2** | **Intelligens profilkép fallback** | Szakember neve | Fotó hiányában a rendszer név-alapú heurisztikával (pl. keresztnevek végződése) rendel hozzá nem-specifikus avatart. | A vizuális megjelenés konzisztens maradt, a rendszer sikeresen pótolta a hiányzó képeket. | **PASSED** |
+| **P_09.3** | **Kép elérési út korrekció** | `imageUrl` (adatbázis) | A rendszer automatikusan javítja az esetlegesen hibás vagy hiányos elérési utakat (prefix pótlás, URL validáció). | A képek minden eszközön és platformon törött linkek nélkül, stabilan jelennek meg. | **PASSED** |
+| **P_09.4** | **Hibás betöltés kezelése** | Képbetöltési hiba (404) | Amennyiben a szerverről nem tölthető be a kép, a `handleImageError()` metódus azonnal egy alapértelmezett fallback képre vált. | A UI esztétikája megmaradt a hibás fájlhivatkozások esetén is; a váltás észrevehetetlen a felhasználó számára. | **PASSED** |
+| **P_09.5** | **Részletes adatlap és UX** | `selectStaff()` hívás | Kiválasztáskor a rendszer az oldal tetejére görget, és aszinkron módon frissíti a választott orvoshoz tartozó kezelések listáját. | A `window.scrollTo` zökkenőmentes navigációt biztosított, a `treatments` Signal reaktívan frissült. | **PASSED** |
+| **P_09.6** | **Foglalási flow indítása** | Kiválasztott `staffId` | A rendszer a foglalási felületre irányít, ahol a `staffId` query paraméter alapján automatikusan a releváns szakember naptára töltődik be. | A paraméter-átadás sikeres, a páciens azonnal láthatja a kiválasztott orvos szabad időpontjait. | **PASSED** |
+
+---
+
+### P_10. Foglalási folyamat és Naptárkezelés
+
+Ez a szakasz a páciensek számára készített interaktív foglalási felületet, a heti beosztás generálását és a foglalási tranzakciók biztonságos lebonyolítását ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_10.1** | **Heti nézet generálása** | `currentDate` (Date) | A rendszer kiszámítja az aktuális hét hétfőjét és legenerál egy 5 napos (H-P) munkahét tömböt a naptár fejlécéhez. | A `generateWeek` metódus helyesen kezeli a hétváltásokat és a dátumugrásokat. | **PASSED** |
+| **P_10.2** | **Dinamikus szűrési lánc** | Szakterület > Szakember > Szolgáltatás | A szakterület kiválasztása szűri az orvosokat, az orvos kiválasztása pedig az elérhető szolgáltatásokat. | Az `onSpecialtyChange` és `onStaffChange` események konzisztensen frissítik a függő listákat. | **PASSED** |
+| **P_10.3** | **Külső paraméterek szinkronizálása** | `queryParams` (staffId) | Ha a páciens konkrét szakember adatlapjáról érkezik, a naptár automatikusan előválasztja az orvost és betölti az adatait. | A `syncSelectionFromParams` sikeresen inicializálja a nézetet a kapott paraméterek alapján. | **PASSED** |
+| **P_10.4** | **Szabad idősávok validációja** | `availableSlots` + `limitTime` | Csak a jövőbeli időpontok jelenhetnek meg. A rendszer kiszűri a már múltbéli vagy "azonnali" slotokat. | A szűrési logika (`slotDateTime > limitTime`) megakadályozza a technikai okokból már nem foglalható sávok megjelenését. | **PASSED**  |
+| **P_10.5** | **Foglalás és Auth ellenőrzés** | `userId` (AuthService) | Foglalási kísérletkor a rendszer ellenőrzi a bejelentkezési státuszt. Ha nincs aktív munkamenet, a `/login` oldalra irányít. | Az `executeBooking` meggátolja az anonim foglalásokat és figyelmeztető üzenetet küld. | **PASSED** |
+| **P_10.6** | **Nyelvspecifikus lokalizáció** | `translate.currentLang` | A naptár fejléce (napok nevei) és a megerősítő ablak dátumformátuma dinamikusan alkalmazkodik a választott nyelvhez (HU/EN). | A `dayFormat` és `dateFormat` property-k helyesen váltanak a nyelvek között. | **PASSED** |
+| **P_10.7** | **Ütköző foglalás tiltása (Race Condition)** | Ugyanaz a slotId két kérésben | A rendszer adatbázis szintű zárolással (`lock`) megakadályozza, hogy ugyanazt az időpontot két különböző felhasználó egyidőben lefoglalja. | A második kérésnél a rendszer észlelte a `isAvailable: false` állapotot és `BOOKING.ALREADY_TAKEN` hibával elutasította azt. | **PASSED** |
+| **P_10.8** | **Lemondás és felszabadítás (>24h)** | `bookingId` (több mint 24h-val a vizit előtt) | Ha a lemondás az időpont előtt több mint 24 órával történik, a foglalás státusza `Cancelled-re` módosult, a kapcsolódó slot pedig újra `isAvailable: true` (szabad) állapotba kerül. | A lemondási logika sikeresen lefutott, a tranzakció visszanyitotta az időpontot a naptárban más páciensek számára. | **PASSED** |
+
+---
+### P_11. Fiókaktiválás folyamat ellenőrzése a P_01 fejezet része lett témakör szempontokat követve egységesítettem lásd. P_01.2 
+---
+
+### P_12: Rendszerbiztonság és Útvonalvédelem
+
+Ez a szakasz a hozzáférési jogosultságokat, a szerepkör-alapú védelmet (RBAC) és a hibás útvonalak automatikus kezelését ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_12.1** | **AuthGuard védelem** | Bejelentkezés nélküli hozzáférés védett útvonalhoz | A Guard blokkolja a kérést, elmenti a `returnUrl`-t, és a bejelentkezési oldalra irányít. | A navigáció megszakadt, a `returnUrl` sikeresen átadásra került a bejelentkezéshez. | **PASSED** |
+| **P_12.2** | **Szerepkör-alapú védelem (Admin)** | Páciens próbálkozik `/admin` eléréssel | Ha a `roleId` nem egyezik az elvárt szinttel, a Guard megtagadja a belépést és fallback oldalra irányít. | A `userRole` alapú szűrés sikeresen megvédte az adminisztrátori felületet. | **PASSED** |
+| **P_12.3** | **Hibás URL (404) kezelése** | Ismeretlen URL | Érvénytelen elérési út esetén a wildcard (`**`) szabály a `NoPageComponent`-et tölti be. | A rendszer helyesen detektálta a nem létező útvonalat és a hibaoldalt renderelte. | **PASSED** |
+| **P_12.4** | **Automatikus fallback navigáció** | `setTimeout` (8s) a 404-es oldalon | A hibaoldalon töltött 8 másodperc után a rendszer automatikusan visszairányítja a felhasználót a kezdőlapra. | Az automatikus `router.navigate` esemény a várt időzítéssel lefutott. | **PASSED** |
+| **P_12.5** | **Időzítő takarítás (Cleanup)** | Navigáció a 404-es oldalról az idő lejárta előtt | Az `ngOnDestroy` során a `clearTimeout` leállítja az időzítőt, megakadályozva a későbbi nem kívánt navigációt. | A memória- és folyamattakarítás sikeres, az időzítő nem futott le a komponens megsemmisítése után. | **PASSED** |
+---
+### P_13: Általános rendszerstabilitás és UX
+
+Ez a szakasz a felhasználói élményt (UX), a mobil-optimalizálást, a többnyelvűséget és a hosszú távú adatintegritást ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_13.1** | **Mobil Reszponzivitás** | Különböző viewport méretek | A navigáció hamburger-menüvé alakul, a naptár és az űrlapok érintésbarát módon átrendeződnek. | A Bootstrap és egyedi media query-k segítségével a felület törésmentes maradt minden eszközön. | **PASSED** |
+| **P_13.2** | **Többnyelvűség váltása** | Nyelvváltás (HU/EN) | A `TranslateService` azonnal frissíti a statikus feliratokat, hibaüzeneteket és naptári napokat. | A lokalizáció teljes körű, nem maradtak "hardcoded" szövegek a template-ekben. | **PASSED** |
+| **P_13.3** | **Biztonságos kijelentkezés** | Kijelentkezés gomb | Az auth-token törlődik a LocalStorage-ból, a Signal-ok alaphelyzetbe állnak, és a rendszer a kezdőlapra navigál. | A munkamenet lezárása teljes körű, a védett útvonalak a kijelentkezés után azonnal elérhetetlenné váltak. | **PASSED** |
+| **P_13.4** | **Email sablon reszponzivitás** | HTML visszaigazoló email | A kiküldött levelek különböző email kliensekben (Gmail, Outlook) és mobil kijelzőn is olvashatóak maradnak. | Az inline CSS stílusok biztosították a megfelelő megjelenést és a CTA gombok kattinthatóságát. | **PASSED** |
+| **P_13.5** | **Staff Logikai Inaktiválása** | `isActive: false` állapot | Az orvos adatai megmaradnak (statisztikai integritás), de a foglalási listákban és a publikus naptárban nem jelenik meg. | A szűrési logika megbízhatóan kezeli a láthatóságot; a meglévő korábbi foglalások nem sérültek. | **PASSED** |
+| **P_13.6** | **Dashboard Adaptivitás** | Admin statisztikai felület | Az összetett statisztikai táblázatok és grafikonok kisebb felbontáson is átláthatóak (vízszintes görgetés vagy stack elrendezés). | Az adminisztrációs felület rugalmasan követi a képernyőméret változását, megőrizve az adatok olvashatóságát. | **PASSED** |
+
+---
+
+### P_14: Navigációs és Elrendezési Struktúra
+
+Ez a szakasz az alkalmazás globális keretrendszerét, a reszponzív navigációt (Navbar) és a dinamikus elrendezési logikát ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_14.1** | **Sticky Footer** | Kevés tartalom az oldalon | A lábléc fixen az oldal alján marad, nem emelkedik fel a tartalom hiánya miatt. | A `flex-direction: column` és `min-height: 100vh` alkalmazása stabil elhelyezkedést biztosít. | **PASSED** |
+| **P_14.2** | **Navbar adaptivitás** | Képernyőszélesség váltás | Desktop nézetben teljes menü, tableten kompakt ikonok, mobilon hamburger menü jelenik meg. | A Bootstrap töréspontok és egyedi media query-k zökkenőmentesen váltják a nézeteket. | **PASSED** |
+| **P_14.3** | **Dinamikus Admin Menü** | `isAdminMenuOpen` Signal | Az adminisztrátorok számára egy sárga kiemelésű, animált dropdown menü biztosítja az extra funkciók elérését. | A jogosultság-függő renderelés és a `navFadeIn` animáció esztétikusan működik. | **PASSED** |
+| **P_14.4** | **Kontextus-függő láthatóság** | Foglalási folyamat indítása | A foglalás fókuszált élménye érdekében a Footer automatikusan elrejtésre kerül. | A feltételes renderelés (`@if`) sikeresen növelte a hasznos képernyőfelületet a kritikus lépéseknél. | **PASSED** |
+| **P_14.5** | **Interaktív Nyelvváltó** | `switchLanguage()` hívás | A HU/EN választó vizuálisan visszajelzi az aktív állapotot és azonnal frissíti a nyelvi környezetet. | Az állapotjelző osztályok és a `TranslateService` reaktív módon működnek együtt. | **PASSED** |
+| **P_14.6** | **Mobil Menü UI/UX** | Mobil menü megnyitása | Nyitott állapotban a menü áttetsző hátteret és árnyékot kap, javítva az olvashatóságot a háttértartalom felett. | A stílusozás prémium megjelenést biztosít és megakadályozza a vizuális zavart mobil nézetben. | **PASSED** |
+
+---
+
+### P_15: Kezdőoldal (Home) és Vizuális Megjelenés
+
+Ez a szakasz a felhasználók fogadásáért felelős elsődleges felületet, az animációkat és a kontextus-függő akciógombokat ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_15.1** | **Hero szekció és Animáció** | Oldalbetöltés | A főcím és alcím az `animate__fadeIn` animációval jelenik meg, a dekorációs elemek központosítottak. | A vizuális elemek sima átmenettel, késleltetés nélkül jelennek meg, biztosítva a professzionális első benyomást. | **PASSED** |
+| **P_15.2** | **Dinamikus CTA gomb** | `authService` állapota | A fő akciógomb (Call to Action) felirata és funkciója reaktívan változik a bejelentkezési státusz alapján. | A feltételes renderelés (@if) sikeresen kiszolgálja mind a vendég, mind a bejelentkezett felhasználókat. | **PASSED** |
+| **P_15.3** | **Elite-Card reszponzivitás** | Viewport változtatás | A szolgáltatásokat bemutató kártyák a CSS Grid/Bootstrap segítségével minden kijelzőméreten torzításmentesek. | A rácsrendszer rugalmasan alkalmazkodik, mobilon egymás alá, desktopon egymás mellé rendezi az elemeket. | **PASSED** |
+| **P_15.4** | **Lokalizált tartalom** | Nyelvváltás (HU/EN) | A `translate` pipe segítségével a teljes marketing szöveg és a kártyák tartalma azonnal nyelvet vált. | A nyelvi fájlokból történő adatbetöltés konzisztens, nincsenek fordítás nélkül maradt szakaszok. | **PASSED** |
+| **P_15.5** | **Interaktív navigáció** | `onStartBooking()` hívás | A gomb az aktuális jogosultság alapján vagy a `/login`, vagy a `/booking` útvonalra navigál. | A navigációs logika pontosan azonosítja a felhasználói állapotot és a megfelelő céloldalra irányít. | **PASSED** |
+
+---
+### P_16: Arculati elemek és Vizuális Finomhangolás
+
+Ez a szakasz az alkalmazás egyedi vizuális identitását, a mikro-interakciókat és a modern UI trendek (pl. Glassmorphism) megvalósítását ellenőrzi.
+
+| Id | Folyamat / Lépés | Bemenő adatok | Elvárt Működés | Tényleges Működés | Státusz |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P_16.1** | **Globális Tipográfia** | Montserrat Google Font | Az alkalmazás egységesen a Montserrat betűtípust használja élsimítással a prémium olvashatóság érdekében. | A betűtípus minden böngészőben és operációs rendszeren konzisztensen jelenik meg. | **PASSED** |
+| **P_16.2** | **Központosított Stíluskezelés** | CSS változók (:root) | Az arculati színek és méretek CSS változókon keresztül vezéreltek, így a design-módosítás globálisan érvényesül. | A változók használata jelentősen megkönnyíti a karbantarthatóságot és egységes színvilágot biztosít. | **PASSED** |
+| **P_16.3** | **Mikro-interakció (Logo)** | Navbar logo hover | Az ikon fölé navigálva a `bi-heart-pulse-fill` szívverés (`beat`) animációt produkál. | Az animáció folyamatos, a transzformáció középpontja (origin) stabil marad. | **PASSED** |
+| **P_16.4** | **Glassmorphism UI** | Auth kártyák és panelek | Az áttetsző hátterek, a blur effekt és a finom árnyékok modern, mélységi érzetet adnak a felületnek. | A vizuális hierarchia tiszta, az elemek jól elkülönülnek a háttértől a `backdrop-filter` segítségével. | **PASSED** |
+| **P_16.5** | **Gradiens Ikonográfia** | Funkcionális ikonok | A profil, pajzs és boríték ikonok egyedi 135 fokos kék gradienst és árnyékot kapnak a kiemelt vizuális karakterért. | Az ikonok stílusa illeszkedik az elit brandhez, segítve a funkciók gyors felismerését. | **PASSED** |
+| **P_16.6** | **Egyedi Scrollbar Design** | `::-webkit-scrollbar` | A görgetősáv stílusozott, színeiben és formájában követi az alkalmazás arculatát. | A görgetősáv esztétikusan simul a felületbe, elkerülve a natív böngészőelemek vizuális törését. | **PASSED** |
+| **P_16.7** | **Vizuális Állapotjelzés** | Success/Error ikonboxok | A műveletek kimenetelét (pl. aktiválás) nagy méretű, szemantikus színekkel (zöld/piros) ellátott ikonok jelzik. | Az állapotjelzések egyértelműek, a felhasználó azonnali vizuális visszacsatolást kap a folyamat eredményéről. | **PASSED** |
+
+---
+
+### Összegzés és Következtetések a teszteléssel kapcsolatosan.
+
+#### A funkcionális és nem-funkcionális tesztelés sikeresen lezárult. A dokumentált szakaszok alapján a rendszer megfelel a specifikációban rögzített követelményeknek.
+---
+
+## Irodalomjegyzék
+
+### Szakirodalom és nyomtatott források
+* **Wiggins, A. (2011):** *The Twelve-Factor App.* Elérhető: https://12factor.net/hu/
+* **Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994):** *Design Patterns: Elements of Reusable Object-Oriented Software.* Addison-Wesley. (Az MVC architektúra és tervezési minták elméleti alapjaihoz).
+* **Leonard, A. (2020):** *Angular Projects: Build modern web apps by exploring Angular 12 with 10 projects.* Packt Publishing.
+* **Martin, R. C. (2008):** *Clean Code: A Handbook of Agile Software Craftsmanship.* Prentice Hall. (A kódminőség és a statikus analízis módszertanához).
+* **Subramanian, V. (2018):** *Full Stack Web Development with Raspberry Pi 3: Build real-world Python-based applications.* Packt Publishing. (A full-stack rendszerszemlélet megalapozásához).
+
+### Online technológiai dokumentációk
+* **szit.hu**
+* **Angular Documentation (2025):** *Hivatalos fejlesztői útmutató és API referencia.* Elérhetőség: [https://angular.dev](https://angular.dev) (Utolsó megtekintés: 2026.02.10.)
+* **ESLint User Guide (2024):** *Statikus kódanalízis szabályrendszer és konfiguráció.* Elérhetőség: [https://eslint.org/docs](https://eslint.org/docs) (Utolsó megtekintés: 2026.02.05.)
+* **Express.js Framework (2024):** *Node.js webalkalmazás keretrendszer dokumentáció.* Elérhetőség: [https://expressjs.com](https://expressjs.com) (Utolsó megtekintés: 2026.03.20.)
+* **k6 Documentation (2025):** *Nyílt forráskódú terheléses tesztelő eszköz útmutatója.* Elérhetőség: [https://k6.io/docs](https://k6.io/docs) (Utolsó megtekintés: 2026.03.12.)
+* **MDN Web Docs (2025):** *HTTP állapotkódok, JavaScript referencia és webes szabványok.* Elérhetőség: [https://developer.mozilla.org](https://developer.mozilla.org) (Utolsó megtekintés: 2026.03.14.)
+* **Mocha - JavaScript Test Framework (2024):** *Backend egységtesztelési és integrációs keretrendszer.* Elérhetőség: [https://mochajs.org](https://mochajs.org) (Utolsó megtekintés: 2026.04.13.)
+* **Node.js v24 Documentation (2025):** *Szerveroldali futtatókörnyezet specifikáció.* Elérhetőség: [https://nodejs.org/docs](https://nodejs.org/docs) (Utolsó megtekintés: 2025.02.10.)
+* **Sequelize ORM (2024):** *Node.js Object-Relational Mapping dokumentáció.* Elérhetőség: [https://sequelize.org](https://sequelize.org) (Utolsó megtekintés: 2025.01.25.)
+* **SQLite Documentation (2024):** *Relációs adatbázis motor specifikáció és SQL szintaxis.* Elérhetőség: [https://www.sqlite.org/docs.html](https://www.sqlite.org/docs.html) (Utolsó megtekintés: 2026.04.30.)
+
+
+
+
